@@ -3,13 +3,13 @@
 - **Projeto desenvolvido com as versões** :package:
    - [node](https://nodejs.org/en/): v10.15.1
    - [vue.js](https://vuejs.org/): v2.5.17
-   - [vuetify](https://vuetifyjs.com): v1.5.5
+   - [bootstrap-vue](https://bootstrap-vue.js.org/docs): v2.0.0-rc.13
 
 ### Executar Projeto :computer::wrench:
 
 ``` bash
 # clonando repositório
-$ git clone xi-sacsis-admin
+$ git clone https://github.com/iguit0/xi-sacsis-admin.git xi-sacsis-admin
 $ cd xi-sacsis-admin
 
 # instala dependências
@@ -18,7 +18,7 @@ $ npm install
 # modo desenvolvimento - hot reload
 $ npm run serve
 
-# builda para produção
+# build para produção
 $ npm run build
 ```
 
