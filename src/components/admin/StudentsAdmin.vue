@@ -8,7 +8,7 @@
             <b-form-input
               id="student-name"
               type="text"
-              v-model="student.name"
+              v-model="student.nome"
               required
               placeholder="Nome completo"
               :readonly="mode === 'remove'"
@@ -20,7 +20,7 @@
             <b-form-input
               id="student-id"
               type="text"
-              v-model="student.id"
+              v-model="student.matricula"
               required
               placeholder="Matrícula"
               :readonly="mode === 'remove'"
@@ -64,7 +64,7 @@
               id="student-cpf"
               v-show="mode === 'save'"
               type="text"
-              v-model="category.icon"
+              v-model="student.cpf"
               required
               placeholder="CPF"
               :readonly="mode === 'remove'"
@@ -77,7 +77,7 @@
               id="student-rg"
               v-show="mode === 'save'"
               type="text"
-              v-model="category.icon"
+              v-model="student.rg"
               required
               placeholder="RG"
               :readonly="mode === 'remove'"
@@ -106,7 +106,7 @@
       striped
       bordered
       caption-top
-      :items="categories"
+      :items="students"
       :fields="fields"
     >
       <template slot="table-caption" v-if="totalRows">
@@ -164,15 +164,12 @@ export default {
         { value: "G", text: "G" },
         { value: "GG", text: "GG" }
       ],
-      category: {},
       student: {},
-      categories: [],
+      students: [],
       fields: [
-        { key: "id", label: "Matrícula", sortable: true },
-        { key: "name", label: "Nome Completo", sortable: true },
+        { key: "matricula", label: "Matrícula", sortable: true },
+        { key: "nome", label: "Nome", sortable: true },
         { key: "email", label: "E-mail" },
-        { key: "birthday", label: "Data Nasc." },
-        { key: "shirt", label: "Camiseta" },
         { key: "cpf", label: "CPF" },
         { key: "rg", label: "RG" },
         { key: "actions", label: "Ações" }
@@ -181,18 +178,17 @@ export default {
   },
   methods: {
     save() {
-      const method = this.category.id ? "put" : "post";
-      const id = this.category.id ? `/${this.category.id}` : "";
-      axios[method](`${baseApiUrl}/categories${id}`, this.category)
+      const method = this.student.id ? "put" : "post";
+      const id = this.student.id ? `/${this.student.id}` : "";
+      axios[method](`${baseApiUrl}/categories${id}`, this.student)
         .then(() => {
           this.$toasted.global.defaultSuccess();
           this.reset();
         })
         .catch(showError);
     },
-    // Remover categorias nao funciona (problema API)
     remove() {
-      const id = this.category.id;
+      const id = this.student.id;
       axios
         .delete(`${baseApiUrl}/categories/${id}`)
         .then(() => {
@@ -203,22 +199,26 @@ export default {
     },
     reset() {
       this.mode = "save";
-      this.category = {};
-      this.loadCategories();
+      this.student = {};
+      this.loadStudents();
     },
-    loadCategories() {
-      axios.get(`${baseApiUrl}/categories`).then(res => {
-        this.categories = res.data;
-        this.totalRows = res.data.length;
-      });
+    async loadStudents() {
+      await axios
+        .get(`${baseApiUrl}/admin/user`, {
+          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
+        })
+        .then(res => {
+          this.students = res.data.usuarios;
+          this.totalRows = res.data.usuarios.length;
+        });
     },
-    selectCategory(category, mode = "save") {
+    selectCategory(student, mode = "save") {
       this.mode = mode;
-      this.category = { ...category };
+      this.student = { ...student };
     }
   },
   mounted() {
-    this.loadCategories();
+    this.loadStudents();
   }
 };
 </script>

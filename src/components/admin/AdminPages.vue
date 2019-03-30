@@ -5,7 +5,7 @@
       <b-card no-body>
         <b-tabs card pills>
           <b-tab title="Participantes">
-            <!--<StudentsAdmin/>-->
+            <StudentsAdmin/>
           </b-tab>
           <b-tab title="Palestrantes">
             <!--<EstablishmentsAdmin/>-->

@@ -34,8 +34,11 @@ export default new Vuex.Store({
         }
     },
     getters: {
-        username(state) {
-            return state.user.name
+        getUsername(state) {
+            return state.user.dados.nome
+        },
+        getToken(state) {
+            return state.user.jwt_token
         }
     }
 })

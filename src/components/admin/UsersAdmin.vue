@@ -41,7 +41,7 @@
       </b-row>
       <b-row v-show="mode === 'save'">
         <b-col md="4" sm="12">
-          <b-form-group label="Senha:" label-for="user-password" v-if="!showPass">
+          <b-form-group label="Senha:" label-for="user-password" v-if="showPass">
             <b-input-group class="mt-3">
               <b-input-group-text slot="append" @click="showPassword">
                 <v-icon name="eye-slash"/>
@@ -161,7 +161,7 @@
 </template>
 
 <script>
-import { baseApiUrl } from "@/global";
+import { baseApiUrl, showError } from "@/global";
 import axios from "axios";
 
 export default {
@@ -186,21 +186,28 @@ export default {
         { text: "Usuário comum", value: "user" }
       ],
       fields: [
-        { key: "id", label: "Código", sortable: true },
-        { key: "name", label: "Nome", sortable: true },
-        { key: "username", label: "Usuário", sortable: true },
+        { key: "matricula", label: "Matrícula", sortable: true },
+        { key: "nome", label: "Nome", sortable: true },
         { key: "email", label: "E-mail" },
+        { key: "cpf", label: "CPF" },
+        { key: "rg", label: "RG" },
+        { key: "admin", label: "Administrador" },
         { key: "actions", label: "Ações" }
       ],
       mode: "save"
     };
   },
   methods: {
-    loadUsers() {
-      axios.get(`${baseApiUrl}/users`).then(res => {
-        this.users = res.data;
-        this.totalRows = res.data.length;
-      });
+    async loadUsers() {
+      await axios
+        .get(`${baseApiUrl}/admin/user`, {
+          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
+        })
+        .then(res => {
+          this.users = res.data.usuarios;
+          this.totalRows = res.data.usuarios.length;
+        })
+        .catch(showError);
     },
     save() {
       this.$toasted.global.defaultSuccess();

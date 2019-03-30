@@ -3,7 +3,6 @@
     <div class="auth-modal">
       <!-- img logo evento -->
       <h1>XI SACSIS</h1>
-      {{user}}
       <hr>
       <div class="auth-title">{{ showSignup ? 'Cadastro' : 'Login' }}</div>
 
@@ -22,14 +21,14 @@
             <v-icon name="envelope"/>
           </span>
         </div>
-        <input
-          v-model="user.login"
+        <b-input
+          v-model="user.email"
           name="email"
           type="text"
           placeholder="E-mail"
           class="form-control"
           required
-        >
+        />
       </div>
 
       <div class="input-group mb-3" v-if="!showPass">
@@ -38,14 +37,14 @@
             <v-icon name="key"/>
           </span>
         </div>
-        <input
-          v-model="user.senha"
+        <b-input
+          v-model="user.password"
           name="password"
           type="password"
           placeholder="Senha"
           class="form-control"
           required
-        >
+        />
         <div class="input-group-append">
           <span class="input-group-text" @click="showPassword">
             <v-icon name="eye-slash"/>
@@ -58,14 +57,14 @@
             <v-icon name="key"/>
           </span>
         </div>
-        <input
+        <b-input
           v-model="user.password"
           name="password"
           type="text"
           placeholder="Senha"
           class="form-control"
           required
-        >
+        />
         <div class="input-group-append">
           <span class="input-group-text" @click="showPassword">
             <v-icon name="eye"/>
@@ -79,14 +78,14 @@
             <v-icon name="key"/>
           </span>
         </div>
-        <input
+        <b-input
           v-if="showSignup"
           v-model="user.confirmPassword"
           type="password"
           placeholder="Confirme a Senha"
           class="form-control"
           required
-        >
+        />
         <div class="input-group-append">
           <span class="input-group-text">
             <v-icon name="check-circle"/>
@@ -124,12 +123,15 @@ export default {
   },
   methods: {
     signin() {
-      console.log("user", this.user);
+      let parsedobj = JSON.parse(JSON.stringify(this.user));
       axios
-        .post(`${baseApiUrl}/login`, this.user)
+        .post(`${baseApiUrl}/login`, {
+          login: parsedobj.email,
+          senha: parsedobj.password
+        })
         .then(res => {
           this.$store.commit("setUser", res.data);
-          //localStorage.setItem(userKey, JSON.stringify(res.data));
+          localStorage.setItem(userKey, JSON.stringify(res.data));
           this.$router.push({ path: "/" });
         })
         .catch(showError);
