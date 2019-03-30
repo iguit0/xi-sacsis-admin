@@ -1,43 +1,85 @@
 <template>
-  <div class="category-admin">
+  <div class="student-admin">
     <b-form>
-      <input id="category-id" type="hidden" v-model="category.id">
+      <input id="student-id" type="hidden" v-model="student.id">
       <b-row>
-        <b-col md="6" sm="6">
-          <b-form-group label="Nome:" label-for="category-name">
+        <b-col md="3" sm="6">
+          <b-form-group label="Nome Completo:" label-for="student-name">
             <b-form-input
-              id="category-name"
+              id="student-name"
               type="text"
-              v-model="category.name"
+              v-model="student.name"
               required
-              placeholder="Digite nome da categoria"
+              placeholder="Nome completo"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
         </b-col>
-        <b-col md="6" sm="6">
-          <b-form-group label="URL:" label-for="category-slug">
+        <b-col md="1" sm="2">
+          <b-form-group label="Matrícula:" label-for="student-id">
             <b-form-input
-              id="category-slug"
+              id="student-id"
               type="text"
-              v-model="category.slug"
+              v-model="student.id"
               required
-              placeholder="Digite a URL da categoria"
+              placeholder="Matrícula"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
         </b-col>
-        <b-col md="6" sm="6" v-show="mode === 'save'">
-          <b-form-group label="Ícone:" label-for="category-icon">
+        <b-col md="2" sm="2">
+          <b-form-group label="E-mail:" label-for="student-email">
             <b-form-input
-              v-b-tooltip.hover
-              title="Padrão Font Awesome"
-              id="category-icon"
+              id="student-email"
+              type="text"
+              v-model="student.email"
+              required
+              placeholder="E-mail"
+              :readonly="mode === 'remove'"
+            />
+          </b-form-group>
+        </b-col>
+        <b-col md="2" sm="2">
+          <b-form-group label="Data de Nascimento:" label-for="student-birthday">
+            <b-form-input
+              id="student-birthday"
+              type="text"
+              v-model="student.birthday"
+              required
+              placeholder="Data de nascimento"
+              :readonly="mode === 'remove'"
+            />
+          </b-form-group>
+        </b-col>
+        <b-col md="2" sm="2">
+          <b-form-group label="Camiseta:" label-for="student-shirt">
+            <b-form-select id="student-shirt" v-model="selectedShirt" :options="optionsShirt"/>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col md="2" sm="6" v-show="mode === 'save'">
+          <b-form-group label="CPF:" label-for="student-cpf">
+            <b-form-input
+              id="student-cpf"
               v-show="mode === 'save'"
               type="text"
               v-model="category.icon"
               required
-              placeholder="Digite ícone da categoria"
+              placeholder="CPF"
+              :readonly="mode === 'remove'"
+            />
+          </b-form-group>
+        </b-col>
+        <b-col md="2" sm="6" v-show="mode === 'save'">
+          <b-form-group label="RG:" label-for="student-rg">
+            <b-form-input
+              id="student-rg"
+              v-show="mode === 'save'"
+              type="text"
+              v-model="category.icon"
+              required
+              placeholder="RG"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
@@ -67,9 +109,14 @@
       :items="categories"
       :fields="fields"
     >
-      <template slot="table-caption">
+      <template slot="table-caption" v-if="totalRows">
         <h6 align="right">
-          <strong>{{totalRows}} categorias encontradas</strong>
+          <strong>{{totalRows}} participantes encontrados</strong>
+        </h6>
+      </template>
+      <template slot="table-caption" v-else>
+        <h6 align="right">
+          <strong>Nenhum participante encontrado</strong>
         </h6>
       </template>
       <template slot="actions" slot-scope="data">
@@ -101,7 +148,7 @@ import { baseApiUrl, showError } from "@/global";
 import axios from "axios";
 
 export default {
-  name: "CategoriesAdmin",
+  name: "StudentsAdmin",
   data() {
     return {
       currentPage: 1,
@@ -109,13 +156,25 @@ export default {
       pageOptions: [5, 10, 15],
       totalRows: 0,
       mode: "save",
+      selectedShirt: null,
+      optionsShirt: [
+        { value: null, text: "Selecione um tamanho" },
+        { value: "P", text: "P" },
+        { value: "M", text: "M" },
+        { value: "G", text: "G" },
+        { value: "GG", text: "GG" }
+      ],
       category: {},
+      student: {},
       categories: [],
       fields: [
-        { key: "id", label: "Código", sortable: true },
-        { key: "name", label: "Nome", sortable: true },
-        { key: "slug", label: "URL" },
-        { key: "icon", label: "Ícone" },
+        { key: "id", label: "Matrícula", sortable: true },
+        { key: "name", label: "Nome Completo", sortable: true },
+        { key: "email", label: "E-mail" },
+        { key: "birthday", label: "Data Nasc." },
+        { key: "shirt", label: "Camiseta" },
+        { key: "cpf", label: "CPF" },
+        { key: "rg", label: "RG" },
         { key: "actions", label: "Ações" }
       ]
     };
