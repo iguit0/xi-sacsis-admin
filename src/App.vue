@@ -9,7 +9,6 @@
 
 <script>
 import { mapState } from "vuex";
-import { baseApiUrl } from "@/global";
 import Menu from "@/components/template/Menu";
 import Footer from "@/components/template/Footer";
 import Header from "@/components/template/Header";
