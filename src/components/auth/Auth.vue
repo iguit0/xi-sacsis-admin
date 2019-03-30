@@ -1,7 +1,9 @@
 <template>
   <div class="auth-content">
     <div class="auth-modal">
+      <!-- img logo evento -->
       <h1>XI SACSIS</h1>
+      {{user}}
       <hr>
       <div class="auth-title">{{ showSignup ? 'Cadastro' : 'Login' }}</div>
 
@@ -21,7 +23,7 @@
           </span>
         </div>
         <input
-          v-model="user.email"
+          v-model="user.login"
           name="email"
           type="text"
           placeholder="E-mail"
@@ -37,7 +39,7 @@
           </span>
         </div>
         <input
-          v-model="user.password"
+          v-model="user.senha"
           name="password"
           type="password"
           placeholder="Senha"
@@ -108,11 +110,11 @@
 </template>
 
 <script>
-import { baseApiUrl, showError } from "@/global";
+import { baseApiUrl, showError, userKey } from "@/global";
 import axios from "axios";
 
 export default {
-  name: "auth",
+  name: "Auth",
   data: function() {
     return {
       showPass: false,
@@ -122,17 +124,19 @@ export default {
   },
   methods: {
     signin() {
+      console.log("user", this.user);
       axios
-        .post(`${baseApiUrl}/signin`, this.user)
+        .post(`${baseApiUrl}/login`, this.user)
         .then(res => {
           this.$store.commit("setUser", res.data);
+          //localStorage.setItem(userKey, JSON.stringify(res.data));
           this.$router.push({ path: "/" });
         })
         .catch(showError);
     },
     signup() {
       axios
-        .post(`${baseApiUrl}/signup`, this.user)
+        .post(`${baseApiUrl}/user`, this.user)
         .then(() => {
           this.$toasted.global.defaultSuccess();
           this.user = {};

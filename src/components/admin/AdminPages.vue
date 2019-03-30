@@ -5,16 +5,16 @@
       <b-card no-body>
         <b-tabs card pills>
           <b-tab title="Participantes">
-            <StudentsAdmin/>
+            <!--<StudentsAdmin/>-->
           </b-tab>
           <b-tab title="Palestrantes">
-            <EstablishmentsAdmin/>
+            <!--<EstablishmentsAdmin/>-->
           </b-tab>
           <b-tab title="Minicursos">
-            <h1 class="text-center">Eventos</h1>
+            <!--<CategoriesAdmin/>-->
           </b-tab>
           <b-tab title="Usuários">
-            <CategoriesAdmin/>
+            <UsersAdmin/>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -24,13 +24,13 @@
 
 <script>
 import PageTitle from "@/components/template/PageTitle";
-import UserAdmin from "./UserAdmin";
+import UsersAdmin from "./UsersAdmin";
 import StudentsAdmin from "./StudentsAdmin";
 import EstablishmentsAdmin from "./EstablishmentsAdmin";
 
 export default {
   name: "AdminPages",
-  components: { PageTitle, UserAdmin, StudentsAdmin, EstablishmentsAdmin }
+  components: { PageTitle, UsersAdmin, StudentsAdmin, EstablishmentsAdmin }
 };
 </script>
 

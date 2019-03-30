@@ -165,7 +165,7 @@ import { baseApiUrl } from "@/global";
 import axios from "axios";
 
 export default {
-  name: "UserAdmin",
+  name: "UsersAdmin",
   data() {
     return {
       currentPage: 1,

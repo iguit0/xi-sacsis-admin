@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <PageTitle icon="home" main="Dashboard" :sub="username"/>
+    <!--<PageTitle icon="home" main="Dashboard" :sub="username"/>-->
     <sequential-entrance fromBottom>
       <div class="stats">
         <Stat title="Participantes" :value="3" icon="users" color="#d54d50"/>
@@ -39,9 +39,6 @@ export default {
         this.categories = res.data.length;
       });
     }
-  },
-  mounted() {
-    this.getStats();
   }
 };
 </script>

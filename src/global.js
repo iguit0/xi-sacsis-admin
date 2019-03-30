@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
-export const baseApiUrl = 'http://localhost:3333'
+export const baseApiUrl = 'https://sacsis-api.herokuapp.com/api'
+export const userKey = '__sacsis_user'
 
 // tratamento de erros/exceções do backend
 export function showError(e) {
