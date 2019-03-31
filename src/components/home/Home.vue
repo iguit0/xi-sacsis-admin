@@ -1,12 +1,12 @@
 <template>
   <div class="home">
-    <!--<PageTitle icon="home" main="Dashboard" :sub="username"/>-->
+    <PageTitle icon="home" main="Dashboard" :sub="username"/>
     <sequential-entrance fromBottom>
       <div class="stats">
-        <Stat title="Participantes" :value="3" icon="users" color="#d54d50"/>
-        <Stat title="Palestrantes" :value="5" icon="microphone" color="#3CB371"/>
-        <Stat title="Minicursos" :value="3" icon="chalkboard-teacher" color="#FF8C00"/>
-        <Stat title="Trabalhos Submetidos" :value="3" icon="file-upload" color="#9370DB"/>
+        <Stat title="Participantes" :value="participants" icon="users" color="#d54d50"/>
+        <Stat title="Palestrantes" :value="10" icon="microphone" color="#3CB371"/>
+        <Stat title="Minicursos" :value="courses" icon="chalkboard-teacher" color="#FF8C00"/>
+        <Stat title="Trabalhos Submetidos" :value="10" icon="file-upload" color="#9370DB"/>
       </div>
     </sequential-entrance>
   </div>
@@ -23,22 +23,38 @@ export default {
   components: { PageTitle, Stat },
   data() {
     return {
-      categories: 0
+      participants: 0,
+      courses: 0
     };
   },
   computed: {
     username() {
-      return this.$store.getters.username
-        ? `Bem-vindo(a), ${this.$store.getters.username}`
+      return this.$store.getters.getUsername
+        ? `Bem-vindo(a), ${this.$store.getters.getUsername}`
         : "Bem-vindo(a)!";
     }
   },
   methods: {
-    getStats() {
-      axios.get(`${baseApiUrl}/categories`).then(res => {
-        this.categories = res.data.length;
-      });
+    async getStats() {
+      await axios
+        .get(`${baseApiUrl}/admin/user`, {
+          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
+        })
+        .then(res => {
+          this.participants = res.data.usuarios.length;
+        });
+
+      await axios
+        .get(`${baseApiUrl}/admin/course`, {
+          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
+        })
+        .then(res => {
+          this.courses = res.data.minicursos.length;
+        });
     }
+  },
+  mounted() {
+    this.getStats();
   }
 };
 </script>

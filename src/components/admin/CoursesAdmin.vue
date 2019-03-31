@@ -1,85 +1,63 @@
 <template>
-  <div class="student-admin">
+  <div class="course-admin">
     <b-form>
-      <input id="student-id" type="hidden" v-model="student.id">
+      <input id="course-id" type="hidden" v-model="course.id">
       <b-row>
         <b-col md="3" sm="6">
-          <b-form-group label="Nome Completo:" label-for="student-name">
+          <b-form-group label="Título:" label-for="course-title">
             <b-form-input
-              id="student-name"
+              id="course-title"
               type="text"
-              v-model="student.nome"
+              v-model="course.title"
               required
-              placeholder="Nome completo"
+              placeholder="Título"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
         </b-col>
         <b-col md="1" sm="2">
-          <b-form-group label="Matrícula:" label-for="student-matricula">
+          <b-form-group label="Descrição:" label-for="course-description">
             <b-form-input
-              id="student-matricula"
+              id="course-description"
               type="text"
-              v-model="student.matricula"
+              v-model="course.description"
               required
-              placeholder="Matrícula"
+              placeholder="Descrição"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
         </b-col>
         <b-col md="2" sm="2">
-          <b-form-group label="E-mail:" label-for="student-email">
+          <b-form-group label="Início:" label-for="course-start">
             <b-form-input
-              id="student-email"
+              id="course-start"
               type="text"
-              v-model="student.email"
+              v-model="course.start"
               required
-              placeholder="E-mail"
+              placeholder="Data Início"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
         </b-col>
         <b-col md="2" sm="2">
-          <b-form-group label="Data de Nascimento:" label-for="student-birthday">
+          <b-form-group label="Fim:" label-for="course-end">
             <b-form-input
-              id="student-birthday"
+              id="course-end"
               type="text"
-              v-model="student.birthday"
+              v-model="course.end"
               required
-              placeholder="Data de nascimento"
+              placeholder="Data Fim"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
         </b-col>
         <b-col md="2" sm="2">
-          <b-form-group label="Camiseta:" label-for="student-shirt">
-            <b-form-select id="student-shirt" v-model="selectedShirt" :options="optionsShirt"/>
-          </b-form-group>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col md="2" sm="6" v-show="mode === 'save'">
-          <b-form-group label="CPF:" label-for="student-cpf">
+          <b-form-group label="Vagas:" label-for="course-attendance">
             <b-form-input
-              id="student-cpf"
-              v-show="mode === 'save'"
-              type="text"
-              v-model="student.cpf"
+              type="number"
+              id="course-attendance"
               required
-              placeholder="CPF"
-              :readonly="mode === 'remove'"
-            />
-          </b-form-group>
-        </b-col>
-        <b-col md="2" sm="6" v-show="mode === 'save'">
-          <b-form-group label="RG:" label-for="student-rg">
-            <b-form-input
-              id="student-rg"
-              v-show="mode === 'save'"
-              type="text"
-              v-model="student.rg"
-              required
-              placeholder="RG"
+              placeholder="Vagas"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
@@ -106,24 +84,24 @@
       striped
       bordered
       caption-top
-      :items="students"
+      :items="courses"
       :fields="fields"
     >
       <template slot="table-caption" v-if="totalRows">
         <h6 align="right">
-          <strong>{{totalRows}} participantes encontrados</strong>
+          <strong>{{totalRows}} minicursos encontrados</strong>
         </h6>
       </template>
       <template slot="table-caption" v-else>
         <h6 align="right">
-          <strong>Nenhum participante encontrado</strong>
+          <strong>Nenhum minicurso encontrado</strong>
         </h6>
       </template>
       <template slot="actions" slot-scope="data">
-        <b-btn variant="warning" @click="selectCategory(data.item)" class="mr-2">
+        <b-btn variant="warning" @click="selectCourse(data.item)" class="mr-2">
           <v-icon name="edit"/>
         </b-btn>
-        <b-btn variant="danger" @click="selectCategory(data.item, 'remove')" class="mr-2">
+        <b-btn variant="danger" @click="selectCourse(data.item, 'remove')" class="mr-2">
           <v-icon name="trash-alt"/>
         </b-btn>
       </template>
@@ -148,7 +126,7 @@ import { baseApiUrl, showError } from "@/global";
 import axios from "axios";
 
 export default {
-  name: "StudentsAdmin",
+  name: "CoursesAdmin",
   data() {
     return {
       currentPage: 1,
@@ -156,31 +134,24 @@ export default {
       pageOptions: [5, 10, 15],
       totalRows: 0,
       mode: "save",
-      selectedShirt: null,
-      optionsShirt: [
-        { value: null, text: "Selecione um tamanho" },
-        { value: "P", text: "P" },
-        { value: "M", text: "M" },
-        { value: "G", text: "G" },
-        { value: "GG", text: "GG" }
-      ],
-      student: {},
-      students: [],
+      course: {},
+      courses: [],
       fields: [
-        { key: "matricula", label: "Matrícula", sortable: true },
-        { key: "nome", label: "Nome", sortable: true },
-        { key: "email", label: "E-mail" },
-        { key: "cpf", label: "CPF" },
-        { key: "rg", label: "RG" },
+        { key: "id", label: "Código", sortable: true },
+        { key: "titulo", label: "Título", sortable: true },
+        { key: "descricao", label: "Descrição" },
+        { key: "data_inicio", label: "Inicio" },
+        { key: "data_fim", label: "Fim" },
+        { key: "vagas", label: "Vagas" },
         { key: "actions", label: "Ações" }
       ]
     };
   },
   methods: {
     save() {
-      const method = this.student.id ? "put" : "post";
-      const id = this.student.id ? `/${this.student.id}` : "";
-      axios[method](`${baseApiUrl}/categories${id}`, this.student)
+      const method = this.course.id ? "put" : "post";
+      const id = this.course.id ? `/${this.course.id}` : "";
+      axios[method](`${baseApiUrl}/categories${id}`, this.course)
         .then(() => {
           this.$toasted.global.defaultSuccess();
           this.reset();
@@ -188,9 +159,9 @@ export default {
         .catch(showError);
     },
     remove() {
-      const id = this.student.id;
+      const id = this.course.id;
       axios
-        .delete(`${baseApiUrl}/categories/${id}`)
+        .delete(`${baseApiUrl}/admin/course/${id}`)
         .then(() => {
           this.$toasted.global.defaultSuccess();
           this.reset();
@@ -200,25 +171,25 @@ export default {
     reset() {
       this.mode = "save";
       this.student = {};
-      this.loadStudents();
+      this.loadCourses();
     },
-    async loadStudents() {
-      await axios
-        .get(`${baseApiUrl}/admin/user`, {
+    loadCourses() {
+      axios
+        .get(`${baseApiUrl}/admin/course`, {
           headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
         })
         .then(res => {
-          this.students = res.data.usuarios;
-          this.totalRows = res.data.usuarios.length;
+          this.courses = res.data.minicursos;
+          this.totalRows = res.data.minicursos.length;
         });
     },
-    selectCategory(student, mode = "save") {
+    selectCourse(course, mode = "save") {
       this.mode = mode;
-      this.student = { ...student };
+      this.course = { ...course };
     }
   },
   mounted() {
-    this.loadStudents();
+    this.loadCourses();
   }
 };
 </script>

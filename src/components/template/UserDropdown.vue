@@ -8,7 +8,10 @@
       <v-icon name="angle-down"/>
     </div>
     <div class="user-dropdown-content">
-      <router-link to="/admin">
+      <router-link to="/minha-conta">
+        <v-icon name="user-circle" class="mr-1"/>Minha conta
+      </router-link>
+      <router-link to="/admin" v-if="user.admin">
         <v-icon name="cogs" class="mr-1"/>Administração
       </router-link>
       <a href @click.prevent="logout">
@@ -26,6 +29,7 @@
 import { userKey } from "@/global";
 import { mapState } from "vuex";
 import Gravatar from "vue-gravatar";
+
 export default {
   name: "UserDropdown",
   components: { Gravatar },

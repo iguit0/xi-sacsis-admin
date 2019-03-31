@@ -15,6 +15,11 @@ const routes = [
         component: () => import('./components/admin/AdminPages')
     },
     {
+        path: '/minha-conta',
+        name: 'AccountPages',
+        component: () => import('./components/admin/AccountPages')
+    },
+    {
         path: '/entrar',
         name: 'auth',
         component: () => import('./components/auth/Auth')
