@@ -5,7 +5,6 @@
       <h1>XI SACSIS</h1>
       <hr>
       <div class="auth-title">{{ showSignup ? 'Cadastro' : 'Login' }}</div>
-
       <div class="input-group mb-3" v-if="showSignup">
         <div class="input-group-prepend">
           <span class="input-group-text">
@@ -93,6 +92,52 @@
         </div>
       </div>
 
+      <div class="input-group mb-3" v-if="showSignup">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <v-icon name="id-card-alt"/>
+          </span>
+        </div>
+        <b-input
+          v-model="user.cpf"
+          name="cpf"
+          type="number"
+          placeholder="CPF"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <div class="input-group mb-3" v-if="showSignup">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <v-icon name="id-card"/>
+          </span>
+        </div>
+        <b-input
+          v-model="user.rg"
+          name="rg"
+          type="text"
+          placeholder="RG"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <div class="input-group mb-3" v-if="showSignup">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <v-icon name="tshirt"/>
+          </span>
+        </div>
+        <b-form-select
+          class="form-contrl"
+          v-model="user.shirtSize"
+          :options="optionsShirt"
+          required
+        />
+      </div>
+
       <b-btn variant="warning" block v-if="showSignup" @click="signup">
         <v-icon name="user-plus" class="mr-1"/>Registrar
       </b-btn>
@@ -118,7 +163,16 @@ export default {
     return {
       showPass: false,
       showSignup: false,
-      user: {}
+      user: {
+        shirtSize: null
+      },
+      optionsShirt: [
+        { value: null, text: "Selecione um tamanho" },
+        { value: "P", text: "P" },
+        { value: "M", text: "M" },
+        { value: "G", text: "G" },
+        { value: "GG", text: "GG" }
+      ]
     };
   },
   methods: {
@@ -164,7 +218,7 @@ export default {
 .auth-modal {
   background-color: #fff;
   width: 600px;
-  height: 500px;
+  height: 650px;
   padding: 35px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
 
@@ -197,9 +251,8 @@ export default {
 
 .auth-modal a {
   margin-top: 35px;
-}*/
 
-.auth-modal hr {
+  .auth-modal hr {
   border: 0;
   width: 100%;
   height: 1px;
@@ -209,5 +262,16 @@ export default {
     rgba(120, 120, 120, 0.75),
     rgba(120, 120, 120, 0)
   );
+}*/
+
+hr {
+  border: none;
+  height: 20px;
+  width: 70%;
+  height: 50px;
+  margin-top: 0;
+  border-bottom: 1px solid #1f1209;
+  box-shadow: 0 20px 20px -20px #333;
+  margin: -50px auto 10px;
 }
 </style>
