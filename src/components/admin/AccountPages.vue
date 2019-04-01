@@ -8,7 +8,7 @@
             <b-tab title="Minicursos">
               <h1 class="text-center">Minicursos</h1>
             </b-tab>
-            <b-tab title="Dados pessoais">
+            <b-tab title="Dados Pessoais">
               <PersonalData/>
             </b-tab>
           </b-tabs>

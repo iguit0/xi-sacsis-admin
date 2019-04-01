@@ -8,20 +8,22 @@
             <b-form-input
               id="course-title"
               type="text"
-              v-model="course.title"
+              v-model="course.titulo"
               required
               placeholder="Título"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
         </b-col>
-        <b-col md="1" sm="2">
+        <b-col md="3" sm="2">
           <b-form-group label="Descrição:" label-for="course-description">
-            <b-form-input
+            <b-form-textarea
               id="course-description"
               type="text"
-              v-model="course.description"
+              v-model="course.descricao"
               required
+              rows="3"
+              no-resize
               placeholder="Descrição"
               :readonly="mode === 'remove'"
             />
@@ -32,7 +34,7 @@
             <b-form-input
               id="course-start"
               type="text"
-              v-model="course.start"
+              v-model="course.data_inicio"
               required
               placeholder="Data Início"
               :readonly="mode === 'remove'"
@@ -44,7 +46,7 @@
             <b-form-input
               id="course-end"
               type="text"
-              v-model="course.end"
+              v-model="course.data_fim"
               required
               placeholder="Data Fim"
               :readonly="mode === 'remove'"
@@ -56,6 +58,7 @@
             <b-form-input
               type="number"
               id="course-attendance"
+              v-model="course.vagas"
               required
               placeholder="Vagas"
               :readonly="mode === 'remove'"
@@ -76,7 +79,6 @@
         </b-col>
       </b-row>
     </b-form>
-
     <!-- TABELA -->
     <b-table
       :current-page="currentPage"

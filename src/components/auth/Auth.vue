@@ -216,11 +216,14 @@ export default {
 }
 
 .auth-modal {
-  background-color: #fff;
+  /*background-color: #fff;
   width: 600px;
   height: 650px;
   padding: 35px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);*/
+  height: 650px;
+  padding: 35px;
+  width: 600px;
 
   display: flex;
   flex-direction: column;
@@ -264,7 +267,7 @@ export default {
   );
 }*/
 
-hr {
+.auth-modal hr {
   border: none;
   height: 20px;
   width: 70%;

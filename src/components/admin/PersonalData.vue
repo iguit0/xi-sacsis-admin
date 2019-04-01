@@ -1,12 +1,11 @@
 <template>
   <div class="personal-data">
-    {{user.dados}}
     <b-form>
       <b-form-group
         id="input-group-1"
         label="E-mail:"
         label-for="input-1"
-        description="Nunca iremos compartilhar seu e-mail"
+        description="Nunca iremos compartilhar seu e-mail."
       >
         <b-form-input
           id="input-1"
@@ -38,7 +37,11 @@
         <b-form-input id="input-5" v-model="user.dados.rg" required placeholder="Digite RG"/>
       </b-form-group>
 
-      <b-form-group id="input-group-6" label="Pago:" label-for="input-6">{{user.dados.status_pago}}</b-form-group>
+      <b-form-group
+        id="input-group-6"
+        label="Pago:"
+        label-for="input-6"
+      >{{user.dados.status_pago ? 'Sim' : 'Não'}}</b-form-group>
 
       <b-button block variant="warning">
         <v-icon name="edit" class="mr-1"/>EDITAR

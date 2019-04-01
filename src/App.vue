@@ -18,7 +18,10 @@ import Loading from "@/components/template/Loading";
 export default {
   name: "App",
   components: { Menu, Footer, Header, Content, Loading },
-  computed: mapState(["isMenuVisible", "user"])
+  computed: mapState(["isMenuVisible", "user"]),
+  created() {
+    this.$router.push("/entrar");
+  }
 };
 </script>
 
