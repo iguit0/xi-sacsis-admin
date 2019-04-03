@@ -4,14 +4,23 @@
       <!-- img logo evento -->
       <b-img :src="require('@/assets/img/logo.png')" class="mb-3"/>
       <hr>
-      <div class="auth-title">{{ showSignup ? 'Cadastro' : 'Login' }}</div>
+      <div class="auth-title" v-if="!recoverPass">{{ showSignup ? 'CADASTRO' : 'LOGIN' }}</div>
+      <div class="auth-title" v-else>ESQUECI MINHA SENHA</div>
+
       <div class="input-group mb-3" v-if="showSignup">
         <div class="input-group-prepend">
           <span class="input-group-text">
             <v-icon name="font"/>
           </span>
         </div>
-        <input v-model="user.name" type="text" placeholder="Nome" class="form-control">
+        <b-input
+          v-model="user.name"
+          type="text"
+          placeholder="Nome"
+          class="form-control"
+          required
+          name="name"
+        />
       </div>
 
       <div class="input-group mb-3">
@@ -30,7 +39,7 @@
         />
       </div>
 
-      <div class="input-group mb-3" v-if="!showPass">
+      <div class="input-group mb-3" v-if="!showPass && !recoverPass">
         <div class="input-group-prepend">
           <span class="input-group-text">
             <v-icon name="key"/>
@@ -50,7 +59,7 @@
           </span>
         </div>
       </div>
-      <div class="input-group mb-3" v-else>
+      <div class="input-group mb-3" v-else-if="showPass && !recoverPass">
         <div class="input-group-prepend">
           <span class="input-group-text">
             <v-icon name="key"/>
@@ -95,7 +104,7 @@
       <div class="input-group mb-3" v-if="showSignup">
         <div class="input-group-prepend">
           <span class="input-group-text">
-            <v-icon name="id-card-alt"/>
+            <v-icon name="id-card"/>
           </span>
         </div>
         <b-input
@@ -127,7 +136,7 @@
       <div class="input-group mb-3" v-if="showSignup">
         <div class="input-group-prepend">
           <span class="input-group-text">
-            <v-icon name="id-card"/>
+            <v-icon name="id-card-alt"/>
           </span>
         </div>
         <b-input
@@ -157,13 +166,21 @@
       <b-btn variant="warning" block v-if="showSignup" @click="signup">
         <v-icon name="user-plus" class="mr-1"/>Registrar
       </b-btn>
-      <b-btn block v-else @click="signin" variant="success">
+      <b-btn block v-else-if="!showSignup && !recoverPass" @click="signin" variant="success">
         <v-icon name="sign-in-alt" class="mr-1"/>Entrar
       </b-btn>
-
+      <b-btn v-if="recoverPass" block @click="forgotPass" variant="primary">
+        <v-icon name="unlock-alt" class="mr-1"/>Recuperar
+      </b-btn>
+      <span class="helper-recover" v-if="recoverPass">
+        <v-icon name="exclamation-triangle" color="red" class="mr-1"/>Uma nova senha temporária será enviada ao seu e-mail
+      </span>
       <a href @click.prevent="showSignup = !showSignup" class="mt-3">
         <span v-if="showSignup">Já tem cadastro? Acesse o Login!</span>
         <span v-else>Não tem cadastro? Registre-se aqui!</span>
+      </a>
+      <a href @click.prevent="toggleRecover" class="mt-2">
+        <span>Esqueci minha senha!</span>
       </a>
     </div>
   </div>
@@ -179,6 +196,7 @@ export default {
     return {
       showPass: false,
       showSignup: false,
+      recoverPass: false,
       user: {
         shirtSize: null
       },
@@ -194,11 +212,11 @@ export default {
   },
   methods: {
     signin() {
-      let parsedobj = JSON.parse(JSON.stringify(this.user));
+      let parsedUser = JSON.parse(JSON.stringify(this.user));
       axios
         .post(`${baseApiUrl}/login`, {
-          login: parsedobj.email,
-          senha: parsedobj.password
+          login: parsedUser.email,
+          senha: parsedUser.password
         })
         .then(res => {
           this.$store.commit("setUser", res.data);
@@ -208,14 +226,31 @@ export default {
         .catch(showError);
     },
     signup() {
+      let newUser = JSON.parse(JSON.stringify(this.user));
       axios
-        .post(`${baseApiUrl}/user`, this.user)
+        .post(`${baseApiUrl}/user`, {
+          nome: newUser.name,
+          email: newUser.email,
+          matricula: newUser.matricula,
+          cpf: newUser.cpf,
+          rg: newUser.rg,
+          senha: newUser.password,
+          camiseta: newUser.shirtSize
+        })
         .then(() => {
           this.$toasted.global.defaultSuccess();
           this.user = {};
           this.showSignup = false;
         })
         .catch(showError);
+    },
+    toggleRecover() {
+      if (this.showSignup) {
+        this.showSignup = !this.showSignup;
+        this.recoverPass = !this.recoverPass;
+      } else {
+        this.recoverPass = !this.recoverPass;
+      }
     },
     showPassword() {
       this.showPass = !this.showPass;
@@ -293,5 +328,11 @@ export default {
   border-bottom: 1px solid #1f1209;
   box-shadow: 0 20px 20px -20px #333;
   margin: -50px auto 10px;
+}
+
+.helper-recover {
+  font-size: 15px;
+  color: black;
+  padding-top: 5px;
 }
 </style>
