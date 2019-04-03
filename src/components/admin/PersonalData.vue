@@ -12,6 +12,7 @@
           v-model="user.dados.email"
           type="email"
           required
+          readonly
           placeholder="Digite e-mail"
         ></b-form-input>
       </b-form-group>

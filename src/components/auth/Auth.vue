@@ -2,7 +2,7 @@
   <div class="auth-content">
     <div class="auth-modal">
       <!-- img logo evento -->
-      <h1>XI SACSIS</h1>
+      <b-img :src="require('@/assets/img/logo.png')" class="mb-3"/>
       <hr>
       <div class="auth-title">{{ showSignup ? 'Cadastro' : 'Login' }}</div>
       <div class="input-group mb-3" v-if="showSignup">
@@ -99,6 +99,22 @@
           </span>
         </div>
         <b-input
+          v-model="user.matricula"
+          name="matricula"
+          type="number"
+          placeholder="Matricula"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <div class="input-group mb-3" v-if="showSignup">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <v-icon name="id-card-alt"/>
+          </span>
+        </div>
+        <b-input
           v-model="user.cpf"
           name="cpf"
           type="number"
@@ -171,7 +187,8 @@ export default {
         { value: "P", text: "P" },
         { value: "M", text: "M" },
         { value: "G", text: "G" },
-        { value: "GG", text: "GG" }
+        { value: "GG", text: "GG" },
+        { value: "XL", text: "XL" }
       ]
     };
   },
