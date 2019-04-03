@@ -238,7 +238,7 @@ export default {
   height: 650px;
   padding: 35px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);*/
-  height: 650px;
+  height: 750px;
   padding: 35px;
   width: 600px;
 
