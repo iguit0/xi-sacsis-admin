@@ -169,7 +169,7 @@
       <b-btn block v-else-if="!showSignup && !recoverPass" @click="signin" variant="success">
         <v-icon name="sign-in-alt" class="mr-1"/>Entrar
       </b-btn>
-      <b-btn v-if="recoverPass" block @click="toggleRecover" variant="primary">
+      <b-btn v-if="recoverPass" block @click="resetPass" variant="primary">
         <v-icon name="unlock-alt" class="mr-1"/>Recuperar
       </b-btn>
       <span class="helper-recover" v-if="recoverPass">
@@ -236,6 +236,19 @@ export default {
           rg: newUser.rg,
           senha: newUser.password,
           camiseta: newUser.shirtSize
+        })
+        .then(() => {
+          this.$toasted.global.defaultSuccess();
+          this.user = {};
+          this.showSignup = false;
+        })
+        .catch(showError);
+    },
+    resetPass() {
+      let newUser = JSON.parse(JSON.stringify(this.user));
+      axios
+        .post(`${baseApiUrl}/reset_password`, {
+          login: newUser.email
         })
         .then(() => {
           this.$toasted.global.defaultSuccess();

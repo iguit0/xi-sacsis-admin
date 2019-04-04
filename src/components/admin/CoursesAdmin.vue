@@ -29,7 +29,7 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="2" sm="2">
+        <b-col md="2" sm="2" v-show="mode === 'save'">
           <b-form-group label="Início:" label-for="course-start">
             <b-form-input
               id="course-start"
@@ -41,7 +41,7 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="2" sm="2">
+        <b-col md="2" sm="2" v-show="mode === 'save'">
           <b-form-group label="Fim:" label-for="course-end">
             <b-form-input
               id="course-end"
@@ -53,7 +53,7 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="2" sm="2">
+        <b-col md="2" sm="2" v-show="mode === 'save'">
           <b-form-group label="Vagas:" label-for="course-attendance">
             <b-form-input
               type="number"
@@ -151,9 +151,17 @@ export default {
   },
   methods: {
     save() {
+      let parsedCourse = JSON.parse(JSON.stringify(this.course));
       const method = this.course.id ? "put" : "post";
       const id = this.course.id ? `/${this.course.id}` : "";
-      axios[method](`${baseApiUrl}/categories${id}`, this.course)
+      axios[method](`${baseApiUrl}/admin/course/${id}`, {
+        titulo: parsedCourse.titulo,
+        descricao: parsedCourse.descricao,
+        vagas: parsedCourse.vagas,
+        ministrante_id: parsedCourse.ministrante_id,
+        data_inicio: parsedCourse.data_inicio,
+        data_fim: parsedCourse.data_fim
+      })
         .then(() => {
           this.$toasted.global.defaultSuccess();
           this.reset();

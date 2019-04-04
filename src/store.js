@@ -7,7 +7,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         isMenuVisible: false,
-        user: null
+        user: null,
+        participants: 0,
+        courses: 0
     },
     mutations: {
         toggleMenu(state, isVisible) {
@@ -25,12 +27,18 @@ export default new Vuex.Store({
         setUser(state, user) {
             state.user = user
             if (user) {
-                axios.defaults.headers.common['Authorization'] = `bearer ${user.token}`
+                axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`
                 state.isMenuVisible = true
             } else {
                 delete axios.defaults.headers.common['Authorization']
                 state.isMenuVisible = false
             }
+        },
+        setParticipants(state, participants) {
+            state.participants = participants
+        },
+        setCourses(state, courses) {
+            state.courses = courses
         }
     },
     getters: {
@@ -39,6 +47,12 @@ export default new Vuex.Store({
         },
         getToken(state) {
             return state.user.jwt_token
+        },
+        getParticipants(state) {
+            return state.participants
+        },
+        getCourses(state) {
+            return state.courses
         }
     }
 })

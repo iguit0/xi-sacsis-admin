@@ -8,14 +8,14 @@
             <b-form-input
               id="user-name"
               type="text"
-              v-model="user.name"
+              v-model="user.nome"
               required
               :readonly="mode === 'remove'"
               placeholder="Digite nome do usuário"
             />
           </b-form-group>
         </b-col>
-        <b-col md="4" sm="12">
+        <b-col md="2" sm="12">
           <b-form-group label="E-mail:" label-for="user-email">
             <b-form-input
               id="user-email"
@@ -27,15 +27,26 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="4">
-          <b-form-group label="Cargo/Depto:" label-for="user-role">
-            <b-form-select
-              v-show="mode === 'save'"
-              id="user-role"
-              v-model="selectedRole"
-              :options="roles"
+        <b-col md="2" sm="12">
+          <b-form-group label="Matrícula:" label-for="user-matricula">
+            <b-form-input
+              id="user-matricula"
+              type="text"
+              v-model="user.matricula"
+              required
               :readonly="mode === 'remove'"
-            ></b-form-select>
+              placeholder="Matrícula"
+            />
+          </b-form-group>
+        </b-col>
+        <b-col md="4">
+          <b-form-group label="Nível de Permissão:" label-for="user-permission">
+            <b-form-radio-group
+              id="user-permission"
+              v-model="user.permission"
+              :options="options"
+              class="mt-3"
+            />
           </b-form-group>
         </b-col>
       </b-row>
@@ -96,16 +107,6 @@
             </b-input-group>
           </b-form-group>
         </b-col>
-        <b-col md="4">
-          <b-form-group label="Nível de Permissão:" label-for="user-permission">
-            <b-form-radio-group
-              id="user-permission"
-              v-model="user.permission"
-              :options="options"
-              class="mt-3"
-            />
-          </b-form-group>
-        </b-col>
       </b-row>
       <b-row>
         <b-col xs="12" class="mb-3">
@@ -120,7 +121,6 @@
         </b-col>
       </b-row>
     </b-form>
-
     <!-- TABELA -->
     <b-table
       :current-page="currentPage"
@@ -175,15 +175,9 @@ export default {
       user: {},
       users: [],
       showPass: false,
-      selectedRole: null,
-      roles: [
-        { text: "Selecione seu cargo/depto", value: null },
-        { text: "Presidente", value: "pres" },
-        { text: "Vice Presidente", value: "vicepres" }
-      ],
       options: [
         { text: "Administrador", value: "admin" },
-        { text: "Usuário comum", value: "user" }
+        { text: "Participante", value: "student" }
       ],
       fields: [
         { key: "matricula", label: "Matrícula", sortable: true },
@@ -191,16 +185,20 @@ export default {
         { key: "email", label: "E-mail" },
         { key: "cpf", label: "CPF" },
         { key: "rg", label: "RG" },
-        { key: "admin", label: "Administrador" },
+        {
+          key: "admin",
+          label: "Admin",
+          formatter: value => (value ? "Sim" : "Não")
+        },
         { key: "actions", label: "Ações" }
       ],
       mode: "save"
     };
   },
   methods: {
-    async loadUsers() {
-      await axios
-        .get(`${baseApiUrl}/admin/user`, {
+    loadUsers() {
+      axios
+        .get(`${baseApiUrl}/admin/user?onlyadm=true`, {
           headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
         })
         .then(res => {

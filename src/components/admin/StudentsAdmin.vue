@@ -39,25 +39,11 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="2" sm="2">
-          <b-form-group label="Data de Nascimento:" label-for="student-birthday">
-            <b-form-input
-              id="student-birthday"
-              type="text"
-              v-model="student.birthday"
-              required
-              placeholder="Data de nascimento"
-              :readonly="mode === 'remove'"
-            />
-          </b-form-group>
-        </b-col>
-        <b-col md="2" sm="2">
+        <b-col md="2" sm="2" v-show="mode === 'save'">
           <b-form-group label="Camiseta:" label-for="student-shirt">
-            <b-form-select id="student-shirt" v-model="selectedShirt" :options="optionsShirt"/>
+            <b-form-select id="student-shirt" v-model="student.camiseta" :options="optionsShirt"/>
           </b-form-group>
         </b-col>
-      </b-row>
-      <b-row>
         <b-col md="2" sm="6" v-show="mode === 'save'">
           <b-form-group label="CPF:" label-for="student-cpf">
             <b-form-input
@@ -80,6 +66,21 @@
               v-model="student.rg"
               required
               placeholder="RG"
+              :readonly="mode === 'remove'"
+            />
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col md="2" sm="6" v-show="mode === 'save'">
+          <b-form-group label="Senha:" label-for="student-password">
+            <b-form-input
+              id="student-password"
+              v-show="mode === 'save'"
+              type="text"
+              v-model="student.senha"
+              required
+              placeholder="Senha"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
@@ -156,7 +157,6 @@ export default {
       pageOptions: [5, 10, 15],
       totalRows: 0,
       mode: "save",
-      selectedShirt: null,
       optionsShirt: [
         { value: null, text: "Selecione um tamanho" },
         { value: "P", text: "P" },
@@ -164,23 +164,41 @@ export default {
         { value: "G", text: "G" },
         { value: "GG", text: "GG" }
       ],
-      student: {},
+      student: {
+        camiseta: null
+      },
       students: [],
       fields: [
         { key: "matricula", label: "Matrícula", sortable: true },
         { key: "nome", label: "Nome", sortable: true },
         { key: "email", label: "E-mail" },
+        { key: "camiseta", label: "Camiseta" },
         { key: "cpf", label: "CPF" },
         { key: "rg", label: "RG" },
+        {
+          key: "status_pago",
+          label: "Pago",
+          sortable: true,
+          formatter: value => (value ? "Sim" : "Não")
+        },
         { key: "actions", label: "Ações" }
       ]
     };
   },
   methods: {
     save() {
+      let parsedStudent = JSON.parse(JSON.stringify(this.student));
       const method = this.student.id ? "put" : "post";
       const id = this.student.id ? `/${this.student.id}` : "";
-      axios[method](`${baseApiUrl}/categories${id}`, this.student)
+      axios[method](`${baseApiUrl}/user${id}`, {
+        nome: parsedStudent.nome,
+        email: parsedStudent.email,
+        matricula: parsedStudent.matricula,
+        cpf: parsedStudent.cpf,
+        rg: parsedStudent.rg,
+        senha: parsedStudent.senha,
+        camiseta: parsedStudent.camiseta
+      })
         .then(() => {
           this.$toasted.global.defaultSuccess();
           this.reset();
@@ -190,7 +208,7 @@ export default {
     remove() {
       const id = this.student.id;
       axios
-        .delete(`${baseApiUrl}/categories/${id}`)
+        .delete(`${baseApiUrl}/admin/user/${id}`)
         .then(() => {
           this.$toasted.global.defaultSuccess();
           this.reset();
@@ -202,9 +220,9 @@ export default {
       this.student = {};
       this.loadStudents();
     },
-    async loadStudents() {
-      await axios
-        .get(`${baseApiUrl}/admin/user`, {
+    loadStudents() {
+      axios
+        .get(`${baseApiUrl}/admin/user?onlyadm=false`, {
           headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
         })
         .then(res => {

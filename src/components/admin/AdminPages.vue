@@ -11,11 +11,11 @@
             <b-tab title="Minicursos">
               <CoursesAdmin/>
             </b-tab>
+            <b-tab title="Palestras">
+              <h1 class="text-center">Palestras</h1>
+            </b-tab>
             <b-tab title="Usuários">
               <UsersAdmin/>
-            </b-tab>
-            <b-tab title="Palestras">
-              <h1 align="text-center">Palestras</h1>
             </b-tab>
           </b-tabs>
         </b-card>
