@@ -169,13 +169,13 @@
       <b-btn block v-else-if="!showSignup && !recoverPass" @click="signin" variant="success">
         <v-icon name="sign-in-alt" class="mr-1"/>Entrar
       </b-btn>
-      <b-btn v-if="recoverPass" block @click="forgotPass" variant="primary">
+      <b-btn v-if="recoverPass" block @click="toggleRecover" variant="primary">
         <v-icon name="unlock-alt" class="mr-1"/>Recuperar
       </b-btn>
       <span class="helper-recover" v-if="recoverPass">
         <v-icon name="exclamation-triangle" color="red" class="mr-1"/>Uma nova senha temporária será enviada ao seu e-mail
       </span>
-      <a href @click.prevent="showSignup = !showSignup" class="mt-3">
+      <a href @click.prevent="toggleSignup" class="mt-3">
         <span v-if="showSignup">Já tem cadastro? Acesse o Login!</span>
         <span v-else>Não tem cadastro? Registre-se aqui!</span>
       </a>
@@ -244,6 +244,14 @@ export default {
         })
         .catch(showError);
     },
+    toggleSignup() {
+      if (!this.recoverPass) {
+        this.showSignup = !this.showSignup;
+      } else if (!this.showSignup && this.recoverPass) {
+        this.recoverPass = !this.recoverPass;
+        this.showSignup = !this.showSignup;
+      }
+    },
     toggleRecover() {
       if (this.showSignup) {
         this.showSignup = !this.showSignup;
@@ -273,7 +281,7 @@ export default {
   height: 650px;
   padding: 35px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);*/
-  height: 750px;
+  height: 850px;
   padding: 35px;
   width: 600px;
 
