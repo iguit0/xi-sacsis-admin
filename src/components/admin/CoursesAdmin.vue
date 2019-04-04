@@ -34,7 +34,7 @@
             <b-form-input
               id="course-start"
               type="text"
-              v-model="course.data_inicio"
+              v-model="course.data_inicio | formatDate"
               required
               placeholder="Data Início"
               :readonly="mode === 'remove'"
@@ -45,7 +45,7 @@
           <b-form-group label="Fim:" label-for="course-end">
             <b-form-input
               id="course-end"
-              type="text"
+              type="datetime"
               v-model="course.data_fim"
               required
               placeholder="Data Fim"
@@ -126,6 +126,7 @@
 <script>
 import { baseApiUrl, showError } from "@/global";
 import axios from "axios";
+import moment from "moment";
 
 export default {
   name: "CoursesAdmin",
@@ -142,8 +143,22 @@ export default {
         { key: "id", label: "Código", sortable: true },
         { key: "titulo", label: "Título", sortable: true },
         { key: "descricao", label: "Descrição" },
-        { key: "data_inicio", label: "Inicio" },
-        { key: "data_fim", label: "Fim" },
+        {
+          key: "data_inicio",
+          label: "Inicio",
+          formatter: value =>
+            moment(String(value))
+              .locale("pt-br")
+              .format("lll")
+        },
+        {
+          key: "data_fim",
+          label: "Fim",
+          formatter: value =>
+            moment(String(value))
+              .locale("pt-br")
+              .format("lll")
+        },
         { key: "vagas", label: "Vagas" },
         { key: "actions", label: "Ações" }
       ]
@@ -196,6 +211,15 @@ export default {
     selectCourse(course, mode = "save") {
       this.mode = mode;
       this.course = { ...course };
+    }
+  },
+  filters: {
+    formatDate(value) {
+      if (value) {
+        return moment(String(value))
+          .locale("pt-br")
+          .format("lll");
+      }
     }
   },
   mounted() {
