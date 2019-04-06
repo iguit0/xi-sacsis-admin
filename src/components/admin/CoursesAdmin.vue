@@ -34,7 +34,7 @@
             <b-form-input
               id="course-start"
               type="text"
-              v-model="course.data_inicio | formatDate"
+              v-model="course.data_inicio"
               required
               placeholder="Data Início"
               :readonly="mode === 'remove'"
