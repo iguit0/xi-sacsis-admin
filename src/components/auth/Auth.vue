@@ -161,9 +161,19 @@
         />
       </div>
 
-      <b-btn variant="warning" block v-if="showSignup" @click="signup">
+      <!--<b-btn variant="warning" block v-if="showSignup" @click="signup">
         <v-icon name="user-plus" class="mr-1"/>Registrar
-      </b-btn>
+      </b-btn>-->
+      <VueLoadingButton
+        aria-label="Entrar no sistema"
+        class="btn btn-warning btn-block"
+        :styled="isStyled"
+        @click.native="signup"
+        :loading="isLoading"
+        v-if="showSignup"
+      >
+        <v-icon name="user-plus" class="mr-1"/>Registrar
+      </VueLoadingButton>
       <VueLoadingButton
         aria-label="Entrar no sistema"
         class="btn btn-success btn-block"
@@ -180,9 +190,6 @@
       <b-btn v-if="recoverPass" block @click="resetPass" variant="primary">
         <v-icon name="unlock-alt" class="mr-1"/>Recuperar
       </b-btn>
-      <span class="helper-recover" v-if="recoverPass">
-        <v-icon name="exclamation-triangle" color="red" class="mr-1"/>Uma nova senha temporária será enviada ao seu e-mail
-      </span>
       <a href @click.prevent="toggleSignup" class="mt-3">
         <span v-if="showSignup">Já tem cadastro? Acesse o Login!</span>
         <span v-else>Não tem cadastro? Registre-se aqui!</span>
@@ -244,6 +251,7 @@ export default {
       }
     },
     signup() {
+      this.isLoading = true;
       let newUser = JSON.parse(JSON.stringify(this.user));
       axios
         .post(`${baseApiUrl}/user`, {
@@ -256,6 +264,7 @@ export default {
           camiseta: newUser.shirtSize
         })
         .then(() => {
+          this.isLoading = false;
           this.$toasted.global.defaultSuccess();
           this.user = {};
           this.showSignup = false;
