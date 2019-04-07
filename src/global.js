@@ -13,3 +13,10 @@ export function showError(e) {
         Vue.toasted.global.defaultError()
     }
 }
+
+export function errorForm(e) {
+    if (e) {
+        console.log(e)
+        Vue.toasted.global.defaultError({ msg: 'E-mail incorreto!' })
+    }
+}

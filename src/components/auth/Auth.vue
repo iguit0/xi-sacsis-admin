@@ -164,9 +164,19 @@
       <b-btn variant="warning" block v-if="showSignup" @click="signup">
         <v-icon name="user-plus" class="mr-1"/>Registrar
       </b-btn>
-      <b-btn block v-else-if="!showSignup && !recoverPass" @click="signin" variant="success">
+      <VueLoadingButton
+        aria-label="Entrar no sistema"
+        class="btn btn-success btn-block"
+        :styled="isStyled"
+        @click.native="signin"
+        :loading="isLoading"
+        v-else-if="!showSignup && !recoverPass"
+      >
         <v-icon name="sign-in-alt" class="mr-1"/>Entrar
-      </b-btn>
+      </VueLoadingButton>
+      <!--<b-btn block v-else-if="!showSignup && !recoverPass" @click="signin" variant="success">
+        <v-icon name="sign-in-alt" class="mr-1"/>Entrar
+      </b-btn>-->
       <b-btn v-if="recoverPass" block @click="resetPass" variant="primary">
         <v-icon name="unlock-alt" class="mr-1"/>Recuperar
       </b-btn>
@@ -187,11 +197,15 @@
 <script>
 import { baseApiUrl, showError, userKey } from "@/global";
 import axios from "axios";
+import VueLoadingButton from "vue-loading-button";
 
 export default {
   name: "Auth",
+  components: { VueLoadingButton },
   data: function() {
     return {
+      isStyled: false,
+      isLoading: false,
       showPass: false,
       showSignup: false,
       recoverPass: false,
@@ -210,18 +224,24 @@ export default {
   },
   methods: {
     signin() {
+      this.isLoading = true;
       let parsedUser = JSON.parse(JSON.stringify(this.user));
-      axios
-        .post(`${baseApiUrl}/login`, {
-          login: parsedUser.email,
-          senha: parsedUser.password
-        })
-        .then(res => {
-          this.$store.commit("setUser", res.data);
-          localStorage.setItem(userKey, JSON.stringify(res.data));
-          this.$router.push({ path: "/" });
-        })
-        .catch(showError);
+      if (!this.user.email && !this.user.password) {
+        alert("E-mail inválido!");
+      } else {
+        axios
+          .post(`${baseApiUrl}/login`, {
+            login: parsedUser.email,
+            senha: parsedUser.password
+          })
+          .then(res => {
+            this.$store.commit("setUser", res.data);
+            this.isLoading = false;
+            localStorage.setItem(userKey, JSON.stringify(res.data));
+            this.$router.push({ path: "/" });
+          })
+          .catch(showError);
+      }
     },
     signup() {
       let newUser = JSON.parse(JSON.stringify(this.user));
