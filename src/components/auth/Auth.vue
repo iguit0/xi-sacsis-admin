@@ -46,6 +46,7 @@
           </span>
         </div>
         <b-input
+          v-on:keyup.enter="signin"
           v-model="user.password"
           name="password"
           type="password"
@@ -66,6 +67,7 @@
           </span>
         </div>
         <b-input
+          v-on:keyup.enter="signin"
           v-model="user.password"
           name="password"
           type="text"
@@ -165,7 +167,7 @@
         <v-icon name="user-plus" class="mr-1"/>Registrar
       </b-btn>-->
       <VueLoadingButton
-        aria-label="Entrar no sistema"
+        aria-label="Registrar no Sistema"
         class="btn btn-warning btn-block"
         :styled="isStyled"
         @click.native="signup"
@@ -187,9 +189,19 @@
       <!--<b-btn block v-else-if="!showSignup && !recoverPass" @click="signin" variant="success">
         <v-icon name="sign-in-alt" class="mr-1"/>Entrar
       </b-btn>-->
-      <b-btn v-if="recoverPass" block @click="resetPass" variant="primary">
+      <VueLoadingButton
+        aria-label="Recuperar Senha"
+        class="btn btn-primary btn-block"
+        :styled="isStyled"
+        @click.native="resetPass"
+        :loading="isLoading"
+        v-if="recoverPass"
+      >
         <v-icon name="unlock-alt" class="mr-1"/>Recuperar
-      </b-btn>
+      </VueLoadingButton>
+      <!--<b-btn v-if="recoverPass" block @click="resetPass" variant="primary">
+        <v-icon name="unlock-alt" class="mr-1"/>Recuperar
+      </b-btn>-->
       <a href @click.prevent="toggleSignup" class="mt-3">
         <span v-if="showSignup">Já tem cadastro? Acesse o Login!</span>
         <span v-else>Não tem cadastro? Registre-se aqui!</span>

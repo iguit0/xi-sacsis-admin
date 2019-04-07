@@ -31,26 +31,50 @@
         </b-col>
         <b-col md="2" sm="2" v-show="mode === 'save'">
           <b-form-group label="Início:" label-for="course-start">
-            <b-form-input
+            <date-pick
+              id="course-start"
+              v-model="course.data_inicio"
+              prevMonthCaption="Mês Anterior"
+              nextMonthCaption="Próximo Mês"
+              setTimeCaption="Horário:"
+              :weekdays="weekDays"
+              :months="months"
+              :pickTime="true"
+              :format="'DD-MM-YYYY HH:mm'"
+              :readonly="mode === 'remove'"
+            />
+            <!--<b-form-input
               id="course-start"
               type="text"
               v-model="course.data_inicio"
               required
               placeholder="Data Início"
               :readonly="mode === 'remove'"
-            />
+            />-->
           </b-form-group>
         </b-col>
         <b-col md="2" sm="2" v-show="mode === 'save'">
           <b-form-group label="Fim:" label-for="course-end">
-            <b-form-input
+            <date-pick
+              id="course-end"
+              v-model="course.data_fim"
+              prevMonthCaption="Mês Anterior"
+              nextMonthCaption="Próximo Mês"
+              setTimeCaption="Horário:"
+              :weekdays="weekDays"
+              :months="months"
+              :pickTime="true"
+              :format="'DD-MM-YYYY HH:mm'"
+              :readonly="mode === 'remove'"
+            />
+            <!--<b-form-input
               id="course-end"
               type="datetime"
               v-model="course.data_fim"
               required
               placeholder="Data Fim"
               :readonly="mode === 'remove'"
-            />
+            />-->
           </b-form-group>
         </b-col>
         <b-col md="2" sm="2" v-show="mode === 'save'">
@@ -127,11 +151,29 @@
 import { baseApiUrl, showError } from "@/global";
 import axios from "axios";
 import moment from "moment";
+import DatePick from "vue-date-pick";
+import "vue-date-pick/dist/vueDatePick.css";
 
 export default {
   name: "CoursesAdmin",
+  components: { DatePick },
   data() {
     return {
+      weekDays: ["Se", "Te", "Qu", "Qu", "Se", "Sa", "Do"],
+      months: [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+      ],
       currentPage: 1,
       perPage: 5,
       pageOptions: [5, 10, 15],
@@ -227,3 +269,51 @@ export default {
   }
 };
 </script>
+
+<style>
+.vdpArrowPrev:after {
+  border-right-color: #333;
+}
+
+.vdpArrowNext:after {
+  border-left-color: #333;
+}
+
+.vdpCell.selectable:hover .vdpCellContent,
+.vdpCell.selected .vdpCellContent {
+  background: #333;
+}
+
+.vdpCell.today {
+  color: #333;
+}
+
+.vdpTimeUnit > input:hover,
+.vdpTimeUnit > input:focus {
+  border-bottom-color: #333;
+}
+
+.vdpComponent.vdpWithInput > input {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+
+.vdpComponent.vdpWithInput > input:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+</style>
