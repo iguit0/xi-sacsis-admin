@@ -111,7 +111,7 @@
           v-model="user.matricula"
           name="matricula"
           type="number"
-          placeholder="Matricula"
+          placeholder="Matrícula"
           class="form-control"
           required
         />
@@ -123,13 +123,12 @@
             <v-icon name="id-card-alt"/>
           </span>
         </div>
-        <b-input
+        <the-mask
           v-model="user.cpf"
-          name="cpf"
-          type="number"
           placeholder="CPF"
           class="form-control"
           required
+          :mask="['###.###.###-##']"
         />
       </div>
 
@@ -139,13 +138,12 @@
             <v-icon name="id-card-alt"/>
           </span>
         </div>
-        <b-input
+        <the-mask
           v-model="user.rg"
-          name="rg"
-          type="text"
           placeholder="RG"
           class="form-control"
           required
+          :mask="['##.###.###']"
         />
       </div>
 

@@ -9,6 +9,7 @@ import './plugins/bootstrap'
 import './plugins/icons'
 import './plugins/toasted'
 import './plugins/entrance'
+import './plugins/vue-mask'
 
 Vue.config.productionTip = false;
 
