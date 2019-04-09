@@ -4,7 +4,7 @@
     <sequential-entrance fromBottom>
       <div class="stats">
         <Stat title="Participantes" :value="participants" icon="users" color="#d54d50"/>
-        <Stat title="Minicursos" :value="courses" icon="chalkboard-teacher" color="#FF8C00"/>
+        <Stat title="Minicursos" :value="22" icon="chalkboard-teacher" color="#FF8C00"/>
         <Stat title="Palestras" :value="22" icon="microphone" color="#3CB371"/>
       </div>
     </sequential-entrance>
@@ -43,13 +43,13 @@ export default {
           this.$store.commit("setParticipants", res.data.usuarios.length);
         });
 
-      await axios
+      /*await axios
         .get(`${baseApiUrl}/admin/course`, {
           headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
         })
         .then(res => {
           this.$store.commit("setCourses", res.data.minicursos.length);
-        });
+        });*/
     }
   },
   mounted() {

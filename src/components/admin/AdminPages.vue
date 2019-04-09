@@ -14,9 +14,6 @@
             <b-tab title="Palestras">
               <h1 class="text-center">Palestras</h1>
             </b-tab>
-            <b-tab title="Usuários">
-              <UsersAdmin/>
-            </b-tab>
           </b-tabs>
         </b-card>
       </div>
@@ -26,13 +23,12 @@
 
 <script>
 import PageTitle from "@/components/template/PageTitle";
-import UsersAdmin from "./UsersAdmin";
 import StudentsAdmin from "./StudentsAdmin";
 import CoursesAdmin from "./CoursesAdmin";
 
 export default {
   name: "AdminPages",
-  components: { PageTitle, UsersAdmin, StudentsAdmin, CoursesAdmin }
+  components: { PageTitle, StudentsAdmin, CoursesAdmin }
 };
 </script>
 

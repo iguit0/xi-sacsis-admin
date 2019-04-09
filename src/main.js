@@ -4,7 +4,6 @@ import store from './store'
 import router from './router'
 
 // plugins
-import './plugins/axios'
 import './plugins/bootstrap'
 import './plugins/icons'
 import './plugins/toasted'

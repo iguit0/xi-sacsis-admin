@@ -27,23 +27,6 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="2" sm="2">
-          <b-form-group label="E-mail:" label-for="student-email">
-            <b-form-input
-              id="student-email"
-              type="text"
-              v-model="student.email"
-              required
-              placeholder="E-mail"
-              :readonly="mode === 'remove'"
-            />
-          </b-form-group>
-        </b-col>
-        <b-col md="2" sm="2" v-show="mode === 'save'">
-          <b-form-group label="Camiseta:" label-for="student-shirt">
-            <b-form-select id="student-shirt" v-model="student.camiseta" :options="optionsShirt"/>
-          </b-form-group>
-        </b-col>
         <b-col md="2" sm="6" v-show="mode === 'save'">
           <b-form-group label="CPF:" label-for="student-cpf">
             <b-form-input
@@ -70,25 +53,41 @@
             />
           </b-form-group>
         </b-col>
-      </b-row>
-      <b-row>
-        <b-col md="2" sm="6" v-show="mode === 'save'">
-          <b-form-group label="Senha:" label-for="student-password">
-            <b-form-input
-              id="student-password"
-              v-show="mode === 'save'"
-              type="text"
-              v-model="student.senha"
-              required
-              placeholder="Senha"
-              :readonly="mode === 'remove'"
-            />
+        <b-col md="2" sm="2" v-show="mode === 'save'">
+          <b-form-group label="Camiseta:" label-for="student-shirt">
+            <b-form-select id="student-shirt" v-model="student.camiseta" :options="optionsShirt"/>
+          </b-form-group>
+        </b-col>
+        <b-col md="2" sm="2">
+          <b-form-group label="Pago:" label-for="student-paid">
+            <b-form-radio-group id="student-paid" v-model="student.status_pago">
+              <b-form-radio value="true">Sim</b-form-radio>
+              <b-form-radio value="false">Não</b-form-radio>
+            </b-form-radio-group>
           </b-form-group>
         </b-col>
       </b-row>
       <b-row>
+        <b-col md="4">
+          <b-form-group label="Nível de Permissão:" label-for="user-permission">
+            <b-form-radio-group
+              id="user-permission"
+              v-model="student.admin"
+              :options="optionsPermission"
+              class="mt-3"
+            />
+          </b-form-group>
+        </b-col>
+      </b-row>
+
+      <b-row>
         <b-col xs="6" class="mb-3">
-          <b-btn variant="primary" v-if="mode === 'save'" @click="save">Salvar</b-btn>
+          <b-btn
+            :disabled="incomplete"
+            variant="primary"
+            v-if="mode === 'save'"
+            @click="save"
+          >Salvar</b-btn>
           <b-btn variant="danger" v-if="mode === 'remove'" @click="remove">Excluir</b-btn>
           <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
         </b-col>
@@ -121,10 +120,10 @@
         </h6>
       </template>
       <template slot="actions" slot-scope="data">
-        <b-btn variant="warning" @click="selectCategory(data.item)" class="mr-2">
+        <b-btn variant="warning" @click="selectStudent(data.item)" class="mr-2">
           <v-icon name="edit"/>
         </b-btn>
-        <b-btn variant="danger" @click="selectCategory(data.item, 'remove')" class="mr-2">
+        <b-btn variant="danger" @click="selectStudent(data.item, 'remove')" class="mr-2">
           <v-icon name="trash-alt"/>
         </b-btn>
       </template>
@@ -157,6 +156,11 @@ export default {
       pageOptions: [5, 10, 15],
       totalRows: 0,
       mode: "save",
+      incomplete: true,
+      optionsPermission: [
+        { text: "Administrador", value: "true" },
+        { text: "Participante", value: "false" }
+      ],
       optionsShirt: [
         { value: null, text: "Selecione um tamanho" },
         { value: "P", text: "P" },
@@ -170,7 +174,7 @@ export default {
       students: [],
       fields: [
         { key: "matricula", label: "Matrícula", sortable: true },
-        { key: "nome", label: "Nome", sortable: true },
+        { key: "nome", label: "Nome Completo", sortable: true },
         { key: "email", label: "E-mail" },
         { key: "camiseta", label: "Camiseta" },
         { key: "cpf", label: "CPF" },
@@ -181,6 +185,11 @@ export default {
           sortable: true,
           formatter: value => (value ? "Sim" : "Não")
         },
+        {
+          key: "admin",
+          label: "Admin",
+          formatter: value => (value ? "Sim" : "Não")
+        },
         { key: "actions", label: "Ações" }
       ]
     };
@@ -188,17 +197,24 @@ export default {
   methods: {
     save() {
       let parsedStudent = JSON.parse(JSON.stringify(this.student));
-      const method = this.student.id ? "put" : "post";
-      const id = this.student.id ? `/${this.student.id}` : "";
-      axios[method](`${baseApiUrl}/user${id}`, {
-        nome: parsedStudent.nome,
-        email: parsedStudent.email,
-        matricula: parsedStudent.matricula,
-        cpf: parsedStudent.cpf,
-        rg: parsedStudent.rg,
-        senha: parsedStudent.senha,
-        camiseta: parsedStudent.camiseta
-      })
+      axios
+        .put(
+          `${baseApiUrl}/admin/user`,
+          {
+            id: parsedStudent.id,
+            nome: parsedStudent.nome,
+            email: parsedStudent.email,
+            matricula: parsedStudent.matricula,
+            cpf: parsedStudent.cpf,
+            rg: parsedStudent.rg,
+            status_pago: parsedStudent.status_pago,
+            admin: parsedStudent.admin,
+            camiseta: parsedStudent.camiseta
+          },
+          {
+            headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
+          }
+        )
         .then(() => {
           this.$toasted.global.defaultSuccess();
           this.reset();
@@ -208,7 +224,9 @@ export default {
     remove() {
       const id = this.student.id;
       axios
-        .delete(`${baseApiUrl}/admin/user/${id}`)
+        .delete(`${baseApiUrl}/admin/user/${id}`, {
+          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
+        })
         .then(() => {
           this.$toasted.global.defaultSuccess();
           this.reset();
@@ -217,12 +235,13 @@ export default {
     },
     reset() {
       this.mode = "save";
-      this.student = {};
+      this.student = { camiseta: null };
+      this.incomplete = true;
       this.loadStudents();
     },
     loadStudents() {
       axios
-        .get(`${baseApiUrl}/admin/user?onlyadm=false`, {
+        .get(`${baseApiUrl}/admin/user`, {
           headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
         })
         .then(res => {
@@ -230,9 +249,10 @@ export default {
           this.totalRows = res.data.usuarios.length;
         });
     },
-    selectCategory(student, mode = "save") {
+    selectStudent(student, mode = "save") {
       this.mode = mode;
       this.student = { ...student };
+      this.incomplete = false;
     }
   },
   mounted() {

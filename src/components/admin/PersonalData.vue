@@ -38,6 +38,10 @@
         <b-form-input id="input-5" v-model="user.dados.rg" required placeholder="Digite RG"/>
       </b-form-group>
 
+      <!--<b-form-group id="input-group-6" label="Camiseta:" label-for="input-6">
+        <b-form-select id="input-6" v-model="user.dados.camiseta" :options="optionsShirt"/>
+      </b-form-group>-->
+
       <b-form-group
         id="input-group-6"
         label="Pago:"
@@ -56,6 +60,17 @@ import { mapState } from "vuex";
 
 export default {
   name: "PersonalData",
+  data() {
+    return {
+      optionsShirt: [
+        { value: null, text: "Selecione um tamanho" },
+        { value: "P", text: "P" },
+        { value: "M", text: "M" },
+        { value: "G", text: "G" },
+        { value: "GG", text: "GG" }
+      ]
+    };
+  },
   computed: { ...mapState(["user"]) }
 };
 </script>
