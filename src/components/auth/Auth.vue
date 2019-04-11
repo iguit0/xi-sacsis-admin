@@ -7,12 +7,10 @@
       <div class="auth-title" v-if="!recoverPass">{{ showSignup ? 'CADASTRO' : 'LOGIN' }}</div>
       <div class="auth-title" v-else>ESQUECI MINHA SENHA</div>
 
-      <div class="input-group mb-3" v-if="showSignup">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <v-icon name="font"/>
-          </span>
-        </div>
+      <b-input-group class="mb-3" v-if="showSignup">
+        <b-input-group-text slot="prepend">
+          <v-icon name="font"/>
+        </b-input-group-text>
         <b-input
           v-model="user.name"
           type="text"
@@ -21,30 +19,26 @@
           required
           name="name"
         />
-      </div>
+      </b-input-group>
 
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <v-icon name="envelope"/>
-          </span>
-        </div>
+      <b-input-group class="mb-3">
+        <b-input-group-text slot="prepend">
+          <v-icon name="envelope"/>
+        </b-input-group-text>
         <b-input
           v-model="user.email"
           name="email"
-          type="text"
+          type="email"
           placeholder="E-mail"
           class="form-control"
           required
         />
-      </div>
+      </b-input-group>
 
-      <div class="input-group mb-3" v-if="!showPass && !recoverPass">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <v-icon name="key"/>
-          </span>
-        </div>
+      <b-input-group class="mb-3" v-if="!showPass && !recoverPass">
+        <b-input-group-text slot="prepend">
+          <v-icon name="key"/>
+        </b-input-group-text>
         <b-input
           v-on:keyup.enter="signin"
           v-model="user.password"
@@ -54,18 +48,15 @@
           class="form-control"
           required
         />
-        <div class="input-group-append">
-          <span class="input-group-text" @click="showPassword">
-            <v-icon name="eye-slash"/>
-          </span>
-        </div>
-      </div>
-      <div class="input-group mb-3" v-else-if="showPass && !recoverPass">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <v-icon name="key"/>
-          </span>
-        </div>
+        <b-input-group-text slot="append" @click="showPassword">
+          <v-icon name="eye-slash"/>
+        </b-input-group-text>
+      </b-input-group>
+
+      <b-input-group class="mb-3" v-else-if="showPass && !recoverPass">
+        <b-input-group-text slot="prepend">
+          <v-icon name="key"/>
+        </b-input-group-text>
         <b-input
           v-on:keyup.enter="signin"
           v-model="user.password"
@@ -75,19 +66,15 @@
           class="form-control"
           required
         />
-        <div class="input-group-append">
-          <span class="input-group-text" @click="showPassword">
-            <v-icon name="eye"/>
-          </span>
-        </div>
-      </div>
+        <b-input-group-text slot="append" @click="showPassword">
+          <v-icon name="eye"/>
+        </b-input-group-text>
+      </b-input-group>
 
-      <div class="input-group mb-3" v-if="showSignup">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <v-icon name="key"/>
-          </span>
-        </div>
+      <b-input-group class="mb-3" v-if="showSignup">
+        <b-input-group-text slot="prepend">
+          <v-icon name="key"/>
+        </b-input-group-text>
         <b-input
           v-if="showSignup"
           v-model="user.confirmPassword"
@@ -96,28 +83,24 @@
           class="form-control"
           required
         />
-        <div class="input-group-append">
-          <span class="input-group-text">
-            <v-icon name="check-circle"/>
-          </span>
-        </div>
-      </div>
+        <b-input-group-text slot="append">
+          <v-icon name="check-circle"/>
+        </b-input-group-text>
+      </b-input-group>
 
-      <div class="input-group mb-3" v-if="showSignup">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <v-icon name="id-card"/>
-          </span>
-        </div>
-        <b-input
+      <b-input-group class="mb-3" v-if="showSignup">
+        <b-input-group-text slot="prepend">
+          <v-icon name="id-card"/>
+        </b-input-group-text>
+        <the-mask
+          :mask="['####']"
           v-model="user.matricula"
           name="matricula"
-          type="number"
           placeholder="Matrícula"
           class="form-control"
           required
         />
-      </div>
+      </b-input-group>
 
       <div class="input-group mb-3" v-if="showSignup">
         <div class="input-group-prepend">
@@ -134,12 +117,10 @@
         />
       </div>
 
-      <div class="input-group mb-3" v-if="showSignup">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <v-icon name="id-card-alt"/>
-          </span>
-        </div>
+      <b-input-group class="mb-3" v-if="showSignup" v-b-tooltip.hover title="Apenas os números">
+        <b-input-group-text slot="prepend">
+          <v-icon name="id-card-alt"/>
+        </b-input-group-text>
         <the-mask
           v-model="user.rg"
           placeholder="RG"
@@ -147,21 +128,19 @@
           required
           :mask="['##.###.###']"
         />
-      </div>
+      </b-input-group>
 
-      <div class="input-group mb-3" v-if="showSignup">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <v-icon name="tshirt"/>
-          </span>
-        </div>
+      <b-input-group class="mb-3" v-if="showSignup">
+        <b-input-group-text slot="prepend">
+          <v-icon name="tshirt"/>
+        </b-input-group-text>
         <b-form-select
           class="form-contrl"
           v-model="user.shirtSize"
           :options="optionsShirt"
           required
         />
-      </div>
+      </b-input-group>
 
       <!--<b-btn variant="warning" block v-if="showSignup" @click="signup">
         <v-icon name="user-plus" class="mr-1"/>Registrar
@@ -180,7 +159,7 @@
         aria-label="Entrar no sistema"
         class="btn btn-success btn-block"
         :styled="isStyled"
-        @click.native="signin"
+        @click.native="signin(user)"
         :loading="isLoading"
         v-else-if="!showSignup && !recoverPass"
       >
@@ -242,11 +221,18 @@ export default {
     };
   },
   methods: {
-    signin() {
+    signin(user) {
       this.isLoading = true;
-      let parsedUser = JSON.parse(JSON.stringify(this.user));
-      if (!this.user.email && !this.user.password) {
-        alert("E-mail inválido!");
+      let parsedUser = JSON.parse(JSON.stringify(user));
+      if (!user.email) {
+        alert("Digite um e-mail!");
+        this.isLoading = false;
+      } else if (!user.password) {
+        alert("Digite uma senha!");
+        this.isLoading = false;
+      } else if (!user.email && !user.password) {
+        alert("E-mail e senha em branco!");
+        this.isLoading = false;
       } else {
         axios
           .post(`${baseApiUrl}/login`, {

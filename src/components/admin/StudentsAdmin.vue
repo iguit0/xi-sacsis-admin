@@ -10,7 +10,7 @@
               type="text"
               v-model="student.nome"
               required
-              placeholder="Nome completo"
+              placeholder="Nome Completo"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
@@ -27,9 +27,18 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="2" sm="6" v-show="mode === 'save'">
+        <b-col md="2" sm="6">
           <b-form-group label="CPF:" label-for="student-cpf">
-            <b-form-input
+            <the-mask
+              id="student-cpf"
+              v-model="student.cpf"
+              placeholder="CPF"
+              class="form-control"
+              required
+              :mask="['###.###.###-##']"
+              :readonly="mode === 'remove'"
+            />
+            <!--<b-form-input
               id="student-cpf"
               v-show="mode === 'save'"
               type="text"
@@ -37,12 +46,29 @@
               required
               placeholder="CPF"
               :readonly="mode === 'remove'"
-            />
+            />-->
           </b-form-group>
         </b-col>
-        <b-col md="2" sm="6" v-show="mode === 'save'">
+        <b-col md="2" sm="6">
           <b-form-group label="RG:" label-for="student-rg">
-            <b-form-input
+            <the-mask
+              id="student-rg"
+              v-model="student.rg"
+              placeholder="RG"
+              class="form-control"
+              required
+              :mask="['##.###.###']"
+              :readonly="mode === 'remove'"
+            />
+            <!--<the-mask
+              v-model="student.rg"
+              placeholder="RG"
+              class="form-control"
+              required
+              :mask="['##.###.###']"
+              :readonly="mode === 'remove'"
+            />-->
+            <!--<b-form-input
               id="student-rg"
               v-show="mode === 'save'"
               type="text"
@@ -50,15 +76,15 @@
               required
               placeholder="RG"
               :readonly="mode === 'remove'"
-            />
+            />-->
           </b-form-group>
         </b-col>
-        <b-col md="2" sm="2" v-show="mode === 'save'">
+        <b-col md="2" sm="2" v-if="mode === 'save'">
           <b-form-group label="Camiseta:" label-for="student-shirt">
             <b-form-select id="student-shirt" v-model="student.camiseta" :options="optionsShirt"/>
           </b-form-group>
         </b-col>
-        <b-col md="2" sm="2">
+        <b-col md="2" sm="2" v-if="mode === 'save'">
           <b-form-group label="Pago:" label-for="student-paid">
             <b-form-radio-group id="student-paid" v-model="student.status_pago">
               <b-form-radio value="true">Sim</b-form-radio>
@@ -69,7 +95,11 @@
       </b-row>
       <b-row>
         <b-col md="4">
-          <b-form-group label="Nível de Permissão:" label-for="user-permission">
+          <b-form-group
+            label="Nível de Permissão:"
+            label-for="user-permission"
+            v-if="mode === 'save'"
+          >
             <b-form-radio-group
               id="user-permission"
               v-model="student.admin"
@@ -106,6 +136,8 @@
       striped
       bordered
       caption-top
+      show-empty
+      empty-text="Não há nenhum participante cadastrado"
       :items="students"
       :fields="fields"
     >

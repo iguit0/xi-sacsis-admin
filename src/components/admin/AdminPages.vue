@@ -12,7 +12,7 @@
               <CoursesAdmin/>
             </b-tab>
             <b-tab title="Palestras">
-              <h1 class="text-center">Palestras</h1>
+              <PresentationAdmin/>
             </b-tab>
           </b-tabs>
         </b-card>
@@ -25,10 +25,11 @@
 import PageTitle from "@/components/template/PageTitle";
 import StudentsAdmin from "./StudentsAdmin";
 import CoursesAdmin from "./CoursesAdmin";
+import PresentationAdmin from "./PresentationAdmin";
 
 export default {
   name: "AdminPages",
-  components: { PageTitle, StudentsAdmin, CoursesAdmin }
+  components: { PageTitle, StudentsAdmin, CoursesAdmin, PresentationAdmin }
 };
 </script>
 

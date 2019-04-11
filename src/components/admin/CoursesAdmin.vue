@@ -110,6 +110,8 @@
       striped
       bordered
       caption-top
+      show-empty
+      empty-text="Não há nenhum minicurso cadastrado"
       :items="courses"
       :fields="fields"
     >
@@ -159,7 +161,7 @@ export default {
   components: { DatePick },
   data() {
     return {
-      weekDays: ["Se", "Te", "Qu", "Qu", "Se", "Sa", "Do"],
+      weekDays: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
       months: [
         "Janeiro",
         "Fevereiro",
