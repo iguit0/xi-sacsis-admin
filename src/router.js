@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { userKey } from '@/global'
 
 Vue.use(VueRouter)
 
@@ -12,7 +13,8 @@ const routes = [
     {
         path: '/admin',
         name: 'adminPages',
-        component: () => import('./components/admin/AdminPages')
+        component: () => import('./components/admin/AdminPages'),
+        meta: { requiresAdmin: true }
     },
     {
         path: '/minha-conta',
@@ -26,7 +28,20 @@ const routes = [
     }
 ]
 
-export default new VueRouter({
+const router = new VueRouter({
     mode: 'history',
     routes
 })
+
+router.beforeEach((to, from, next) => {
+    const json = localStorage.getItem(userKey)
+
+    if (to.matched.some(record => record.meta.requiresAdmin)) {
+        const user = JSON.parse(json)
+        user && user.admin ? next() : next({ path: '/' })
+    } else {
+        next()
+    }
+})
+
+export default router

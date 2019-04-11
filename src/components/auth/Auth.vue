@@ -26,6 +26,7 @@
           <v-icon name="envelope"/>
         </b-input-group-text>
         <b-input
+          v-on:keyup.enter="signin(user)"
           v-model="user.email"
           name="email"
           type="email"
@@ -40,7 +41,7 @@
           <v-icon name="key"/>
         </b-input-group-text>
         <b-input
-          v-on:keyup.enter="signin"
+          v-on:keyup.enter="signin(user)"
           v-model="user.password"
           name="password"
           type="password"

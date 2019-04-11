@@ -5,7 +5,6 @@ export const userKey = '__sacsis_user'
 
 // tratamento de erros/exceções do backend
 export function showError(e) {
-    Vue.toasted.global.defaultError({ msg: 'Erro!' })
     if (e && e.response && e.response.data) {
         Vue.toasted.global.defaultError({ msg: e.response.data })
         console.log('caso 1')
@@ -15,11 +14,5 @@ export function showError(e) {
     } else {
         Vue.toasted.global.defaultError()
         console.log('caso 3')
-    }
-}
-
-export function errorForm(e) {
-    if (e) {
-        Vue.toasted.global.defaultError({ msg: 'E-mail incorreto!' })
     }
 }

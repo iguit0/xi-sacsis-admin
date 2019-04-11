@@ -15,7 +15,7 @@
 import PageTitle from "@/components/template/PageTitle";
 import Stat from "@/components/home/Stat";
 import axios from "axios";
-import { baseApiUrl } from "@/global";
+import { showError, baseApiUrl } from "@/global";
 
 export default {
   name: "Home",
@@ -34,14 +34,16 @@ export default {
     }
   },
   methods: {
-    async getStats() {
-      await axios
+    getStats() {
+      axios
         .get(`${baseApiUrl}/admin/user`, {
           headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
         })
         .then(res => {
+          console.log(res);
           this.$store.commit("setParticipants", res.data.usuarios.length);
-        });
+        })
+        .catch(showError);
 
       /*await axios
         .get(`${baseApiUrl}/admin/course`, {
