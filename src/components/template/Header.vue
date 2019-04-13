@@ -4,7 +4,8 @@
       <v-icon scale="1.5" :name="icon"/>
     </a>
     <h1 class="title my-1">
-      <router-link to="/">{{title}}</router-link>
+      {{title}}
+      <!--<router-link to="/">{{title}}</router-link>-->
     </h1>
     <UserDropdown v-if="!hideUserDropdown"/>
   </header>

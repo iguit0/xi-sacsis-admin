@@ -13,11 +13,10 @@ import Menu from "@/components/template/Menu";
 import Footer from "@/components/template/Footer";
 import Header from "@/components/template/Header";
 import Content from "@/components/template/Content";
-import Loading from "@/components/template/Loading";
 
 export default {
   name: "App",
-  components: { Menu, Footer, Header, Content, Loading },
+  components: { Menu, Footer, Header, Content },
   computed: mapState(["isMenuVisible", "user"]),
   created() {
     this.$router.push("/entrar");

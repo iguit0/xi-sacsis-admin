@@ -84,9 +84,6 @@
           class="form-control"
           required
         />
-        <b-input-group-text slot="append">
-          <v-icon name="check-circle"/>
-        </b-input-group-text>
       </b-input-group>
 
       <b-input-group class="mb-3" v-if="showSignup">
@@ -194,8 +191,7 @@
 </template>
 
 <script>
-import { baseApiUrl, showError, showSuccess, userKey } from "@/global";
-import axios from "axios";
+import { showError, showSuccess, userKey } from "@/global";
 import api from "@/services/api";
 import VueLoadingButton from "vue-loading-button";
 
