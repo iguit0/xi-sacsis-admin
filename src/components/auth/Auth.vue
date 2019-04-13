@@ -26,7 +26,7 @@
           <v-icon name="envelope"/>
         </b-input-group-text>
         <b-input
-          v-on:keyup.enter="signin"
+          v-on:keyup.enter="checkForm"
           v-model="user.email"
           name="email"
           type="email"
@@ -41,7 +41,7 @@
           <v-icon name="key"/>
         </b-input-group-text>
         <b-input
-          v-on:keyup.enter="signin"
+          v-on:keyup.enter="checkForm"
           v-model="user.password"
           name="password"
           type="password"
@@ -59,7 +59,7 @@
           <v-icon name="key"/>
         </b-input-group-text>
         <b-input
-          v-on:keyup.enter="signin"
+          v-on:keyup.enter="checkForm"
           v-model="user.password"
           name="password"
           type="text"
@@ -160,7 +160,7 @@
         aria-label="Entrar no sistema"
         class="btn btn-success btn-block"
         :styled="isStyled"
-        @click.native="signin"
+        @click.native="checkForm"
         :loading="isLoading"
         v-else-if="!showSignup && !recoverPass"
       >
@@ -223,6 +223,43 @@ export default {
     };
   },
   methods: {
+    validEmail: function(email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    },
+    checkForm(e) {
+      this.errors = [];
+      this.isLoading = true;
+
+      if (!this.user.email) {
+        let msg = "E-mail é obrigatório";
+        this.errors.push(msg);
+        showError(msg);
+        this.isLoading = false;
+      } else if (!this.validEmail(this.user.email)) {
+        let msg = "Utilize um e-mail válido";
+        this.errors.push(msg);
+        showError(msg);
+        this.isLoading = false;
+      } else if (!this.user.password) {
+        let msg = "Senha é obrigatório";
+        this.errors.push(msg);
+        showError(msg);
+        this.isLoading = false;
+      } else if (!this.user.email && !this.user.password) {
+        let msg = "E-mail e Senha são obrigatórios";
+        this.errors.push(msg);
+        showError(msg);
+        this.isLoading = false;
+      }
+
+      if (!this.errors.length) {
+        this.isLoading = false;
+        return this.signin();
+      }
+
+      e.preventDefault();
+    },
     signin() {
       this.isLoading = true;
       let parsedUser = JSON.parse(JSON.stringify(this.user));
@@ -262,8 +299,7 @@ export default {
       const response = api
         .post("/user", data)
         .then(response => {
-          if (response.status === 200) {
-            console.log("caiu no 200");
+          if (response.status === 201) {
             console.log(response);
             this.isLoading = false;
             let successMsg = response.data.message;
@@ -271,43 +307,36 @@ export default {
             this.user = {};
             this.showSignup = false;
           } else {
-            console.log("caiu no else");
             let errorMsg = response.data.message;
             showError(errorMsg);
             this.isLoading = false;
           }
         })
         .catch(showError);
-      /*axios
-        .post(`${baseApiUrl}/user`, {
-          nome: newUser.name,
-          email: newUser.email,
-          matricula: newUser.matricula,
-          cpf: newUser.cpf,
-          rg: newUser.rg,
-          senha: newUser.password,
-          camiseta: newUser.shirtSize
-        })
-        .then(() => {
-          this.isLoading = false;
-          this.$toasted.global.defaultSuccess();
-          this.user = {};
-          this.showSignup = false;
-        })
-        .catch(showError);*/
     },
     resetPass() {
-      let newUser = JSON.parse(JSON.stringify(this.user));
-      axios
-        .post(`${baseApiUrl}/reset_password`, {
-          login: newUser.email
-        })
-        .then(() => {
-          this.$toasted.global.defaultSuccess();
-          this.user = {};
-          this.showSignup = false;
-        })
-        .catch(showError);
+      this.isLoading = true;
+      let forgotUser = JSON.parse(JSON.stringify(this.user));
+      try {
+        const data = {
+          login: forgotUser.email
+        };
+        const response = api.post("/reset_password", data).then(response => {
+          if (response.status === 200) {
+            let successMsg = response.data.message;
+            showSuccess(successMsg);
+            this.isLoading = false;
+            this.user = {};
+            this.showSignup = false;
+          } else {
+            let errorMsg = response.data.message;
+            showError(errorMsg);
+            this.isLoading = false;
+          }
+        });
+      } catch (err) {
+        console.log(err);
+      }
     },
     toggleSignup() {
       if (!this.recoverPass) {

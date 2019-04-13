@@ -5,21 +5,21 @@
       <div class="stats">
         <Stat
           title="Participantes"
-          :isLoading="isLoading"
+          :isLoading="isLoading.participants"
           :value="participants"
           icon="users"
           color="#d54d50"
         />
         <Stat
           title="Minicursos"
-          :isLoading="isLoading"
+          :isLoading="isLoading.courses"
           :value="22"
           icon="chalkboard-teacher"
           color="#FF8C00"
         />
         <Stat
           title="Palestras"
-          :isLoading="isLoading"
+          :isLoading="isLoading.presentations"
           :value="22"
           icon="microphone"
           color="#3CB371"
@@ -40,7 +40,11 @@ export default {
   components: { PageTitle, Stat },
   data() {
     return {
-      isLoading: false
+      isLoading: {
+        participants: false,
+        courses: false,
+        presentations: false
+      }
     };
   },
   computed: {
@@ -60,10 +64,10 @@ export default {
         .get("/admin/user")
         .then(res => {
           if (res.status === 200) {
-            this.isLoading = false;
+            this.isLoading.participants = false;
             this.$store.commit("setParticipants", res.data.usuarios.length);
           } else {
-            this.isLoading = false;
+            this.isLoading.participants = false;
             let errorMsg = res.data.message;
             showError(errorMsg);
           }
