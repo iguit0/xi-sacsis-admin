@@ -32,9 +32,8 @@
 <script>
 import PageTitle from "@/components/template/PageTitle";
 import Stat from "@/components/home/Stat";
-import axios from "axios";
 import api from "@/services/api";
-import { showError, baseApiUrl } from "@/global";
+import { showError } from "@/global";
 
 export default {
   name: "Home",
