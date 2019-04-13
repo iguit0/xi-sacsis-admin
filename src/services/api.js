@@ -18,12 +18,10 @@ api.interceptors.request.use((config) => {
         } else {
             delete config.headers.Authorization
         }
-        return config;
-
     } catch (err) {
-        console.log('caiu no catch');
         console.log(err)
     }
+    return config;
 })
 
 export default api;
