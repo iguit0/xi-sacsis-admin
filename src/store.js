@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+import api from '@/services/api'
 
 Vue.use(Vuex);
 
@@ -27,10 +27,10 @@ export default new Vuex.Store({
         setUser(state, user) {
             state.user = user
             if (user) {
-                axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`
+                //axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`
                 state.isMenuVisible = true
             } else {
-                delete axios.defaults.headers.common['Authorization']
+                //delete axios.defaults.headers.common['Authorization']
                 state.isMenuVisible = false
             }
         },
@@ -46,7 +46,10 @@ export default new Vuex.Store({
             return state.user.dados.nome
         },
         getToken(state) {
-            return state.user.jwt_token
+            if (state.user.jwt_token)
+                return state.user.jwt_token
+            else
+                return null
         },
         getParticipants(state) {
             return state.participants

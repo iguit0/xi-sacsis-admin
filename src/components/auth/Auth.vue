@@ -26,7 +26,7 @@
           <v-icon name="envelope"/>
         </b-input-group-text>
         <b-input
-          v-on:keyup.enter="signin(user)"
+          v-on:keyup.enter="signin"
           v-model="user.email"
           name="email"
           type="email"
@@ -41,7 +41,7 @@
           <v-icon name="key"/>
         </b-input-group-text>
         <b-input
-          v-on:keyup.enter="signin(user)"
+          v-on:keyup.enter="signin"
           v-model="user.password"
           name="password"
           type="password"
@@ -160,7 +160,7 @@
         aria-label="Entrar no sistema"
         class="btn btn-success btn-block"
         :styled="isStyled"
-        @click.native="signin(user)"
+        @click.native="signin"
         :loading="isLoading"
         v-else-if="!showSignup && !recoverPass"
       >
@@ -194,8 +194,9 @@
 </template>
 
 <script>
-import { baseApiUrl, showError, userKey } from "@/global";
+import { baseApiUrl, showError, showSuccess, userKey } from "@/global";
 import axios from "axios";
+import api from "@/services/api";
 import VueLoadingButton from "vue-loading-button";
 
 export default {
@@ -222,37 +223,62 @@ export default {
     };
   },
   methods: {
-    signin(user) {
+    signin() {
       this.isLoading = true;
-      let parsedUser = JSON.parse(JSON.stringify(user));
-      if (!user.email) {
-        alert("Digite um e-mail!");
-        this.isLoading = false;
-      } else if (!user.password) {
-        alert("Digite uma senha!");
-        this.isLoading = false;
-      } else if (!user.email && !user.password) {
-        alert("E-mail e senha em branco!");
-        this.isLoading = false;
-      } else {
-        axios
-          .post(`${baseApiUrl}/login`, {
-            login: parsedUser.email,
-            senha: parsedUser.password
-          })
-          .then(res => {
-            this.$store.commit("setUser", res.data);
+      let parsedUser = JSON.parse(JSON.stringify(this.user));
+      try {
+        const data = {
+          login: parsedUser.email,
+          senha: parsedUser.password
+        };
+        const response = api.post("/login", data).then(response => {
+          if (response.status === 200) {
+            localStorage.setItem(userKey, JSON.stringify(response.data));
+            this.$store.commit("setUser", response.data);
             this.isLoading = false;
-            localStorage.setItem(userKey, JSON.stringify(res.data));
             this.$router.push({ path: "/" });
-          })
-          .catch(showError);
+          } else {
+            let errorMsg = response.data.message;
+            showError(errorMsg);
+            this.isLoading = false;
+          }
+        });
+      } catch (err) {
+        console.log(err);
       }
     },
     signup() {
       this.isLoading = true;
       let newUser = JSON.parse(JSON.stringify(this.user));
-      axios
+      const data = {
+        nome: newUser.name,
+        email: newUser.email,
+        matricula: newUser.matricula,
+        cpf: newUser.cpf,
+        rg: newUser.rg,
+        senha: newUser.password,
+        camiseta: newUser.shirtSize
+      };
+      const response = api
+        .post("/user", data)
+        .then(response => {
+          if (response.status === 200) {
+            console.log("caiu no 200");
+            console.log(response);
+            this.isLoading = false;
+            let successMsg = response.data.message;
+            showSuccess(successMsg);
+            this.user = {};
+            this.showSignup = false;
+          } else {
+            console.log("caiu no else");
+            let errorMsg = response.data.message;
+            showError(errorMsg);
+            this.isLoading = false;
+          }
+        })
+        .catch(showError);
+      /*axios
         .post(`${baseApiUrl}/user`, {
           nome: newUser.name,
           email: newUser.email,
@@ -268,7 +294,7 @@ export default {
           this.user = {};
           this.showSignup = false;
         })
-        .catch(showError);
+        .catch(showError);*/
     },
     resetPass() {
       let newUser = JSON.parse(JSON.stringify(this.user));

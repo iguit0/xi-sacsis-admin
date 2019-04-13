@@ -3,9 +3,27 @@
     <PageTitle icon="home" main="Dashboard" :sub="username"/>
     <sequential-entrance fromBottom>
       <div class="stats">
-        <Stat title="Participantes" :value="participants" icon="users" color="#d54d50"/>
-        <Stat title="Minicursos" :value="22" icon="chalkboard-teacher" color="#FF8C00"/>
-        <Stat title="Palestras" :value="22" icon="microphone" color="#3CB371"/>
+        <Stat
+          title="Participantes"
+          :isLoading="isLoading"
+          :value="participants"
+          icon="users"
+          color="#d54d50"
+        />
+        <Stat
+          title="Minicursos"
+          :isLoading="isLoading"
+          :value="22"
+          icon="chalkboard-teacher"
+          color="#FF8C00"
+        />
+        <Stat
+          title="Palestras"
+          :isLoading="isLoading"
+          :value="22"
+          icon="microphone"
+          color="#3CB371"
+        />
       </div>
     </sequential-entrance>
   </div>
@@ -15,11 +33,17 @@
 import PageTitle from "@/components/template/PageTitle";
 import Stat from "@/components/home/Stat";
 import axios from "axios";
+import api from "@/services/api";
 import { showError, baseApiUrl } from "@/global";
 
 export default {
   name: "Home",
   components: { PageTitle, Stat },
+  data() {
+    return {
+      isLoading: false
+    };
+  },
   computed: {
     username() {
       return this.$store.getters.getUsername
@@ -28,20 +52,22 @@ export default {
     },
     participants() {
       return this.$store.getters.getParticipants;
-    },
-    courses() {
-      return this.$store.getters.getCourses;
     }
   },
   methods: {
     getStats() {
-      axios
-        .get(`${baseApiUrl}/admin/user`, {
-          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
-        })
+      this.isLoading = true;
+      api
+        .get("/admin/user")
         .then(res => {
-          console.log(res);
-          this.$store.commit("setParticipants", res.data.usuarios.length);
+          if (res.status === 200) {
+            this.isLoading = false;
+            this.$store.commit("setParticipants", res.data.usuarios.length);
+          } else {
+            this.isLoading = false;
+            let errorMsg = res.data.message;
+            showError(errorMsg);
+          }
         })
         .catch(showError);
 

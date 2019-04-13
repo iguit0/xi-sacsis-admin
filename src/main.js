@@ -9,7 +9,6 @@ import './plugins/icons'
 import './plugins/toasted'
 import './plugins/entrance'
 import './plugins/vue-mask'
-import './plugins/axios'
 
 Vue.config.productionTip = false;
 
