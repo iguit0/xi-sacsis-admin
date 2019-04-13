@@ -4,7 +4,7 @@
     <span class="mr-1">por</span>
     <a href="https://github.com/iguit0" target="_blank" rel="noopener">Igor Alves</a>
     <span class="ml-1 mr-1">&</span>
-    <a href="https://github.com/LuisMSoares" target="_blank" rel="noopener">Luiz Eduardo</a>
+    <a href="https://github.com/LuisMSoares" target="_blank" rel="noopener">Luis Eduardo</a>
   </footer>
 </template>
 
