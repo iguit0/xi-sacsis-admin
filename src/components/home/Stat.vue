@@ -5,10 +5,7 @@
     </div>
     <div class="stat-info">
       <span class="stat-title">{{title}}</span>
-      <span v-if="isLoading" class="stat-value">
-        <b-spinner type="grow" label="Carregando..."/>
-      </span>
-      <span v-else class="stat-value">{{value}}</span>
+      <span class="stat-value">{{value}}</span>
     </div>
   </div>
 </template>
@@ -16,7 +13,7 @@
 <script>
 export default {
   name: "Stat",
-  props: ["title", "value", "icon", "color", "isLoading"],
+  props: ["title", "value", "icon", "color"],
   computed: {
     style() {
       return this.color || "#000";

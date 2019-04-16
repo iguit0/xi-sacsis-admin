@@ -1,6 +1,5 @@
 import axios from 'axios';
 import store from '@/store';
-import { showError } from '@/global'
 
 const api = axios.create({
     baseURL: 'https://sacsis-api.herokuapp.com/api',
@@ -17,10 +16,7 @@ api.interceptors.request.use((config) => {
         } else {
             delete config.headers.Authorization;
         }
-    } catch (err) {
-        showError(err);
-        //console.log(err)
-    }
+    } catch { }
     return config;
 })
 

@@ -25,6 +25,11 @@ const routes = [
         path: '/entrar',
         name: 'auth',
         component: () => import('./components/auth/Auth')
+    },
+    {
+        path: '/cadastro-palestrante',
+        name: 'FormSpeakerSignup',
+        component: () => import('./components/admin/FormSpeakerSignup.vue')
     }
 ]
 

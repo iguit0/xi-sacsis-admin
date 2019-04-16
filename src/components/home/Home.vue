@@ -3,27 +3,9 @@
     <PageTitle icon="home" main="Dashboard" :sub="username"/>
     <sequential-entrance fromBottom>
       <div class="stats">
-        <Stat
-          title="Participantes"
-          :isLoading="isLoading.participants"
-          :value="participants"
-          icon="users"
-          color="#d54d50"
-        />
-        <Stat
-          title="Minicursos"
-          :isLoading="isLoading.courses"
-          :value="22"
-          icon="chalkboard-teacher"
-          color="#FF8C00"
-        />
-        <Stat
-          title="Palestras"
-          :isLoading="isLoading.presentations"
-          :value="22"
-          icon="microphone"
-          color="#3CB371"
-        />
+        <Stat title="Participantes" :value="participants" icon="users" color="#d54d50"/>
+        <Stat title="Minicursos" :value="22" icon="chalkboard-teacher" color="#FF8C00"/>
+        <Stat title="Palestras" :value="22" icon="microphone" color="#3CB371"/>
       </div>
     </sequential-entrance>
   </div>
@@ -38,15 +20,6 @@ import { showError } from "@/global";
 export default {
   name: "Home",
   components: { PageTitle, Stat },
-  data() {
-    return {
-      isLoading: {
-        participants: false,
-        courses: false,
-        presentations: false
-      }
-    };
-  },
   computed: {
     username() {
       return this.$store.getters.getUsername
@@ -59,20 +32,15 @@ export default {
   },
   methods: {
     getStats() {
-      this.isLoading = true;
-      api
-        .get("/admin/user")
-        .then(res => {
-          if (res.status === 200) {
-            this.isLoading.participants = false;
-            this.$store.commit("setParticipants", res.data.usuarios.length);
-          } else {
-            this.isLoading.participants = false;
-            let errorMsg = res.data.message;
-            showError(errorMsg);
-          }
-        })
-        .catch(showError);
+      api.get("/admin/user").then(res => {
+        if (res.status === 200) {
+          this.$store.commit("setParticipants", res.data.usuarios.length);
+        } else {
+          console.log("else");
+          let errorMsg = res.data.message;
+          showError(errorMsg);
+        }
+      });
 
       /*await axios
         .get(`${baseApiUrl}/admin/course`, {

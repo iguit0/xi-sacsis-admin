@@ -192,6 +192,7 @@
 
 <script>
 import { showError, showSuccess, userKey } from "@/global";
+import axios from "axios";
 import api from "@/services/api";
 import VueLoadingButton from "vue-loading-button";
 
@@ -232,12 +233,14 @@ export default {
         this.errors.push(msg);
         showError(msg);
         this.isLoading = false;
-      } else if (!this.validEmail(this.user.email)) {
+      } /*else if (!this.validEmail(this.user.email)) {
         let msg = "Utilize um e-mail válido";
         this.errors.push(msg);
         showError(msg);
         this.isLoading = false;
-      } else if (!this.user.password) {
+      } */ else if (
+        !this.user.password
+      ) {
         let msg = "Senha é obrigatório";
         this.errors.push(msg);
         showError(msg);
