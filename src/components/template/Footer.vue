@@ -1,6 +1,8 @@
 <template>
   <footer class="footer">
     <v-icon name="code" class="mr-1" style="color: #333;"/>
+    <span class="mr-1">com</span>
+    <v-icon name="heart" class="mr-1" style="color: red;"/>
     <span class="mr-1">por</span>
     <a href="https://github.com/iguit0" target="_blank" rel="noopener">Igor Alves</a>
     <span class="ml-1 mr-1">&</span>

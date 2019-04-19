@@ -30,6 +30,11 @@ const routes = [
         path: '/cadastro-palestrante',
         name: 'FormSpeakerSignup',
         component: () => import('./components/admin/FormSpeakerSignup.vue')
+    },
+    {
+        path: '/cadastro-ministrante',
+        name: 'FormTeacherSignup',
+        component: () => import('./components/admin/FormTeacherSignup.vue')
     }
 ]
 
