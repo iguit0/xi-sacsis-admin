@@ -17,7 +17,10 @@ import Content from "@/components/template/Content";
 export default {
   name: "App",
   components: { Menu, Footer, Header, Content },
-  computed: mapState(["isMenuVisible", "user"])
+  computed: mapState(["isMenuVisible", "user"]),
+  mounted() {
+    this.$router.push("/entrar");
+  }
 };
 </script>
 

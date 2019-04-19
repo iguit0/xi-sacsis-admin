@@ -3,10 +3,7 @@
     <a class="toggle" @click="toggleMenu" v-if="!hideToggle">
       <v-icon scale="1.5" :name="icon"/>
     </a>
-    <h1 class="title my-1">
-      {{title}}
-      <!--<router-link to="/">{{title}}</router-link>-->
-    </h1>
+    <h1 class="title my-1">{{title}}</h1>
     <UserDropdown v-if="!hideUserDropdown"/>
   </header>
 </template>
