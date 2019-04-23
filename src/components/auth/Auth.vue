@@ -12,6 +12,7 @@
           <v-icon name="font"/>
         </b-input-group-text>
         <b-input
+          v-on:keyup.enter="checkForm"
           v-model="user.name"
           type="text"
           placeholder="Nome"
@@ -77,6 +78,7 @@
           <v-icon name="key"/>
         </b-input-group-text>
         <b-input
+          v-on:keyup.enter="checkForm"
           v-if="showSignup"
           v-model="user.confirmPassword"
           type="password"
@@ -91,6 +93,7 @@
           <v-icon name="id-card"/>
         </b-input-group-text>
         <the-mask
+          v-on:keyup.enter="checkForm"
           :mask="['####']"
           v-model="user.matricula"
           name="matricula"
@@ -107,6 +110,7 @@
           </span>
         </div>
         <the-mask
+          v-on:keyup.enter="checkForm"
           v-model="user.cpf"
           placeholder="CPF"
           class="form-control"
@@ -120,6 +124,7 @@
           <v-icon name="id-card-alt"/>
         </b-input-group-text>
         <the-mask
+          v-on:keyup.enter="checkForm"
           v-model="user.rg"
           placeholder="RG"
           class="form-control"
@@ -133,7 +138,8 @@
           <v-icon name="tshirt"/>
         </b-input-group-text>
         <b-form-select
-          class="form-contrl"
+          v-on:keyup.enter="checkForm"
+          class="form-control"
           v-model="user.shirtSize"
           :options="optionsShirt"
           required
@@ -147,7 +153,7 @@
         aria-label="Registrar no Sistema"
         class="btn btn-warning btn-block"
         :styled="isStyled"
-        @click.native="signup"
+        @click.native="checkForm"
         :loading="isLoading"
         v-if="showSignup"
       >
@@ -191,8 +197,9 @@
 </template>
 
 <script>
-import { showError, showSuccess, userKey } from "@/global";
+import { showError, showSuccess, userKey, baseApiUrl } from "@/global";
 import api from "@/services/api";
+import axios from "axios";
 import VueLoadingButton from "vue-loading-button";
 
 export default {
@@ -228,33 +235,97 @@ export default {
       this.errors = [];
       this.isLoading = true;
 
-      if (!this.user.email) {
-        let msg = "E-mail é obrigatório";
-        this.errors.push(msg);
-        showError(msg);
-        this.isLoading = false;
-      } /*else if (!this.validEmail(this.user.email)) {
+      if (!this.showSignup) {
+        if (!this.user.email) {
+          let msg = "E-mail é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } /*else if (!this.validEmail(this.user.email)) {
         let msg = "Utilize um e-mail válido";
         this.errors.push(msg);
         showError(msg);
         this.isLoading = false;
       } */ else if (
-        !this.user.password
-      ) {
-        let msg = "Senha é obrigatório";
+          !this.user.password
+        ) {
+          let msg = "Senha é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } else if (!this.user.email && !this.user.password) {
+          let msg = "E-mail e Senha são obrigatórios";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        }
+      } else if (this.showSignup) {
+        if (!this.user.name) {
+          let msg = "Nome é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } else if (!this.user.email) {
+          let msg = "E-mail é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } /*else if (!this.validEmail(this.user.email)) {
+        let msg = "Utilize um e-mail válido";
         this.errors.push(msg);
         showError(msg);
         this.isLoading = false;
-      } else if (!this.user.email && !this.user.password) {
-        let msg = "E-mail e Senha são obrigatórios";
-        this.errors.push(msg);
-        showError(msg);
-        this.isLoading = false;
+      } */ else if (
+          !this.user.password
+        ) {
+          let msg = "Senha é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } else if (!this.user.email && !this.user.password) {
+          let msg = "E-mail e Senha são obrigatórios";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } else if (this.user.password != this.user.confirmPassword) {
+          let msg = "Senha e Confirmar senha não são iguais";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } else if (!this.user.confirmPassword) {
+          let msg = "Confirme sua senha";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } else if (!this.user.matricula) {
+          let msg = "Matrícula é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } else if (!this.user.cpf) {
+          let msg = "CPF é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } else if (!this.user.rg) {
+          let msg = "RG é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } else if (this.user.shirtSize === null) {
+          let msg = "Escolha um tamanho de camiseta";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        }
       }
 
-      if (!this.errors.length) {
+      if (!this.errors.length && !this.showSignup) {
         this.isLoading = false;
         return this.signin();
+      } else if (!this.errors.length && this.showSignup) {
+        this.isLoading = false;
+        return this.signup();
       }
 
       e.preventDefault();
@@ -291,7 +362,7 @@ export default {
         senha: newUser.password,
         camiseta: newUser.shirtSize
       };
-      api.post("/user", data).then(response => {
+      axios.post(`${baseApiUrl}/user`, data).then(response => {
         if (response.status === 201) {
           this.isLoading = false;
           let successMsg = response.data.message;

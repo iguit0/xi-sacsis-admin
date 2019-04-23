@@ -9,12 +9,14 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-    const token = store.getters.getToken;
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    } else {
-        delete config.headers.Authorization;
-    }
+    try {
+        const token = store.getters.getToken;
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        } else {
+            delete config.headers.Authorization;
+        }
+    } catch { }
     return config;
 })
 
