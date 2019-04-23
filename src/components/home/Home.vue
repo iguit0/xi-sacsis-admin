@@ -36,7 +36,6 @@ export default {
         if (res.status === 200) {
           this.$store.commit("setParticipants", res.data.usuarios.length);
         } else {
-          console.log("else");
           let errorMsg = res.data.message;
           showError(errorMsg);
         }

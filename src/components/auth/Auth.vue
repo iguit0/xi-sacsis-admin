@@ -192,7 +192,6 @@
 
 <script>
 import { showError, showSuccess, userKey } from "@/global";
-import axios from "axios";
 import api from "@/services/api";
 import VueLoadingButton from "vue-loading-button";
 
@@ -220,10 +219,11 @@ export default {
     };
   },
   methods: {
+    /*
     validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
-    },
+    },*/
     checkForm(e) {
       this.errors = [];
       this.isLoading = true;
@@ -262,26 +262,22 @@ export default {
     signin() {
       this.isLoading = true;
       let parsedUser = JSON.parse(JSON.stringify(this.user));
-      try {
-        const data = {
-          login: parsedUser.email,
-          senha: parsedUser.password
-        };
-        const response = api.post("/login", data).then(response => {
-          if (response.status === 200) {
-            localStorage.setItem(userKey, JSON.stringify(response.data));
-            this.$store.commit("setUser", response.data);
-            this.isLoading = false;
-            this.$router.push({ path: "/" });
-          } else {
-            let errorMsg = response.data.message;
-            showError(errorMsg);
-            this.isLoading = false;
-          }
-        });
-      } catch (err) {
-        console.log(err);
-      }
+      const data = {
+        login: parsedUser.email,
+        senha: parsedUser.password
+      };
+      api.post("/login", data).then(response => {
+        if (response.status === 200) {
+          localStorage.setItem(userKey, JSON.stringify(response.data));
+          this.$store.commit("setUser", response.data);
+          this.isLoading = false;
+          this.$router.push({ path: "/" });
+        } else {
+          let errorMsg = response.data.message;
+          showError(errorMsg);
+          this.isLoading = false;
+        }
+      });
     },
     signup() {
       this.isLoading = true;
@@ -295,47 +291,39 @@ export default {
         senha: newUser.password,
         camiseta: newUser.shirtSize
       };
-      const response = api
-        .post("/user", data)
-        .then(response => {
-          if (response.status === 201) {
-            console.log(response);
-            this.isLoading = false;
-            let successMsg = response.data.message;
-            showSuccess(successMsg);
-            this.user = {};
-            this.showSignup = false;
-          } else {
-            let errorMsg = response.data.message;
-            showError(errorMsg);
-            this.isLoading = false;
-          }
-        })
-        .catch(showError);
+      api.post("/user", data).then(response => {
+        if (response.status === 201) {
+          this.isLoading = false;
+          let successMsg = response.data.message;
+          showSuccess(successMsg);
+          this.user = {};
+          this.showSignup = false;
+        } else {
+          let errorMsg = response.data.message;
+          showError(errorMsg);
+          this.isLoading = false;
+        }
+      });
     },
     resetPass() {
       this.isLoading = true;
       let forgotUser = JSON.parse(JSON.stringify(this.user));
-      try {
-        const data = {
-          login: forgotUser.email
-        };
-        const response = api.post("/reset_password", data).then(response => {
-          if (response.status === 200) {
-            let successMsg = response.data.message;
-            showSuccess(successMsg);
-            this.isLoading = false;
-            this.user = {};
-            this.showSignup = false;
-          } else {
-            let errorMsg = response.data.message;
-            showError(errorMsg);
-            this.isLoading = false;
-          }
-        });
-      } catch (err) {
-        console.log(err);
-      }
+      const data = {
+        login: forgotUser.email
+      };
+      api.post("/reset_password", data).then(response => {
+        if (response.status === 200) {
+          let successMsg = response.data.message;
+          showSuccess(successMsg);
+          this.isLoading = false;
+          this.user = {};
+          this.showSignup = false;
+        } else {
+          let errorMsg = response.data.message;
+          showError(errorMsg);
+          this.isLoading = false;
+        }
+      });
     },
     toggleSignup() {
       if (!this.recoverPass) {
