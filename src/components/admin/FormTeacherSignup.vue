@@ -6,13 +6,15 @@
           error-color="#a94442"
           shape="square"
           color="#49a7c1"
-          title="OLÁ MINISTRANTE"
           subtitle="Preencha seus dados corretamente e participe da XI SACSIS"
           stepSize="lg"
           finishButtonText="ENVIAR"
           nextButtonText="PRÓXIMO"
           backButtonText="VOLTAR"
         >
+          <!-- sobrescrita do título -->
+          <h2 slot="title" class="text-uppercase">{{title}}</h2>
+          <!-- ./sobrescrita do título -->
           <tab-content title="Sobre você" icon="fa fa-user">
             <!-- personal content -->
             <b-form>
@@ -41,13 +43,7 @@
                 label-for="input-2"
                 description="Apenas números"
               >
-                <the-mask
-                  v-model="teacher.rg"
-                  placeholder="RG"
-                  class="form-control"
-                  required
-                  :mask="['##.###.###']"
-                />
+                <b-input v-model="teacher.rg" type="number" placeholder="RG" required/>
               </b-form-group>
               <b-form-group id="input-group-3" label="CPF:" label-for="input-3">
                 <the-mask
@@ -62,7 +58,7 @@
                 id="input-group-8"
                 label="Foto:"
                 label-for="input-8"
-                description="Formatos aceitos: JPG, JPEG e PNG"
+                description="Formatos aceitos: .jpg, .jpeg e .png"
               >
                 <b-form-file
                   id="input-8"
@@ -139,9 +135,15 @@ export default {
   data() {
     return {
       teacher: {
+        name: "",
         description: ""
       }
     };
+  },
+  computed: {
+    title() {
+      return this.teacher.name ? `OLÁ ${this.teacher.name}` : "OLÁ MINISTRANTE";
+    }
   }
 };
 </script>

@@ -9,13 +9,13 @@ const routes = [
         path: '/',
         name: 'home',
         component: () => import('./components/home/Home'),
-        meta: { requiresAdmin: true }
+        meta: { requiresLogin: true }
     },
     {
         path: '/admin',
         name: 'adminPages',
         component: () => import('./components/admin/AdminPages'),
-        meta: { requiresAdmin: true }
+        meta: { requiresLogin: true }
     },
     {
         path: '/minha-conta',
@@ -45,14 +45,20 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const json = localStorage.getItem(userKey)
+    const user = JSON.parse(localStorage.getItem(userKey))
 
+    // verificar se usuario esta logado - possui token valido
+    if (to.matched.some(record => record.meta.requiresLogin))
+        user && user.jwt_token ? next() : next({ path: '/entrar' })
+    else
+        next()
+
+    /* verificar se usuario eh admin
     if (to.matched.some(record => record.meta.requiresAdmin)) {
-        const user = JSON.parse(json)
         user && user.admin ? next() : next({ path: '/entrar' })
     } else {
         next()
-    }
+    }*/
 })
 
 export default router;
