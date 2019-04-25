@@ -1,9 +1,11 @@
 <h1 align="center">XI SACSIS − Painel Administrativo :bar_chart:</h1>
 
-- **Projeto desenvolvido com as versões** :package:
-   - [node](https://nodejs.org/en/): v10.15.1
-   - [vue.js](https://vuejs.org/): v2.5.17
-   - [bootstrap-vue](https://bootstrap-vue.js.org/docs): v2.0.0-rc.13
+- **Projeto desenvolvido com** :package:
+   - [Vue](https://vuejs.org/) - A progressive JavaScript framework
+   - [Vue-router](https://router.vuejs.org/) - The official router for Vue.js
+   - [Vuex](https://vuex.vuejs.org/) - The state manager for Vue.js
+   - [Axios](https://github.com/axios/axios) - Promise based HTTP client for the browser and node.js
+   - [Bootstrap-vue](https://bootstrap-vue.js.org/docs) - The most comprehensive implementations of Bootstrap V4 components and grid system available for Vue.js
 
 ### Executar Projeto :computer::wrench:
 
