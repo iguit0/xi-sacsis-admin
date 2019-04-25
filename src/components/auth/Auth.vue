@@ -1,7 +1,6 @@
 <template>
   <div class="auth-content">
     <div class="auth-modal">
-      <!-- img logo evento -->
       <b-img :src="require('@/assets/img/logo.png')" class="mb-3"/>
       <hr>
       <div class="auth-title" v-if="!recoverPass">{{ showSignup ? 'CADASTRO' : 'LOGIN' }}</div>
@@ -119,18 +118,11 @@
         />
       </div>
 
-      <b-input-group class="mb-3" v-if="showSignup" v-b-tooltip.hover title="Apenas os números">
+      <b-input-group class="mb-3" v-if="showSignup">
         <b-input-group-text slot="prepend">
           <v-icon name="id-card-alt"/>
         </b-input-group-text>
-        <the-mask
-          v-on:keyup.enter="checkForm"
-          v-model="user.rg"
-          placeholder="RG"
-          class="form-control"
-          required
-          :mask="['##.###.###']"
-        />
+        <b-input v-on:keyup.enter="checkForm" v-model="user.rg" placeholder="RG" required/>
       </b-input-group>
 
       <b-input-group class="mb-3" v-if="showSignup">
@@ -146,9 +138,6 @@
         />
       </b-input-group>
 
-      <!--<b-btn variant="warning" block v-if="showSignup" @click="signup">
-        <v-icon name="user-plus" class="mr-1"/>Registrar
-      </b-btn>-->
       <VueLoadingButton
         aria-label="Registrar no Sistema"
         class="btn btn-warning btn-block"
@@ -169,9 +158,6 @@
       >
         <v-icon name="sign-in-alt" class="mr-1"/>Entrar
       </VueLoadingButton>
-      <!--<b-btn block v-else-if="!showSignup && !recoverPass" @click="signin" variant="success">
-        <v-icon name="sign-in-alt" class="mr-1"/>Entrar
-      </b-btn>-->
       <VueLoadingButton
         aria-label="Recuperar Senha"
         class="btn btn-primary btn-block"
@@ -182,9 +168,7 @@
       >
         <v-icon name="unlock-alt" class="mr-1"/>Recuperar
       </VueLoadingButton>
-      <!--<b-btn v-if="recoverPass" block @click="resetPass" variant="primary">
-        <v-icon name="unlock-alt" class="mr-1"/>Recuperar
-      </b-btn>-->
+
       <a href @click.prevent="toggleSignup" class="mt-3">
         <span v-if="showSignup">Já tem cadastro? Acesse o Login!</span>
         <span v-else-if="!showSignup">Não tem cadastro? Registre-se aqui!</span>

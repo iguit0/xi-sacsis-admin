@@ -34,12 +34,12 @@ export default {
   margin-right: 5px;
   margin-left: 5px;
   font-weight: 100;
-  color: whitesmoke;
+  color: #373b44;
 }
 
 .footer a {
   text-decoration: none;
-  color: #373b44;
+  color: #493240;
   font-weight: bold;
 }
 </style>

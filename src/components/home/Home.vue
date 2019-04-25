@@ -49,9 +49,6 @@ export default {
           this.$store.commit("setCourses", res.data.minicursos.length);
         });*/
     }
-  },
-  mounted() {
-    this.getStats();
   }
 };
 </script>
