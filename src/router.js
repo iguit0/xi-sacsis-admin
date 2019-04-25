@@ -8,7 +8,8 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: () => import('./components/home/Home')
+        component: () => import('./components/home/Home'),
+        meta: { requiresAdmin: true }
     },
     {
         path: '/admin',
@@ -48,7 +49,7 @@ router.beforeEach((to, from, next) => {
 
     if (to.matched.some(record => record.meta.requiresAdmin)) {
         const user = JSON.parse(json)
-        user && user.admin ? next() : next({ path: '/' })
+        user && user.admin ? next() : next({ path: '/entrar' })
     } else {
         next()
     }
