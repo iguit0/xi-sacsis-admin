@@ -14,6 +14,9 @@
             <b-tab title="Palestras">
               <PresentationAdmin/>
             </b-tab>
+            <b-tab title="Pagamentos">
+              <h1 class="text-center text-uppercase">Controle de Pagamentos</h1>
+            </b-tab>
           </b-tabs>
         </b-card>
       </div>

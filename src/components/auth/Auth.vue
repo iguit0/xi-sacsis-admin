@@ -187,10 +187,11 @@
       </b-btn>-->
       <a href @click.prevent="toggleSignup" class="mt-3">
         <span v-if="showSignup">Já tem cadastro? Acesse o Login!</span>
-        <span v-else>Não tem cadastro? Registre-se aqui!</span>
+        <span v-else-if="!showSignup">Não tem cadastro? Registre-se aqui!</span>
       </a>
       <a href @click.prevent="toggleRecover" class="mt-2">
-        <span>Esqueci minha senha!</span>
+        <span v-if="!recoverPass">Esqueci minha senha!</span>
+        <span v-else>Lembrou a senha? Entre aqui!</span>
       </a>
     </div>
   </div>
