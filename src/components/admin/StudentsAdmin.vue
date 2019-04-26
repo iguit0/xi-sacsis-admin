@@ -15,7 +15,7 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="1" sm="2">
+        <b-col md="2" sm="2">
           <b-form-group label="Matrícula:" label-for="student-matricula">
             <b-form-input
               id="student-matricula"
@@ -47,17 +47,9 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="2" sm="2" v-if="mode === 'save'">
+        <b-col md="3" sm="2" v-if="mode === 'save'">
           <b-form-group label="Camiseta:" label-for="student-shirt">
             <b-form-select id="student-shirt" v-model="student.camiseta" :options="optionsShirt"/>
-          </b-form-group>
-        </b-col>
-        <b-col md="2" sm="2" v-if="mode === 'save'">
-          <b-form-group label="Pago:" label-for="student-paid">
-            <b-form-radio-group id="student-paid" v-model="student.status_pago">
-              <b-form-radio value="true">Sim</b-form-radio>
-              <b-form-radio value="false">Não</b-form-radio>
-            </b-form-radio-group>
           </b-form-group>
         </b-col>
       </b-row>
@@ -180,19 +172,12 @@ export default {
         { key: "camiseta", label: "Camiseta" },
         { key: "cpf", label: "CPF" },
         { key: "rg", label: "RG" },
-        {
-          key: "status_pago",
-          label: "Pago",
-          sortable: true,
-          formatter: value => (value ? "Sim" : "Não")
-        },
         { key: "actions", label: "Ações" }
       ]
     };
   },
   methods: {
     save() {
-      const id = this.student.id;
       let parsedStudent = JSON.parse(JSON.stringify(this.student));
       console.log(parsedStudent);
       const data = {
@@ -202,7 +187,6 @@ export default {
         cpf: parsedStudent.cpf,
         rg: parsedStudent.rg,
         camiseta: parsedStudent.camiseta,
-        status_pago: parsedStudent.status_pago,
         admin: parsedStudent.admin
       };
       axios
