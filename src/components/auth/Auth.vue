@@ -393,6 +393,7 @@ export default {
         if (response.status === 200) {
           let successMsg = response.data.message;
           showSuccess(successMsg);
+          showInfo("Senha enviada ao e-mail!");
           this.isLoading = false;
           this.user = {};
           this.showSignup = false;

@@ -21,3 +21,11 @@ Vue.toasted.register(
         icon: 'times'
     }
 )
+
+Vue.toasted.register(
+    'defaultInformation',
+    payload => !payload.msg ? 'Ops... Aconteceu um erro!' : payload.msg, {
+        type: 'info',
+        icon: 'info-circle'
+    }
+)

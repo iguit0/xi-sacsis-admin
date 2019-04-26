@@ -161,6 +161,9 @@ export default {
     },
     onNodeSelected(node) {
       this.$router.push({ name: node.data.name });
+      if (this.$mq === "xs" || this.$mq === "sm") {
+        this.$store.commit("toggleMenu", false);
+      }
     }
   }
 };

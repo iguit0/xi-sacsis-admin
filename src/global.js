@@ -22,3 +22,13 @@ export function showSuccess(e) {
         Vue.toasted.global.defaultSuccess()
     }
 }
+
+export function showInfo(e) {
+    if (e && e.response && e.response.data) {
+        Vue.toasted.global.defaultInformation({ msg: e.response.data })
+    } else if (typeof e === 'string') {
+        Vue.toasted.global.defaultInformation({ msg: e })
+    } else {
+        Vue.toasted.global.defaultInformation()
+    }
+}
