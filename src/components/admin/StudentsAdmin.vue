@@ -29,26 +29,20 @@
         </b-col>
         <b-col md="2" sm="6">
           <b-form-group label="CPF:" label-for="student-cpf">
-            <the-mask
+            <b-input
               id="student-cpf"
               v-model="student.cpf"
               placeholder="CPF"
-              class="form-control"
-              required
-              :mask="['###.###.###-##']"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
         </b-col>
         <b-col md="2" sm="6">
           <b-form-group label="RG:" label-for="student-rg">
-            <the-mask
+            <b-input
               id="student-rg"
               v-model="student.rg"
               placeholder="RG"
-              class="form-control"
-              required
-              :mask="['##.###.###']"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
@@ -198,7 +192,9 @@ export default {
   },
   methods: {
     save() {
+      const id = this.student.id;
       let parsedStudent = JSON.parse(JSON.stringify(this.student));
+      console.log(parsedStudent);
       const data = {
         id: parsedStudent.id,
         nome: parsedStudent.nome,
@@ -209,7 +205,23 @@ export default {
         status_pago: parsedStudent.status_pago,
         admin: parsedStudent.admin
       };
-      api.put("/admin/user", data).then(response => {
+      axios
+        .put(`${baseApiUrl}/admin/user/${id}`, data, {
+          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
+        })
+        .then(response => {
+          if (response.status === 200) {
+            console.log(response);
+            let successMsg = response.data.message;
+            showSuccess(successMsg);
+            this.reset();
+          } else {
+            let errorMsg = response.data.message;
+            showError(errorMsg);
+            this.reset();
+          }
+        });
+      /*api.put("/admin/user", data).then(response => {
         if (response.status === 200) {
           console.log(response);
           let successMsg = response.data.message;
@@ -220,7 +232,7 @@ export default {
           showError(errorMsg);
           this.reset();
         }
-      });
+      });*/
     },
     remove() {
       const id = this.student.id;
