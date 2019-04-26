@@ -206,7 +206,7 @@ export default {
         admin: parsedStudent.admin
       };
       axios
-        .put(`${baseApiUrl}/admin/user/${id}`, data, {
+        .put(`${baseApiUrl}/admin/user`, data, {
           headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
         })
         .then(response => {
