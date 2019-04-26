@@ -179,7 +179,6 @@ export default {
   methods: {
     save() {
       let parsedStudent = JSON.parse(JSON.stringify(this.student));
-      console.log(parsedStudent);
       const data = {
         id: parsedStudent.id,
         nome: parsedStudent.nome,
@@ -195,7 +194,6 @@ export default {
         })
         .then(response => {
           if (response.status === 200) {
-            console.log(response);
             let successMsg = response.data.message;
             showSuccess(successMsg);
             this.reset();
@@ -205,18 +203,6 @@ export default {
             this.reset();
           }
         });
-      /*api.put("/admin/user", data).then(response => {
-        if (response.status === 200) {
-          console.log(response);
-          let successMsg = response.data.message;
-          showSuccess(successMsg);
-          this.reset();
-        } else {
-          let errorMsg = response.data.message;
-          showError(errorMsg);
-          this.reset();
-        }
-      });*/
     },
     remove() {
       const id = this.student.id;

@@ -34,7 +34,7 @@ body {
   height: 100vh;
   display: grid;
   grid-template-rows: 60px 1fr 25px;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 260px 1fr;
   grid-template-areas: "header header" "menu content" "menu footer";
 }
 

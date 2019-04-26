@@ -107,10 +107,15 @@ export default {
           children: [
             {
               text: "Participantes",
-              data: { icon: "users", color: "#d54d50", name: "adminPages" }
+              data: {
+                icon: "users",
+                color: "#d54d50",
+                name: "adminPages",
+                value: 0
+              }
             },
             {
-              text: "Minicursos",
+              text: "Ministrantes",
               data: {
                 icon: "chalkboard-teacher",
                 color: "#FF8C00",
@@ -118,15 +123,36 @@ export default {
               }
             },
             {
-              text: "Palestras",
-              data: { icon: "microphone", color: "#3CB371", name: "adminPages" }
+              text: "Palestrantes",
+              data: {
+                icon: "microphone",
+                color: "#3CB371",
+                name: "adminPages"
+              }
+            },
+            {
+              text: "Programação",
+              data: {
+                icon: "calendar-alt",
+                color: "#FBD786",
+                name: "adminPages"
+              }
+            },
+            {
+              text: "Lotes",
+              data: {
+                icon: "cash-register",
+                color: "#C6FFDD",
+                name: "adminPages"
+              }
             },
             {
               text: "Pagamentos",
               data: {
                 icon: "comment-dollar",
-                color: "#3b8d99",
-                name: "adminPages"
+                color: "#2980B9",
+                name: "adminPages",
+                value: 5
               }
             }
           ]

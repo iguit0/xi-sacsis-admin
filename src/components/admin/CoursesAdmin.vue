@@ -92,7 +92,12 @@
       </b-row>
       <b-row>
         <b-col xs="6" class="mb-3">
-          <b-btn variant="primary" v-if="mode === 'save'" @click="save">Salvar</b-btn>
+          <b-btn
+            variant="primary"
+            :disabled="incomplete"
+            v-if="mode === 'save'"
+            @click="save"
+          >Salvar</b-btn>
           <b-btn variant="danger" v-if="mode === 'remove'" @click="remove">Excluir</b-btn>
           <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
         </b-col>
@@ -150,7 +155,7 @@
 </template>
 
 <script>
-import { baseApiUrl, showError } from "@/global";
+import { baseApiUrl, showError, showSuccess } from "@/global";
 import axios from "axios";
 import moment from "moment";
 import DatePick from "vue-date-pick";
@@ -176,6 +181,7 @@ export default {
         "Novembro",
         "Dezembro"
       ],
+      incomplete: true,
       currentPage: 1,
       perPage: 5,
       pageOptions: [5, 10, 15],
@@ -211,16 +217,16 @@ export default {
   methods: {
     save() {
       let parsedCourse = JSON.parse(JSON.stringify(this.course));
-      const method = this.course.id ? "put" : "post";
-      const id = this.course.id ? `/${this.course.id}` : "";
-      axios[method](`${baseApiUrl}/admin/course/${id}`, {
-        titulo: parsedCourse.titulo,
-        descricao: parsedCourse.descricao,
-        vagas: parsedCourse.vagas,
-        ministrante_id: parsedCourse.ministrante_id,
-        data_inicio: parsedCourse.data_inicio,
-        data_fim: parsedCourse.data_fim
-      })
+      const id = this.course.id;
+      axios
+        .put(`${baseApiUrl}/admin/course/${id}`, {
+          titulo: parsedCourse.titulo,
+          descricao: parsedCourse.descricao,
+          vagas: parsedCourse.vagas,
+          ministrante_id: parsedCourse.ministrante_id,
+          data_inicio: parsedCourse.data_inicio,
+          data_fim: parsedCourse.data_fim
+        })
         .then(() => {
           this.$toasted.global.defaultSuccess();
           this.reset();
@@ -229,17 +235,22 @@ export default {
     },
     remove() {
       const id = this.course.id;
-      axios
-        .delete(`${baseApiUrl}/admin/course/${id}`)
-        .then(() => {
-          this.$toasted.global.defaultSuccess();
+      api.delete(`/admin/course/${id}`).then(response => {
+        if (response.status === 200) {
+          let successMsg = response.data.message;
+          showSuccess(successMsg);
           this.reset();
-        })
-        .catch(showError);
+        } else {
+          let errorMsg = response.data.message;
+          showError(errorMsg);
+          this.reset();
+        }
+      });
     },
     reset() {
       this.mode = "save";
       this.student = {};
+      this.incomplete = true;
       this.loadCourses();
     },
     loadCourses() {
@@ -255,6 +266,7 @@ export default {
     selectCourse(course, mode = "save") {
       this.mode = mode;
       this.course = { ...course };
+      this.incomplete = false;
     }
   },
   filters: {
@@ -267,7 +279,7 @@ export default {
     }
   },
   mounted() {
-    //this.loadCourses();
+    this.loadCourses();
   }
 };
 </script>

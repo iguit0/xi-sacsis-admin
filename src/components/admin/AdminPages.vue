@@ -4,15 +4,21 @@
       <PageTitle icon="cogs" main="Administração" sub="Gerenciamento do Sistema"/>
       <div class="admin-pages-tabs">
         <b-card no-body>
-          <b-tabs card pills>
+          <b-tabs card pills active-nav-item-class="font-weight-bold text-uppercase">
             <b-tab title="Participantes">
               <StudentsAdmin/>
             </b-tab>
-            <b-tab title="Minicursos">
+            <b-tab title="Ministrantes">
               <CoursesAdmin/>
             </b-tab>
-            <b-tab title="Palestras">
+            <b-tab title="Palestrantes">
               <PresentationAdmin/>
+            </b-tab>
+            <b-tab title="Programação">
+              <h1 class="text-center text-uppercase">Programação</h1>
+            </b-tab>
+            <b-tab title="Lotes">
+              <h1 class="text-center text-uppercase">Lotes</h1>
             </b-tab>
             <b-tab title="Pagamentos">
               <h1 class="text-center text-uppercase">Controle de Pagamentos</h1>
