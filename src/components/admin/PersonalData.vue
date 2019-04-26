@@ -11,23 +11,17 @@
           id="input-1"
           v-model="editedUser.email"
           type="email"
-          required
           readonly
           placeholder="Digite e-mail"
         ></b-form-input>
       </b-form-group>
 
       <b-form-group id="input-group-2" label="Nome:" label-for="input-2">
-        <b-form-input id="input-2" v-model="editedUser.nome" required placeholder="Digite nome"></b-form-input>
+        <b-form-input id="input-2" v-model="editedUser.nome" placeholder="Digite nome"></b-form-input>
       </b-form-group>
 
       <b-form-group id="input-group-3" label="Matricula:" label-for="input-3">
-        <b-form-input
-          id="input-3"
-          v-model="editedUser.matricula"
-          required
-          placeholder="Digite matrícula"
-        ></b-form-input>
+        <b-form-input id="input-3" v-model="editedUser.matricula" placeholder="Digite matrícula"></b-form-input>
       </b-form-group>
 
       <b-form-group id="input-group-4" label="CPF:" label-for="input-4">
@@ -41,7 +35,7 @@
       </b-form-group>
 
       <b-form-group id="input-group-5" label="RG:" label-for="input-5">
-        <b-form-input id="input-5" v-model="editedUser.rg" required placeholder="Digite RG"/>
+        <b-form-input id="input-5" v-model="editedUser.rg" placeholder="Digite RG"/>
       </b-form-group>
 
       <b-form-group id="input-group-6" label="Camiseta:" label-for="input-6">
@@ -87,6 +81,7 @@ export default {
     return {
       isStyled: false,
       isLoading: false,
+      editedUser: {},
       optionsShirt: [
         { value: null, text: "Selecione um tamanho" },
         { value: "P", text: "P" },
@@ -97,10 +92,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user"]),
-    editedUser() {
-      return this.$store.getters.getUserData;
-    }
+    ...mapState(["user"])
   },
   methods: {
     editUser() {
@@ -115,11 +107,9 @@ export default {
       };
       api.put("/user", data).then(response => {
         if (response.status === 200) {
-          console.log(response.data);
-          this.$store.commit("setUser", response.data);
-          this.isLoading = false;
           let successMsg = response.data.message;
           showSuccess(successMsg);
+          this.isLoading = false;
         } else {
           let errorMsg = response.data.message;
           showError(errorMsg);
@@ -127,6 +117,9 @@ export default {
         }
       });
     }
+  },
+  mounted() {
+    this.editedUser = this.user.dados;
   }
 };
 </script>
