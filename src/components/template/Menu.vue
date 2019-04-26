@@ -1,7 +1,7 @@
 <template>
   <aside class="menu" v-show="isMenuVisible">
     <div class="menu-filter">
-      <v-icon name="search" color="#AAA" scale="2" class="mr-2"/>
+      <v-icon name="search" color="#AAA" class="mr-2"/>
       <input
         type="text"
         class="search-input-menu"

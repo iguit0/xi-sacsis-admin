@@ -21,12 +21,27 @@
         />
       </b-input-group>
 
-      <b-input-group class="mb-3">
+      <b-input-group class="mb-3" v-if="!recoverPass">
         <b-input-group-text slot="prepend">
           <v-icon name="envelope"/>
         </b-input-group-text>
         <b-input
           v-on:keyup.enter="checkForm"
+          v-model="user.email"
+          name="email"
+          type="email"
+          placeholder="E-mail"
+          class="form-control"
+          required
+        />
+      </b-input-group>
+
+      <b-input-group class="mb-3" v-if="recoverPass">
+        <b-input-group-text slot="prepend">
+          <v-icon name="envelope"/>
+        </b-input-group-text>
+        <b-input
+          v-on:keyup.enter="resetPass"
           v-model="user.email"
           name="email"
           type="email"
@@ -162,7 +177,7 @@
         aria-label="Recuperar Senha"
         class="btn btn-primary btn-block"
         :styled="isStyled"
-        @click.native="resetPass"
+        @click.native="checkForm"
         :loading="isLoading"
         v-if="recoverPass"
       >
@@ -363,6 +378,13 @@ export default {
     },
     resetPass() {
       this.isLoading = true;
+      if (!this.user.email) {
+        let msg = "E-mail é obrigatório";
+        this.errors.push(msg);
+        showError(msg);
+        this.isLoading = false;
+        return;
+      }
       let forgotUser = JSON.parse(JSON.stringify(this.user));
       const data = {
         login: forgotUser.email
