@@ -5,11 +5,11 @@
         id="input-group-1"
         label="E-mail:"
         label-for="input-1"
-        description="Nunca iremos compartilhar seu e-mail."
+        description="Nunca iremos compartilhar seu e-mail"
       >
         <b-form-input
           id="input-1"
-          v-model="user.dados.email"
+          v-model="editedUser.email"
           type="email"
           required
           readonly
@@ -18,50 +18,75 @@
       </b-form-group>
 
       <b-form-group id="input-group-2" label="Nome:" label-for="input-2">
-        <b-form-input id="input-2" v-model="user.dados.nome" required placeholder="Digite nome"></b-form-input>
+        <b-form-input id="input-2" v-model="editedUser.nome" required placeholder="Digite nome"></b-form-input>
       </b-form-group>
 
       <b-form-group id="input-group-3" label="Matricula:" label-for="input-3">
         <b-form-input
           id="input-3"
-          v-model="user.dados.matricula"
+          v-model="editedUser.matricula"
           required
           placeholder="Digite matrícula"
         ></b-form-input>
       </b-form-group>
 
       <b-form-group id="input-group-4" label="CPF:" label-for="input-4">
-        <b-form-input id="input-4" v-model="user.dados.cpf" required placeholder="Digite CPF"></b-form-input>
+        <the-mask
+          id="input-4"
+          v-model="editedUser.cpf"
+          placeholder="CPF"
+          class="form-control"
+          :mask="['###.###.###-##']"
+        />
       </b-form-group>
 
       <b-form-group id="input-group-5" label="RG:" label-for="input-5">
-        <b-form-input id="input-5" v-model="user.dados.rg" required placeholder="Digite RG"/>
+        <b-form-input id="input-5" v-model="editedUser.rg" required placeholder="Digite RG"/>
       </b-form-group>
 
-      <!--<b-form-group id="input-group-6" label="Camiseta:" label-for="input-6">
-        <b-form-select id="input-6" v-model="user.dados.camiseta" :options="optionsShirt"/>
-      </b-form-group>-->
+      <b-form-group id="input-group-6" label="Camiseta:" label-for="input-6">
+        <b-form-select id="input-6" v-model="editedUser.camiseta" :options="optionsShirt"/>
+      </b-form-group>
 
       <b-form-group
-        id="input-group-6"
+        id="input-group-7"
         label="Pago:"
-        label-for="input-6"
-      >{{user.dados.status_pago ? 'Sim' : 'Não'}}</b-form-group>
+        label-for="input-7"
+        description="Após o pagamento ser confirmado, seu cadastro será liberado na plataforma"
+      >
+        <b-form-checkbox
+          disabled
+          :state="editedUser.status_pago"
+          switch
+        >{{ editedUser.status_pago ? 'Sim' : 'Não'}}</b-form-checkbox>
+      </b-form-group>
 
-      <b-button block variant="warning">
-        <v-icon name="edit" class="mr-1"/>EDITAR
-      </b-button>
+      <VueLoadingButton
+        aria-label="Editar Dados de Usuário"
+        class="btn btn-warning btn-block"
+        :styled="isStyled"
+        @click.native="editUser"
+        :loading="isLoading"
+      >
+        <v-icon name="edit" scale="1.5" class="mr-1"/>Editar
+      </VueLoadingButton>
     </b-form>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import api from "@/services/api";
+import VueLoadingButton from "vue-loading-button";
+import { showError, showSuccess } from "@/global";
 
 export default {
   name: "PersonalData",
+  components: { VueLoadingButton },
   data() {
     return {
+      isStyled: false,
+      isLoading: false,
       optionsShirt: [
         { value: null, text: "Selecione um tamanho" },
         { value: "P", text: "P" },
@@ -71,6 +96,37 @@ export default {
       ]
     };
   },
-  computed: { ...mapState(["user"]) }
+  computed: {
+    ...mapState(["user"]),
+    editedUser() {
+      return this.$store.getters.getUserData;
+    }
+  },
+  methods: {
+    editUser() {
+      this.isLoading = true;
+      let parsedUser = JSON.parse(JSON.stringify(this.editedUser));
+      const data = {
+        nome: parsedUser.nome,
+        cpf: parsedUser.cpf,
+        rg: parsedUser.rg,
+        matricula: parsedUser.matricula,
+        camiseta: parsedUser.camiseta
+      };
+      api.put("/user", data).then(response => {
+        if (response.status === 200) {
+          console.log(response.data);
+          this.$store.commit("setUser", response.data);
+          this.isLoading = false;
+          let successMsg = response.data.message;
+          showSuccess(successMsg);
+        } else {
+          let errorMsg = response.data.message;
+          showError(errorMsg);
+          this.isLoading = false;
+        }
+      });
+    }
+  }
 };
 </script>

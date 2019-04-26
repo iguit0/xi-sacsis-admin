@@ -146,7 +146,7 @@
         :loading="isLoading"
         v-if="showSignup"
       >
-        <v-icon name="user-plus" class="mr-1"/>Registrar
+        <v-icon name="user-plus" scale="1.5" class="mr-1"/>Registrar
       </VueLoadingButton>
       <VueLoadingButton
         aria-label="Entrar no sistema"
@@ -156,7 +156,7 @@
         :loading="isLoading"
         v-else-if="!showSignup && !recoverPass"
       >
-        <v-icon name="sign-in-alt" class="mr-1"/>Entrar
+        <v-icon name="sign-in-alt" scale="1.5" class="mr-1"/>Entrar
       </VueLoadingButton>
       <VueLoadingButton
         aria-label="Recuperar Senha"
@@ -166,7 +166,7 @@
         :loading="isLoading"
         v-if="recoverPass"
       >
-        <v-icon name="unlock-alt" class="mr-1"/>Recuperar
+        <v-icon name="unlock-alt" scale="1.5" class="mr-1"/>Recuperar
       </VueLoadingButton>
 
       <a href @click.prevent="toggleSignup" class="mt-3">

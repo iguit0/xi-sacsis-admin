@@ -76,15 +76,18 @@ export default {
       return Promise.resolve([
         {
           text: "Início",
-          data: { icon: "home", name: "home" }
+          data: { icon: "home", name: "home", color: "#FA8072" }
         },
         {
           text: "Minha Conta",
-          data: { icon: "user-circle", name: "AccountsPages" }
+          data: { icon: "user-circle", name: "AccountPages", color: "#F7DC6F" }
         },
         {
           text: "Minicursos",
-          data: { icon: "chalkboard-teacher", color: "#FF8C00" }
+          data: {
+            icon: "chalkboard-teacher",
+            color: "#FF8C00"
+          }
         }
       ]);
     },

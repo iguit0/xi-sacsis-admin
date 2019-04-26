@@ -39,6 +39,9 @@ export default new Vuex.Store({
         }
     },
     getters: {
+        getUserData(state) {
+            return state.user.dados
+        },
         getUsername(state) {
             return state.user.dados.nome
         },

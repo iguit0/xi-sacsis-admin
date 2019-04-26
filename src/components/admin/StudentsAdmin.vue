@@ -4,13 +4,13 @@
       <input id="student-id" type="hidden" v-model="student.id">
       <b-row>
         <b-col md="3" sm="6">
-          <b-form-group label="Nome Completo:" label-for="student-name">
+          <b-form-group label="Nome:" label-for="student-name">
             <b-form-input
               id="student-name"
               type="text"
               v-model="student.nome"
               required
-              placeholder="Nome Completo"
+              placeholder="Nome"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
@@ -38,15 +38,6 @@
               :mask="['###.###.###-##']"
               :readonly="mode === 'remove'"
             />
-            <!--<b-form-input
-              id="student-cpf"
-              v-show="mode === 'save'"
-              type="text"
-              v-model="student.cpf"
-              required
-              placeholder="CPF"
-              :readonly="mode === 'remove'"
-            />-->
           </b-form-group>
         </b-col>
         <b-col md="2" sm="6">
@@ -60,23 +51,6 @@
               :mask="['##.###.###']"
               :readonly="mode === 'remove'"
             />
-            <!--<the-mask
-              v-model="student.rg"
-              placeholder="RG"
-              class="form-control"
-              required
-              :mask="['##.###.###']"
-              :readonly="mode === 'remove'"
-            />-->
-            <!--<b-form-input
-              id="student-rg"
-              v-show="mode === 'save'"
-              type="text"
-              v-model="student.rg"
-              required
-              placeholder="RG"
-              :readonly="mode === 'remove'"
-            />-->
           </b-form-group>
         </b-col>
         <b-col md="2" sm="2" v-if="mode === 'save'">
@@ -176,7 +150,8 @@
 </template>
 
 <script>
-import { baseApiUrl, showError } from "@/global";
+import { baseApiUrl, showError, showSuccess } from "@/global";
+import api from "@/services/api";
 import axios from "axios";
 
 export default {
@@ -217,11 +192,6 @@ export default {
           sortable: true,
           formatter: value => (value ? "Sim" : "Não")
         },
-        {
-          key: "admin",
-          label: "Admin",
-          formatter: value => (value ? "Sim" : "Não")
-        },
         { key: "actions", label: "Ações" }
       ]
     };
@@ -229,41 +199,42 @@ export default {
   methods: {
     save() {
       let parsedStudent = JSON.parse(JSON.stringify(this.student));
-      axios
-        .put(
-          `${baseApiUrl}/admin/user`,
-          {
-            id: parsedStudent.id,
-            nome: parsedStudent.nome,
-            email: parsedStudent.email,
-            matricula: parsedStudent.matricula,
-            cpf: parsedStudent.cpf,
-            rg: parsedStudent.rg,
-            status_pago: parsedStudent.status_pago,
-            admin: parsedStudent.admin,
-            camiseta: parsedStudent.camiseta
-          },
-          {
-            headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
-          }
-        )
-        .then(() => {
-          this.$toasted.global.defaultSuccess();
+      const data = {
+        id: parsedStudent.id,
+        nome: parsedStudent.nome,
+        matricula: parsedStudent.matricula,
+        cpf: parsedStudent.cpf,
+        rg: parsedStudent.rg,
+        camiseta: parsedStudent.camiseta,
+        status_pago: parsedStudent.status_pago,
+        admin: parsedStudent.admin
+      };
+      api.put("/admin/user", data).then(response => {
+        if (response.status === 200) {
+          console.log(response);
+          let successMsg = response.data.message;
+          showSuccess(successMsg);
           this.reset();
-        })
-        .catch(showError);
+        } else {
+          let errorMsg = response.data.message;
+          showError(errorMsg);
+          this.reset();
+        }
+      });
     },
     remove() {
       const id = this.student.id;
-      axios
-        .delete(`${baseApiUrl}/admin/user/${id}`, {
-          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
-        })
-        .then(() => {
-          this.$toasted.global.defaultSuccess();
+      api.delete(`/admin/user/${id}`).then(response => {
+        if (response.status === 200) {
+          let successMsg = response.data.message;
+          showSuccess(successMsg);
           this.reset();
-        })
-        .catch(showError);
+        } else {
+          let errorMsg = response.data.message;
+          showError(errorMsg);
+          this.reset();
+        }
+      });
     },
     reset() {
       this.mode = "save";
