@@ -197,7 +197,13 @@
 </template>
 
 <script>
-import { showError, showSuccess, userKey, baseApiUrl } from "@/global";
+import {
+  showError,
+  showSuccess,
+  showInfo,
+  userKey,
+  baseApiUrl
+} from "@/global";
 import api from "@/services/api";
 import axios from "axios";
 import VueLoadingButton from "vue-loading-button";
