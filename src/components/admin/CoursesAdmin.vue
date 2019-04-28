@@ -15,13 +15,12 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="3" sm="2">
+        <b-col md="4" sm="2">
           <b-form-group label="Descrição:" label-for="course-description">
             <b-form-textarea
               id="course-description"
               type="text"
-              v-model="course.descricao"
-              required
+              v-model="course.conteudo"
               rows="3"
               no-resize
               placeholder="Descrição"
@@ -29,63 +28,13 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="2" sm="2" v-show="mode === 'save'">
-          <b-form-group label="Início:" label-for="course-start">
-            <date-pick
-              id="course-start"
-              v-model="course.data_inicio"
-              prevMonthCaption="Mês Anterior"
-              nextMonthCaption="Próximo Mês"
-              setTimeCaption="Horário:"
-              :weekdays="weekDays"
-              :months="months"
-              :pickTime="true"
-              :format="'DD-MM-YYYY HH:mm'"
-              :readonly="mode === 'remove'"
-            />
-            <!--<b-form-input
-              id="course-start"
+        <b-col md="3" sm="2">
+          <b-form-group label="Ministrante:" label-for="course-ministrante">
+            <b-input
+              id="course-ministrante"
               type="text"
-              v-model="course.data_inicio"
-              required
-              placeholder="Data Início"
-              :readonly="mode === 'remove'"
-            />-->
-          </b-form-group>
-        </b-col>
-        <b-col md="2" sm="2" v-show="mode === 'save'">
-          <b-form-group label="Fim:" label-for="course-end">
-            <date-pick
-              id="course-end"
-              v-model="course.data_fim"
-              prevMonthCaption="Mês Anterior"
-              nextMonthCaption="Próximo Mês"
-              setTimeCaption="Horário:"
-              :weekdays="weekDays"
-              :months="months"
-              :pickTime="true"
-              :format="'DD-MM-YYYY HH:mm'"
-              :readonly="mode === 'remove'"
-            />
-            <!--<b-form-input
-              id="course-end"
-              type="datetime"
-              v-model="course.data_fim"
-              required
-              placeholder="Data Fim"
-              :readonly="mode === 'remove'"
-            />-->
-          </b-form-group>
-        </b-col>
-        <b-col md="2" sm="2" v-show="mode === 'save'">
-          <b-form-group label="Vagas:" label-for="course-attendance">
-            <b-form-input
-              type="number"
-              id="course-attendance"
-              v-model="course.vagas"
-              required
-              placeholder="Vagas"
-              :readonly="mode === 'remove'"
+              v-model="course.ministrante"
+              placeholder="Ministrante"
             />
           </b-form-group>
         </b-col>
@@ -131,10 +80,10 @@
         </h6>
       </template>
       <template slot="actions" slot-scope="data">
-        <b-btn variant="warning" @click="selectCourse(data.item)" class="mr-2">
+        <b-btn size="sm" variant="warning" @click="selectCourse(data.item)" class="mr-2">
           <v-icon name="edit"/>
         </b-btn>
-        <b-btn variant="danger" @click="selectCourse(data.item, 'remove')" class="mr-2">
+        <b-btn size="sm" variant="danger" @click="selectCourse(data.item, 'remove')" class="mr-2">
           <v-icon name="trash-alt"/>
         </b-btn>
       </template>
@@ -158,29 +107,11 @@
 import { baseApiUrl, showError, showSuccess } from "@/global";
 import axios from "axios";
 import moment from "moment";
-import DatePick from "vue-date-pick";
-import "vue-date-pick/dist/vueDatePick.css";
 
 export default {
   name: "CoursesAdmin",
-  components: { DatePick },
   data() {
     return {
-      weekDays: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
-      months: [
-        "Janeiro",
-        "Fevereiro",
-        "Março",
-        "Abril",
-        "Maio",
-        "Junho",
-        "Julho",
-        "Agosto",
-        "Setembro",
-        "Outubro",
-        "Novembro",
-        "Dezembro"
-      ],
       incomplete: true,
       currentPage: 1,
       perPage: 5,
@@ -192,8 +123,10 @@ export default {
       fields: [
         { key: "id", label: "Código", sortable: true },
         { key: "titulo", label: "Título", sortable: true },
-        { key: "descricao", label: "Descrição" },
-        {
+        { key: "conteudo", label: "Descrição" },
+        { key: "ministrante", label: "Ministrante" },
+        { key: "actions", label: "Ações" }
+        /*{
           key: "data_inicio",
           label: "Inicio",
           formatter: value =>
@@ -208,30 +141,33 @@ export default {
             moment(String(value))
               .locale("pt-br")
               .format("lll")
-        },
-        { key: "vagas", label: "Vagas" },
-        { key: "actions", label: "Ações" }
+        },*/
       ]
     };
   },
   methods: {
     save() {
       let parsedCourse = JSON.parse(JSON.stringify(this.course));
-      const id = this.course.id;
+      const data = {
+        id: parsedCourse.id,
+        titulo: parsedCourse.titulo,
+        conteudo: parsedCourse.conteudo
+      };
       axios
-        .put(`${baseApiUrl}/admin/course/${id}`, {
-          titulo: parsedCourse.titulo,
-          descricao: parsedCourse.descricao,
-          vagas: parsedCourse.vagas,
-          ministrante_id: parsedCourse.ministrante_id,
-          data_inicio: parsedCourse.data_inicio,
-          data_fim: parsedCourse.data_fim
+        .put(`${baseApiUrl}/admin/course`, data, {
+          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
         })
-        .then(() => {
-          this.$toasted.global.defaultSuccess();
-          this.reset();
-        })
-        .catch(showError);
+        .then(res => {
+          if (res.status === 200) {
+            let successMsg = res.data.message;
+            showSuccess(successMsg);
+            this.reset();
+          } else {
+            let errorMsg = response.data.message;
+            showError(errorMsg);
+            this.reset();
+          }
+        });
     },
     remove() {
       const id = this.course.id;
@@ -249,7 +185,7 @@ export default {
     },
     reset() {
       this.mode = "save";
-      this.student = {};
+      this.course = {};
       this.incomplete = true;
       this.loadCourses();
     },
@@ -283,51 +219,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.vdpArrowPrev:after {
-  border-right-color: #333;
-}
-
-.vdpArrowNext:after {
-  border-left-color: #333;
-}
-
-.vdpCell.selectable:hover .vdpCellContent,
-.vdpCell.selected .vdpCellContent {
-  background: #333;
-}
-
-.vdpCell.today {
-  color: #333;
-}
-
-.vdpTimeUnit > input:hover,
-.vdpTimeUnit > input:focus {
-  border-bottom-color: #333;
-}
-
-.vdpComponent.vdpWithInput > input {
-  display: block;
-  width: 100%;
-  height: calc(1.5em + 0.75rem + 2px);
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-}
-
-.vdpComponent.vdpWithInput > input:focus {
-  color: #495057;
-  background-color: #fff;
-  border-color: #80bdff;
-  outline: 0;
-  -webkit-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-</style>

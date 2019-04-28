@@ -112,10 +112,10 @@
         </h6>
       </template>
       <template slot="actions" slot-scope="data">
-        <b-btn variant="warning" @click="selectStudent(data.item)" class="mr-2">
+        <b-btn size="sm" variant="warning" @click="selectStudent(data.item)" class="mr-2">
           <v-icon name="edit"/>
         </b-btn>
-        <b-btn variant="danger" @click="selectStudent(data.item, 'remove')" class="mr-2">
+        <b-btn size="sm" variant="danger" @click="selectStudent(data.item, 'remove')" class="mr-2">
           <v-icon name="trash-alt"/>
         </b-btn>
       </template>

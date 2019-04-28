@@ -3,7 +3,7 @@ import App from './App'
 import store from './store'
 import router from './router'
 
-import '@fortawesome/fontawesome-free'
+//import '@fortawesome/fontawesome-free'
 
 // plugins
 import './plugins/bootstrap'
