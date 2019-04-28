@@ -105,6 +105,7 @@
 
 <script>
 import { baseApiUrl, showError, showSuccess } from "@/global";
+import api from "@/services/api";
 import axios from "axios";
 import moment from "moment";
 
@@ -163,7 +164,7 @@ export default {
             showSuccess(successMsg);
             this.reset();
           } else {
-            let errorMsg = response.data.message;
+            let errorMsg = res.data.message;
             showError(errorMsg);
             this.reset();
           }
