@@ -8,24 +8,31 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: () => import('./components/home/Home'),
+        component: () => import('./components/home/Home.vue'),
         meta: { requiresLogin: true }
     },
     {
         path: '/admin',
         name: 'adminPages',
-        component: () => import('./components/admin/AdminPages'),
-        meta: { requiresLogin: true }
+        component: () => import('./components/admin/AdminPages.vue'),
+        meta: { requiresLogin: true, requiresAdmin: true }
+    },
+    {
+        path: '/programacao',
+        name: 'SchedulePages',
+        component: () => import('./components/admin/schedule/SchedulePages.vue'),
+        meta: { requiresLogin: true, requiresAdmin: true }
     },
     {
         path: '/minha-conta',
         name: 'AccountPages',
-        component: () => import('./components/admin/AccountPages')
+        component: () => import('./components/admin/AccountPages.vue'),
+        meta: { requiresLogin: true }
     },
     {
         path: '/entrar',
         name: 'auth',
-        component: () => import('./components/auth/Auth')
+        component: () => import('./components/auth/Auth.vue')
     },
     {
         path: '/cadastro-palestrante',
@@ -53,12 +60,12 @@ router.beforeEach((to, from, next) => {
     else
         next()
 
-    /* verificar se usuario eh admin
+    // verificar se usuario eh admin
     if (to.matched.some(record => record.meta.requiresAdmin)) {
         user && user.admin ? next() : next({ path: '/entrar' })
     } else {
         next()
-    }*/
+    }
 })
 
 export default router;

@@ -111,6 +111,10 @@ export default {
           data: { icon: "cogs", name: "adminPages" }
         },
         {
+          text: "Programação",
+          data: { icon: "calendar-alt", name: "SchedulePages" }
+        },
+        {
           text: "Sair",
           data: { icon: "sign-out-alt" }
         }
@@ -119,7 +123,7 @@ export default {
     logout() {
       this.$swal({
         position: "center",
-        title: "Sair",
+        title: "Já vai?",
         text: "Você realmente deseja sair?",
         type: "warning",
         showCancelButton: true,
@@ -135,7 +139,9 @@ export default {
           this.$swal({
             position: "center",
             type: "success",
-            text: "Você saiu!!",
+            title: "Até logo :)",
+            text: "Você saiu!",
+            showConfirmButton: false,
             timer: 2500
           });
         }

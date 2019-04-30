@@ -35,6 +35,7 @@
               type="text"
               v-model="course.ministrante"
               placeholder="Ministrante"
+              readonly
             />
           </b-form-group>
         </b-col>

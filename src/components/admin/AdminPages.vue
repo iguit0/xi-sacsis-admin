@@ -8,14 +8,11 @@
             <b-tab title="Participantes">
               <StudentsAdmin/>
             </b-tab>
-            <b-tab title="Ministrantes">
+            <b-tab title="Minicursos">
               <CoursesAdmin/>
             </b-tab>
-            <b-tab title="Palestrantes">
+            <b-tab title="Palestras">
               <PresentationAdmin/>
-            </b-tab>
-            <b-tab title="Programação">
-              <h1 class="text-center text-uppercase">Programação</h1>
             </b-tab>
             <b-tab title="Lotes">
               <h1 class="text-center text-uppercase">Lotes</h1>
@@ -41,5 +38,3 @@ export default {
   components: { PageTitle, StudentsAdmin, CoursesAdmin, PresentationAdmin }
 };
 </script>
-
-<style></style>
