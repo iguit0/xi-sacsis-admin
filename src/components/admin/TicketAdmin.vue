@@ -1,6 +1,6 @@
 <template>
   <div class="ticket-admin">
-    <b-form v-if="tickets && ticket.length">
+    <b-form v-if="tickets && tickets.length">
       <b-row>teste</b-row>
     </b-form>
     <h2 class="text-center text-uppercase" v-else>Nenhum lote cadastrado!</h2>

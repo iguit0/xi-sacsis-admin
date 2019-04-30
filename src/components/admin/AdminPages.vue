@@ -8,6 +8,9 @@
             <b-tab title="Participantes">
               <StudentsAdmin/>
             </b-tab>
+            <b-tab title="Ministrantes">
+              <SpeakerAdmin/>
+            </b-tab>
             <b-tab title="Minicursos">
               <CoursesAdmin/>
             </b-tab>
@@ -34,6 +37,7 @@ import CoursesAdmin from "./CoursesAdmin";
 import PresentationAdmin from "./PresentationAdmin";
 import PaymentAdmin from "./PaymentAdmin";
 import TicketAdmin from "./TicketAdmin";
+import SpeakerAdmin from "./SpeakerAdmin";
 
 export default {
   name: "AdminPages",
@@ -43,7 +47,8 @@ export default {
     CoursesAdmin,
     PresentationAdmin,
     PaymentAdmin,
-    TicketAdmin
+    TicketAdmin,
+    SpeakerAdmin
   }
 };
 </script>
