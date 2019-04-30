@@ -3,8 +3,8 @@
     <PageTitle icon="home" main="Dashboard" :sub="username"/>
     <div class="stats">
       <Stat title="Participantes" :value="participants" icon="users" color="#d54d50"/>
-      <Stat title="Minicursos" :value="22" icon="chalkboard-teacher" color="#FF8C00"/>
-      <Stat title="Palestras" :value="22" icon="microphone" color="#3CB371"/>
+      <Stat title="Minicursos" :value="courses" icon="chalkboard-teacher" color="#FF8C00"/>
+      <Stat title="Palestras" :value="lectures" icon="microphone" color="#3CB371"/>
     </div>
   </div>
 </template>
@@ -30,22 +30,43 @@ export default {
       return this.$store.getters.getUsername
         ? `Bem-vindo(a), ${this.$store.getters.getUsername}`
         : "Bem-vindo(a)!";
-    },
-    getStats() {
-      return this.$store.getters.getParticipants;
     }
   },
   methods: {
     getEventData() {
+      // dados usuarios
       api.get("/admin/user").then(res => {
         if (res.status === 200) {
-          this.$store.commit("setParticipants", res.data.usuarios.length);
+          this.participants = res.data.usuarios.length;
+        } else {
+          let errorMsg = res.data.message;
+          showError(errorMsg);
+        }
+      });
+
+      // dados minicursos
+      api.get("/admin/course").then(res => {
+        if (res.status === 200) {
+          this.courses = res.data.minicursos.length;
+        } else {
+          let errorMsg = res.data.message;
+          showError(errorMsg);
+        }
+      });
+
+      // dados palestras
+      api.get("/admin/lecture?loadtitle=0").then(res => {
+        if (res.status === 200) {
+          this.lectures = res.data.palestras.length;
         } else {
           let errorMsg = res.data.message;
           showError(errorMsg);
         }
       });
     }
+  },
+  mounted() {
+    this.getEventData();
   }
 };
 </script>
