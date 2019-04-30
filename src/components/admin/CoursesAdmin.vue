@@ -1,6 +1,6 @@
 <template>
   <div class="course-admin">
-    <b-form>
+    <b-form v-if="courses && courses.length">
       <input id="course-id" type="hidden" v-model="course.id">
       <b-row>
         <b-col md="3" sm="6">
@@ -58,6 +58,9 @@
         </b-col>
       </b-row>
     </b-form>
+
+    <h2 class="text-center text-uppercase" v-else>Nenhum minicurso cadastrado!</h2>
+
     <!-- TABELA -->
     <b-table
       :current-page="currentPage"
@@ -192,14 +195,16 @@ export default {
       this.loadCourses();
     },
     loadCourses() {
-      axios
-        .get(`${baseApiUrl}/admin/course`, {
-          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
-        })
-        .then(res => {
+      api.get("/admin/course").then(res => {
+        if (res.status === 200) {
           this.courses = res.data.minicursos;
           this.totalRows = res.data.minicursos.length;
-        });
+        } else {
+          let errorMsg = res.data.message;
+          showError(errorMsg);
+          this.reset();
+        }
+      });
     },
     selectCourse(course, mode = "save") {
       this.mode = mode;

@@ -53,7 +53,7 @@ export default {
             title: "Até logo :)",
             text: "Você saiu!",
             showConfirmButton: false,
-            timer: 2500
+            timer: 1500
           });
         }
       });

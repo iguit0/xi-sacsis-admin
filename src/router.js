@@ -20,7 +20,7 @@ const routes = [
     {
         path: '/programacao',
         name: 'SchedulePages',
-        component: () => import('./components/admin/schedule/SchedulePages.vue'),
+        component: () => import('./components/admin/SchedulePages.vue'),
         meta: { requiresLogin: true, requiresAdmin: true }
     },
     {

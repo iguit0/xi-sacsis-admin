@@ -18,7 +18,15 @@ Vue.toasted.register(
     'defaultError',
     payload => !payload.msg ? 'Ops... Aconteceu um erro!' : payload.msg, {
         type: 'error',
+        position: "bottom-right",
         icon: 'times'
+    }
+)
+
+Vue.toasted.register(
+    'defaultWelcome',
+    payload => !payload.msg ? 'Bem vindo(a)!' : payload.msg, {
+        icon: 'smile'
     }
 )
 

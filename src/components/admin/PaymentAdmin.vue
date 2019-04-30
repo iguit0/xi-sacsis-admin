@@ -1,10 +1,12 @@
 <template>
   <div class="payment-admin">
-    <b-form>
+    <b-form v-if="payments && payments.length">
       <b-row>
         <b-col>teste</b-col>
       </b-row>
     </b-form>
+
+    <h2 class="text-center text-uppercase" v-else>Nenhum pagamento cadastrado!</h2>
   </div>
 </template>
 
@@ -29,10 +31,6 @@ export default {
           let errorMsg = res.data.message;
           showError(errorMsg);
         }
-      });
-
-      api.get("/admin/schedule").then(res => {
-        console.log(res);
       });
     },
     reset() {

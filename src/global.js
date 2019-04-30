@@ -32,3 +32,13 @@ export function showInfo(e) {
         Vue.toasted.global.defaultInformation()
     }
 }
+
+export function showWelcome(e) {
+    if (e && e.response && e.response.data) {
+        Vue.toasted.global.defaultWelcome({ msg: e.response.data })
+    } else if (typeof e === 'string') {
+        Vue.toasted.global.defaultWelcome({ msg: e })
+    } else {
+        Vue.toasted.global.defaultWelcome()
+    }
+}

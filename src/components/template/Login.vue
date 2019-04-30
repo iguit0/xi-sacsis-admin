@@ -201,6 +201,7 @@ import {
   showError,
   showSuccess,
   showInfo,
+  showWelcome,
   userKey,
   baseApiUrl
 } from "@/global";
@@ -348,8 +349,9 @@ export default {
           localStorage.setItem(userKey, JSON.stringify(response.data));
           this.$store.commit("setUser", response.data);
           this.isLoading = false;
-          showInfo("Bem Vindo(a)!");
           this.$router.push({ path: "/" });
+          let welcomeMsg = `Bem Vindo (a), ` + this.$store.getters.getUsername;
+          showWelcome(welcomeMsg);
         } else {
           let errorMsg = response.data.message;
           showError(errorMsg);

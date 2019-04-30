@@ -1,6 +1,6 @@
 <template>
   <div class="presentation-admin">
-    <b-form>
+    <b-form v-if="presentations && presentations.length">
       <input id="presentation-id" type="hidden" v-model="presentation.id">
       <b-row>
         <b-col md="3" sm="6">
@@ -58,6 +58,8 @@
         </b-col>
       </b-row>
     </b-form>
+
+    <h2 class="text-center text-uppercase" v-else>Nenhuma palestra cadastrada!</h2>
     <!-- TABELA -->
     <b-table
       striped

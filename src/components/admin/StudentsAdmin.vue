@@ -1,6 +1,6 @@
 <template>
   <div class="student-admin">
-    <b-form>
+    <b-form v-if="students && students.length">
       <input id="student-id" type="hidden" v-model="student.id">
       <b-row>
         <b-col md="3" sm="6">
@@ -88,6 +88,8 @@
         </b-col>
       </b-row>
     </b-form>
+
+    <h2 class="text-center text-uppercase" v-else>Nenhum estudante cadastrado!</h2>
 
     <!-- TABELA -->
     <b-table
