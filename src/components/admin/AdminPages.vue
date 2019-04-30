@@ -15,10 +15,10 @@
               <PresentationAdmin/>
             </b-tab>
             <b-tab title="Lotes">
-              <h1 class="text-center text-uppercase">Lotes</h1>
+              <TicketAdmin/>
             </b-tab>
             <b-tab title="Pagamentos">
-              <h1 class="text-center text-uppercase">Controle de Pagamentos</h1>
+              <PaymentAdmin/>
             </b-tab>
           </b-tabs>
         </b-card>
@@ -32,9 +32,18 @@ import PageTitle from "@/components/template/PageTitle";
 import StudentsAdmin from "./StudentsAdmin";
 import CoursesAdmin from "./CoursesAdmin";
 import PresentationAdmin from "./PresentationAdmin";
+import PaymentAdmin from "./PaymentAdmin";
+import TicketAdmin from "./TicketAdmin";
 
 export default {
   name: "AdminPages",
-  components: { PageTitle, StudentsAdmin, CoursesAdmin, PresentationAdmin }
+  components: {
+    PageTitle,
+    StudentsAdmin,
+    CoursesAdmin,
+    PresentationAdmin,
+    PaymentAdmin,
+    TicketAdmin
+  }
 };
 </script>
