@@ -13,6 +13,7 @@ import './plugins/entrance'
 import './plugins/vue-mask'
 import './plugins/form-wizard'
 import './plugins/mq'
+import './plugins/sweetalert'
 
 Vue.config.productionTip = false;
 

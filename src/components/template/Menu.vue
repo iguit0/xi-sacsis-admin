@@ -53,6 +53,7 @@
 <script>
 import { mapState } from "vuex";
 import Tree from "liquor-tree";
+import { userKey } from "@/global";
 
 export default {
   name: "Menu",
@@ -88,6 +89,10 @@ export default {
             icon: "chalkboard-teacher",
             color: "#FF8C00"
           }
+        },
+        {
+          text: "Sair",
+          data: { icon: "sign-out-alt" }
         }
       ]);
     },
@@ -103,66 +108,48 @@ export default {
         },
         {
           text: "Administração",
-          data: { icon: "cogs" },
-          children: [
-            {
-              text: "Participantes",
-              data: {
-                icon: "users",
-                color: "#d54d50",
-                name: "adminPages",
-                value: 0
-              }
-            },
-            {
-              text: "Ministrantes",
-              data: {
-                icon: "chalkboard-teacher",
-                color: "#FF8C00",
-                name: "adminPages"
-              }
-            },
-            {
-              text: "Palestrantes",
-              data: {
-                icon: "microphone",
-                color: "#3CB371",
-                name: "adminPages"
-              }
-            },
-            {
-              text: "Programação",
-              data: {
-                icon: "calendar-alt",
-                color: "#FBD786",
-                name: "adminPages"
-              }
-            },
-            {
-              text: "Lotes",
-              data: {
-                icon: "cash-register",
-                color: "#C6FFDD",
-                name: "adminPages"
-              }
-            },
-            {
-              text: "Pagamentos",
-              data: {
-                icon: "comment-dollar",
-                color: "#2980B9",
-                name: "adminPages",
-                value: 5
-              }
-            }
-          ]
+          data: { icon: "cogs", name: "adminPages" }
+        },
+        {
+          text: "Sair",
+          data: { icon: "sign-out-alt" }
         }
       ]);
     },
+    logout() {
+      this.$swal({
+        position: "center",
+        title: "Sair",
+        text: "Você realmente deseja sair?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sim, sair!",
+        cancelButtonText: "Cancelar"
+      }).then(result => {
+        if (result.value) {
+          localStorage.removeItem(userKey);
+          this.$store.commit("setUser", null);
+          this.$router.push({ name: "auth" });
+          this.$swal({
+            position: "center",
+            type: "success",
+            text: "Você saiu!!",
+            timer: 2500
+          });
+        }
+      });
+    },
     onNodeSelected(node) {
-      this.$router.push({ name: node.data.name });
       if (this.$mq === "xs" || this.$mq === "sm") {
         this.$store.commit("toggleMenu", false);
+      }
+      if (node.text === "Sair") {
+        this.logout();
+        node.unselect();
+      } else {
+        this.$router.push({ name: node.data.name });
       }
     }
   }

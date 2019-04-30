@@ -17,10 +17,6 @@
       <a href @click.prevent="logout">
         <v-icon name="sign-out-alt" class="mr-1"/>Sair
       </a>
-      <!--
-      <router-link to="/entrar">
-        <v-icon name="sign-out-alt" class="mr-1"/>Sair
-      </router-link>-->
     </div>
   </div>
 </template>
@@ -36,9 +32,29 @@ export default {
   computed: { ...mapState(["user"]) },
   methods: {
     logout() {
-      localStorage.removeItem(userKey);
-      this.$store.commit("setUser", null);
-      this.$router.push({ name: "auth" });
+      this.$swal({
+        position: "center",
+        title: "Sair",
+        text: "Você realmente deseja sair?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sim, sair!",
+        cancelButtonText: "Cancelar"
+      }).then(result => {
+        if (result.value) {
+          localStorage.removeItem(userKey);
+          this.$store.commit("setUser", null);
+          this.$router.push({ name: "auth" });
+          this.$swal({
+            position: "center",
+            type: "success",
+            text: "Você saiu!!",
+            timer: 2500
+          });
+        }
+      });
     }
   }
 };
