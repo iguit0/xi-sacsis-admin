@@ -8,7 +8,7 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: () => import('./components/home/Home.vue'),
+        component: () => import('./components/template/Home.vue'),
         meta: { requiresLogin: true }
     },
     {

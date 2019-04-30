@@ -9,8 +9,10 @@ export default new Vuex.Store({
     state: {
         isMenuVisible: false,
         user: null,
-        participants: 0,
-        courses: 0
+        stats: {
+            participants: 0,
+            courses: 0
+        }
     },
     mutations: {
         toggleMenu(state, isVisible) {
@@ -33,12 +35,9 @@ export default new Vuex.Store({
                 state.isMenuVisible = false
             }
         },
-        setParticipants(state, participants) {
-            state.participants = participants
+        setStats(state, stats) {
+            state.stats = stats;
         },
-        setCourses(state, courses) {
-            state.courses = courses
-        }
     },
     getters: {
         getUserData(state) {
@@ -53,11 +52,8 @@ export default new Vuex.Store({
             else
                 return null
         },
-        getParticipants(state) {
-            return state.participants
-        },
-        getCourses(state) {
-            return state.courses
+        getStats(state) {
+            return state.stats
         }
     }
 })
