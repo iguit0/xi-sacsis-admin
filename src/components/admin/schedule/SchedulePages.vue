@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="schedule-pages">
-      <PageTitle icon="calendar-alt" main="Programação" sub="Gerenciamento de Programação"/>
+      <PageTitle
+        icon="calendar-alt"
+        main="Programação do Evento"
+        sub="Gerenciamento de Programação"
+      />
       <div class="schedule-pages-tabs">
         <b-card no-body>
           <b-tabs card pills active-nav-item-class="font-weight-bold text-uppercase">

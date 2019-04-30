@@ -1,5 +1,6 @@
 <template>
   <div class="personal-data">
+    <PageTitle icon="user-circle" main="Minha conta" sub="Gerencie suas informações"/>
     <b-form>
       <b-form-group
         id="input-group-1"
@@ -73,10 +74,11 @@ import { mapState } from "vuex";
 import api from "@/services/api";
 import VueLoadingButton from "vue-loading-button";
 import { showError, showSuccess } from "@/global";
+import PageTitle from "@/components/template/PageTitle";
 
 export default {
   name: "PersonalData",
-  components: { VueLoadingButton },
+  components: { VueLoadingButton, PageTitle },
   data() {
     return {
       isStyled: false,

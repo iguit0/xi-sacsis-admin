@@ -26,13 +26,13 @@ const routes = [
     {
         path: '/minha-conta',
         name: 'AccountPages',
-        component: () => import('./components/admin/AccountPages.vue'),
+        component: () => import('./components/account/Account.vue'),
         meta: { requiresLogin: true }
     },
     {
         path: '/entrar',
         name: 'auth',
-        component: () => import('./components/auth/Auth.vue')
+        component: () => import('./components/template/Login.vue')
     },
     {
         path: '/cadastro-palestrante',
