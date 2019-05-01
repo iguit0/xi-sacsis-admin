@@ -2,9 +2,21 @@
   <div class="home">
     <PageTitle icon="home" main="Dashboard" :sub="username"/>
     <div class="stats">
-      <Stat title="Participantes" :value="participants" icon="users" color="#d54d50"/>
-      <Stat title="Minicursos" :value="courses" icon="chalkboard-teacher" color="#FF8C00"/>
-      <Stat title="Palestras" :value="lectures" icon="microphone" color="#3CB371"/>
+      <Stat
+        v-if="participants"
+        title="Participantes"
+        :value="participants"
+        icon="users"
+        color="#d54d50"
+      />
+      <Stat
+        v-if="courses"
+        title="Minicursos"
+        :value="courses"
+        icon="chalkboard-teacher"
+        color="#FF8C00"
+      />
+      <Stat v-if="lectures" title="Palestras" :value="lectures" icon="microphone" color="#3CB371"/>
     </div>
   </div>
 </template>

@@ -1,23 +1,29 @@
 <template>
   <div class="lecture-schedule">
-    <b-form>
+    <b-form v-if="lectures && lectures.length">
       <input id="lecture-id" type="hidden" v-model="lecture.id">
       <b-row>
         <b-col md="3" sm="6">
-          <b-form-group label="Local:" label-for="lecture-location">
+          <b-form-group label="Local:" label-for="lecture-location" description="Exemplo: PVA 235">
             <b-form-input
               id="lecture-location"
               type="text"
               required
+              v-model="lecture.local"
               placeholder="Local"
               :readonly="mode === 'remove'"
             />
           </b-form-group>
         </b-col>
-        <b-col md="3" sm="6">
-          <b-form-group label="Data Início" label-for="lecture-start" class="mw-50">
+        <b-col md="2" sm="6">
+          <b-form-group
+            label="Data Início"
+            label-for="lecture-start"
+            description="Selecione a data e depois horário"
+          >
             <date-pick
               id="lecture-start"
+              v-model="lecture.data_inicio"
               :inputAttributes="{readonly: true}"
               prevMonthCaption="Mês Anterior"
               nextMonthCaption="Próximo Mês"
@@ -29,10 +35,11 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="3" sm="6" class="mx-0">
+        <b-col md="2" sm="6">
           <b-form-group label="Data Fim" label-for="lecture-end">
             <date-pick
               id="lecture-end"
+              v-model="lecture.data_fim"
               :inputAttributes="{readonly: true}"
               prevMonthCaption="Mês Anterior"
               nextMonthCaption="Próximo Mês"
@@ -45,7 +52,68 @@
           </b-form-group>
         </b-col>
       </b-row>
+      <b-row>
+        <b-col xs="6" class="mb-3">
+          <b-btn
+            variant="primary"
+            :disabled="incomplete"
+            v-if="mode === 'save'"
+            @click="save"
+          >Salvar</b-btn>
+          <b-btn variant="danger" v-if="mode === 'remove'">Excluir</b-btn>
+          <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
+        </b-col>
+        <b-col xs="6">
+          <b-form-group label-cols-sm="10" label="Exibir por página" label-align="right">
+            <b-form-select :options="pageOptions" v-model="perPage"/>
+          </b-form-group>
+        </b-col>
+      </b-row>
     </b-form>
+
+    <h2 class="text-center text-uppercase" v-else>Nenhuma palestra cadastrada!</h2>
+
+    <!-- TABELA -->
+    <b-table
+      striped
+      bordered
+      caption-top
+      show-empty
+      :fields="fields"
+      :items="lectures"
+      empty-text="Não há nenhuma palestra cadastrada"
+    >
+      <template slot="table-caption" v-if="totalRows">
+        <h6 align="right">
+          <strong>{{totalRows}} palestra encontradas</strong>
+        </h6>
+      </template>
+      <template slot="table-caption" v-else>
+        <h6 align="right">
+          <strong>Nenhum palestras encontrado</strong>
+        </h6>
+      </template>
+      <template slot="actions" slot-scope="data">
+        <b-btn size="sm" variant="primary" class="mr-2">
+          <v-icon name="hand-pointer"/>
+        </b-btn>
+        <b-btn size="sm" variant="warning" @click="selectLecture(data.item)" class="mr-2">
+          <v-icon name="edit"/>
+        </b-btn>
+      </template>
+    </b-table>
+    <!-- ./TABELA -->
+    <b-row>
+      <b-col xs="12" class="text-center">
+        <b-pagination
+          align="center"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          v-model="currentPage"
+          class="text-center"
+        />
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -75,20 +143,48 @@ export default {
         "Novembro",
         "Dezembro"
       ],
+      currentPage: 1,
+      perPage: 5,
+      pageOptions: [5, 10, 15],
+      totalRows: 0,
       incomplete: true,
       mode: "save",
       lecture: {},
-      lectures: []
+      lectures: [],
+      fields: [
+        { key: "id", label: "Código", sortable: true },
+        { key: "titulo", label: "Título", sortable: true },
+        { key: "conteudo", label: "Descrição" },
+        { key: "ministrante", label: "Palestrante", sortable: true },
+        { key: "actions", label: "Ações" }
+      ]
     };
   },
   methods: {
-    loadLectures() {
-      api.get("/admin/payment").then(res => {
+    save() {
+      let parsedLecture = JSON.parse(JSON.stringify(this.lecture));
+      const data = {
+        local: parsedLecture.local,
+        data_inicio: parsedLecture.data_inicio,
+        data_fim: parsedLecture.data_fim
+      };
+      api.post("admin/schedule?formtype=lecture", data).then(res => {
         if (res.status === 200) {
-          console.log(res.data);
+          let successMsg = response.data.message;
+          showSuccess(successMsg);
+          this.reset();
         } else {
-          let errorMsg = res.data.message;
+          let errorMsg = response.data.message;
           showError(errorMsg);
+          this.reset();
+        }
+      });
+    },
+    loadLectures() {
+      api.get("/admin/lecture?loadtitle=0").then(res => {
+        if (res.status === 200) {
+          this.lectures = res.data.palestras;
+          this.totalRows = res.data.palestras.length;
         }
       });
     },
@@ -96,13 +192,16 @@ export default {
       this.mode = "save";
       this.lecture = {};
       this.incomplete = true;
-      //this.loadPayments();
+      this.loadLectures();
     },
     selectLecture(lecture, mode = "save") {
       this.mode = mode;
       this.lecture = { ...lecture };
       this.incomplete = false;
     }
+  },
+  mounted() {
+    this.loadLectures();
   }
 };
 </script>

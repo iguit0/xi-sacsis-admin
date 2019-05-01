@@ -192,17 +192,12 @@ export default {
       this.mode = "save";
       this.course = {};
       this.incomplete = true;
-      this.loadCourses();
     },
     loadCourses() {
       api.get("/admin/course").then(res => {
         if (res.status === 200) {
           this.courses = res.data.minicursos;
           this.totalRows = res.data.minicursos.length;
-        } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
-          this.reset();
         }
       });
     },
