@@ -76,8 +76,7 @@
 </template>
 
 <script>
-import { baseApiUrl, showError, showSuccess } from "@/global";
-import axios from 'axios'
+import { showError, showSuccess } from "@/global";
 import api from "@/services/api";
 import moment from "moment";
 
@@ -123,31 +122,16 @@ export default {
         valor: parsedTicket.valor
       };
       api.post('/admin/payment/lot',data).then(response => {
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 201) {
             let successMsg = response.data.message;
             showSuccess(successMsg);
-            console.log('deu certo uai')
             this.reset();
           } else {
             let errorMsg = response.data.message;
             showError(errorMsg);
-            console.log('n deu certo uai')
             this.reset();
           }
       })
-/*      axios.post(`${baseApiUrl}/admin/payment/lot`, data, {
-        headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
-      }).then(response => {
-        if (response.status === 200) {
-            let successMsg = response.data.message;
-            showSuccess(successMsg);
-            this.reset();
-          } else {
-            let errorMsg = response.data.message;
-            showError(errorMsg);
-            this.reset();
-          }
-      })*/
     },
     loadTickets() {
       api.get("/admin/payment/lot?loadvalue=0").then(res => {
