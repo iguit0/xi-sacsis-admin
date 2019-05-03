@@ -181,7 +181,6 @@ export default {
   methods: {
     save() {
       let parsedStudent = JSON.parse(JSON.stringify(this.student));
-      console.log(parsedStudent.admin);
       const data = {
         id: parsedStudent.id,
         nome: parsedStudent.nome,

@@ -1,15 +1,49 @@
 <template>
-  <div>
-    <date-pick
-      id="course-end"
-      prevMonthCaption="Mês Anterior"
-      nextMonthCaption="Próximo Mês"
-      setTimeCaption="Horário:"
-      :weekdays="weekDays"
-      :months="months"
-      :pickTime="true"
-      :format="'DD-MM-YYYY HH:mm'"
-    />
+  <div class="course-schedule">
+    <b-form>
+      <input id="course-id" type="hidden" v-model="course.id">
+      <b-row>
+        <b-col md="2">
+          <b-form-group label="Local" description="Exemplo: PVA 235">
+            <b-input type="number" placeholder="Local" v-model="course.local"/>
+          </b-form-group>
+        </b-col>
+        <b-col md="2">
+          <b-form-group
+            label="Data Início"
+            label-for="course-start"
+            description="Selecione a data e depois horário"
+          >
+            <date-pick
+              id="course-start"
+              v-model="course.data_inicio"
+              prevMonthCaption="Mês Anterior"
+              nextMonthCaption="Próximo Mês"
+              setTimeCaption="Horário:"
+              :weekdays="weekDays"
+              :months="months"
+              :pickTime="true"
+              :format="'DD-MM-YYYY HH:mm'"
+            />
+          </b-form-group>
+        </b-col>
+        <b-col md="2">
+          <b-form-group label="Data Fim" label-for="course-end">
+            <date-pick
+              id="course-end"
+              v-model="course.data_fim"
+              prevMonthCaption="Mês Anterior"
+              nextMonthCaption="Próximo Mês"
+              setTimeCaption="Horário:"
+              :weekdays="weekDays"
+              :months="months"
+              :pickTime="true"
+              :format="'DD-MM-YYYY HH:mm'"
+            />
+          </b-form-group>
+        </b-col>
+      </b-row>
+    </b-form>
   </div>
 </template>
 

@@ -90,6 +90,10 @@ export default {
             color: "#FF8C00"
           }
         },
+                {
+          text: "Programação",
+          data: { icon: "calendar-alt" }
+        },
         {
           text: "Sair",
           data: { icon: "sign-out-alt" }
@@ -108,11 +112,17 @@ export default {
         },
         {
           text: "Administração",
-          data: { icon: "cogs", name: "adminPages" }
+          data: { icon: "cogs", name: "adminPages" },
+          children: [
+            {
+              text: "Programação",
+              data: { icon: "calendar-check" }
+            }
+          ]
         },
         {
-          text: "Programação",
-          data: { icon: "calendar-alt", name: "SchedulePages" }
+          text: "Ver Programação",
+          data: { icon: "calendar-alt" }
         },
         {
           text: "Sair",
