@@ -3,9 +3,7 @@
     <b-form>
       <b-row>
         <b-col>
-          <b-form-group label="teste">
-            
-          </b-form-group>
+          <b-form-group label="Selecione participante">teste</b-form-group>
         </b-col>
       </b-row>
     </b-form>
@@ -15,7 +13,7 @@
 </template>
 
 <script>
-import { baseApiUrl, showError, showSuccess } from "@/global";
+import { showError, showSuccess } from "@/global";
 import api from "@/services/api";
 
 export default {
@@ -24,10 +22,22 @@ export default {
     return {
       payment: {},
       payments: [],
+      user: {},
+      users: [],
       tickets: []
     };
   },
   methods: {
+    loadUsers() {
+      api.get("/admin/user?onlyadm=0&loadname=1").then(res => {
+        if (res.status === 200) {
+          this.users = res.data;
+        } else {
+          let errorMsg = res.data.message;
+          showError(errorMsg);
+        }
+      });
+    },
     loadPayments() {
       api.get("/admin/payment").then(res => {
         if (res.status === 200) {
@@ -48,6 +58,11 @@ export default {
         }
       });
     },
+    selectFromParentComponent1() {
+      this.user.id = this.users[0].id;
+      this.user.nome = this.users[0].nome;
+      this.user.matricula = this.users[0].matricula;
+    },
     reset() {
       this.mode = "save";
       this.ticket = {};
@@ -61,7 +76,8 @@ export default {
     }
   },
   mounted() {
-    this.loadPayments();
+    this.loadUsers();
+    //this.loadPayments();
   }
 };
 </script>

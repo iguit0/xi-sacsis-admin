@@ -77,22 +77,21 @@ export default {
       return Promise.resolve([
         {
           text: "Início",
-          data: { icon: "home", name: "home", color: "#FA8072" }
+          data: { icon: "home", name: "home" }
         },
         {
           text: "Minha Conta",
-          data: { icon: "user-circle", name: "AccountPages", color: "#F7DC6F" }
+          data: { icon: "user-circle", name: "AccountPages" }
         },
         {
           text: "Minicursos",
           data: {
-            icon: "chalkboard-teacher",
-            color: "#FF8C00"
+            icon: "chalkboard-teacher"
           }
         },
-                {
+        {
           text: "Programação",
-          data: { icon: "calendar-alt" }
+          data: { icon: "calendar-alt", name: "ViewSchedule" }
         },
         {
           text: "Sair",
@@ -116,7 +115,7 @@ export default {
           children: [
             {
               text: "Programação",
-              data: { icon: "calendar-check" }
+              data: { icon: "calendar-check", name: "SchedulePages" }
             }
           ]
         },

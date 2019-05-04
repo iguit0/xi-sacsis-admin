@@ -18,10 +18,15 @@ const routes = [
         meta: { requiresLogin: true, requiresAdmin: true }
     },
     {
-        path: '/programacao',
+        path: '/admin-programacao',
         name: 'SchedulePages',
-        component: () => import('./components/admin/SchedulePages.vue'),
+        component: () => import('./components/admin/schedule/SchedulePages.vue'),
         meta: { requiresLogin: true, requiresAdmin: true }
+    },
+    {
+        path: '/programacao',
+        name: 'ViewSchedule',
+        meta: { requiresLogin: true }
     },
     {
         path: '/minha-conta',
