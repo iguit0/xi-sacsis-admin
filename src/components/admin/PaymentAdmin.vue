@@ -65,7 +65,6 @@
             v-if="mode === 'save'"
             @click="save"
           >Salvar</b-btn>
-          <b-btn variant="danger" v-if="mode === 'remove'">Excluir</b-btn>
           <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
         </b-col>
         <b-col xs="6">
@@ -75,7 +74,10 @@
         </b-col>
       </b-row>
     </b-form>
-    <h2 class="text-center text-uppercase">Nenhum pagamento registrado!</h2>
+    <h2
+      class="text-center text-uppercase"
+      v-if="!tickets && !tickets.length"
+    >Nenhum pagamento registrado!</h2>
 
     <!-- TABELA -->
     <b-table
@@ -100,11 +102,13 @@
         </h6>
       </template>
       <template slot="actions" slot-scope="data">
-        <b-btn size="sm" variant="warning" @click="selectCourse(data.item)" class="mr-2">
-          <v-icon name="edit"/>
-        </b-btn>
-        <b-btn size="sm" variant="danger" @click="selectCourse(data.item, 'remove')" class="mr-2">
-          <v-icon name="trash-alt"/>
+        <b-btn
+          size="sm"
+          variant="primary"
+          @click="paymentInfo(data.item, $event.target)"
+          class="mr-2"
+        >
+          <v-icon name="info-circle"/>
         </b-btn>
       </template>
     </b-table>
@@ -121,12 +125,54 @@
         />
       </b-col>
     </b-row>
+
+    <!-- Info modal -->
+    <b-modal
+      header-bg-variant="dark"
+      header-text-variant="light"
+      :id="paymentModal.id"
+      :title="paymentModal.title"
+      ok-only
+      @hide="resetPaymentModal"
+    >
+      <ul>
+        <li class="py-1">
+          Nome:
+          <span class="font-weight-bold">{{paymentContent.user_nome}}</span>
+        </li>
+        <li>
+          Autorizado por:
+          <span class="font-weight-bold">{{paymentContent.admin_nome}}</span>
+        </li>
+        <li>
+          Lote Número:
+          <span class="font-weight-bold">{{paymentContent.lote_id}}</span>
+        </li>
+        <li>
+          Lote Valor:
+          <span class="font-weight-bold">{{paymentContent.valor}}</span>
+        </li>
+        <li>
+          Data Pagamento:
+          <span
+            class="font-weight-bold"
+          >{{paymentContent.data_pagamento | formatDate}}</span>
+        </li>
+        <li>
+          Data Modificação:
+          <span
+            class="font-weight-bold"
+          >{{paymentContent.data_modificacao | formatDate}}</span>
+        </li>
+      </ul>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import { showError, showSuccess } from "@/global";
 import api from "@/services/api";
+import moment from "moment";
 
 export default {
   name: "PaymentAdmin",
@@ -141,25 +187,72 @@ export default {
       user: null,
       ticket: null,
       payment: {},
+      paymentContent: {},
+      paymentModal: {
+        id: "payment-modal",
+        title: "",
+        content: ""
+      },
       payments: [],
       users: [],
       tickets: [],
       fields: [
-        { key: "id", label: "Código", sortable: true },
+        { key: "user_nome", label: "Participante", sortable: true },
+        { key: "valor", label: "Valor", sortable: true },
+        { key: "lote_id", label: "Código Lote", sortable: true },
+        {
+          key: "data_pagamento",
+          label: "Pago em",
+          formatter: value =>
+            moment(String(value))
+              .locale("pt-br")
+              .format("lll")
+        },
+        {
+          key: "data_modificacao",
+          label: "Modificado em",
+          formatter: value =>
+            moment(String(value))
+              .locale("pt-br")
+              .format("lll")
+        },
         { key: "actions", label: "Ações" }
       ]
     };
   },
+  filters: {
+    formatDate(value) {
+      if (value) {
+        return moment(String(value))
+          .locale("pt-br")
+          .format("lll");
+      }
+    }
+  },
   methods: {
+    paymentInfo(item, button) {
+      this.paymentModal.title = "Detalhes de pagamento";
+      this.paymentModal.content = JSON.stringify(item, null, 2);
+      this.paymentContent = JSON.parse(JSON.stringify(item));
+      this.$root.$emit("bv::show::modal", this.paymentModal.id, button);
+    },
+    resetPaymentModal() {
+      this.paymentModal.title = "";
+      this.paymentContent = "";
+      this.paymentModal.content = "";
+    },
     save() {
       let parsedTicket = JSON.parse(JSON.stringify(this.ticket));
       let parsedUser = JSON.parse(JSON.stringify(this.user));
       const data = {
-        user_id: parsedTicket.id,
-        lote_id: parsedUser.id
+        user_id: parsedUser.id,
+        lote_id: parsedTicket.id
       };
       api.post("/admin/payment", data).then(res => {
         if (res.status === 200) {
+          let successMsg = res.data.message;
+          showSuccess(successMsg);
+          this.reset();
         } else {
           let errorMsg = res.data.message;
           showError(errorMsg);
@@ -179,7 +272,7 @@ export default {
     loadPayments() {
       api.get("/admin/payment").then(res => {
         if (res.status === 200) {
-          this.payments = res.data;
+          this.payments = res.data.pagamentos;
         } else {
           let errorMsg = res.data.message;
           showError(errorMsg);
@@ -212,7 +305,7 @@ export default {
   mounted() {
     this.loadUsers();
     this.loadTickets();
-    //this.loadPayments();
+    this.loadPayments();
   }
 };
 </script>

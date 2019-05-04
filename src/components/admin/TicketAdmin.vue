@@ -4,7 +4,11 @@
       <input id="course-id" type="hidden" v-model="ticket.id">
       <b-row>
         <b-col md="4">
-          <b-form-group label="Responsável:" label-for="ticket-admin" description="Quem criou o lote">
+          <b-form-group
+            label="Responsável:"
+            label-for="ticket-admin"
+            description="Quem criou o lote"
+          >
             <b-input type="text" v-model="ticket.admin_nome" placeholder="Responsável" readonly/>
           </b-form-group>
         </b-col>
@@ -95,7 +99,7 @@ export default {
         { key: "admin_nome", label: "Responsável", sortable: true },
         {
           key: "data_criacao",
-          label: "Criado",
+          label: "Criado em",
           formatter: value =>
             moment(String(value))
               .locale("pt-br")
@@ -103,7 +107,7 @@ export default {
         },
         {
           key: "data_modificacao",
-          label: "Modificado",
+          label: "Modificado em",
           formatter: value =>
             moment(String(value))
               .locale("pt-br")
@@ -121,17 +125,17 @@ export default {
       const data = {
         valor: parsedTicket.valor
       };
-      api.post('/admin/payment/lot',data).then(response => {
+      api.post("/admin/payment/lot", data).then(response => {
         if (response.status === 200 || response.status === 201) {
-            let successMsg = response.data.message;
-            showSuccess(successMsg);
-            this.reset();
-          } else {
-            let errorMsg = response.data.message;
-            showError(errorMsg);
-            this.reset();
-          }
-      })
+          let successMsg = response.data.message;
+          showSuccess(successMsg);
+          this.reset();
+        } else {
+          let errorMsg = response.data.message;
+          showError(errorMsg);
+          this.reset();
+        }
+      });
     },
     loadTickets() {
       api.get("/admin/payment/lot?loadvalue=0").then(res => {
