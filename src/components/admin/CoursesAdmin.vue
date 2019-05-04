@@ -131,22 +131,6 @@ export default {
         { key: "conteudo", label: "Descrição" },
         { key: "ministrante", label: "Ministrante" },
         { key: "actions", label: "Ações" }
-        /*{
-          key: "data_inicio",
-          label: "Inicio",
-          formatter: value =>
-            moment(String(value))
-              .locale("pt-br")
-              .format("lll")
-        },
-        {
-          key: "data_fim",
-          label: "Fim",
-          formatter: value =>
-            moment(String(value))
-              .locale("pt-br")
-              .format("lll")
-        },*/
       ]
     };
   },
