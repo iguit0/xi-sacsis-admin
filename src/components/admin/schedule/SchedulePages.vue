@@ -1,16 +1,12 @@
 <template>
   <div>
     <div class="schedule-pages">
-      <PageTitle
-        icon="calendar-alt"
-        main="Programação do Evento"
-        sub="Gerenciamento de Programação"
-      />
+      <PageTitle icon="calendar-alt" main="Programação" sub="Gerenciamento dos eventos"/>
       <div class="schedule-pages-tabs">
         <b-card no-body>
           <b-tabs card pills active-nav-item-class="font-weight-bold text-uppercase">
             <b-tab title="Minicurso">
-              <h1 align="center">Teste</h1>
+              <CourseSchedule/>
             </b-tab>
             <b-tab title="Palestra">
               <LectureSchedule/>
@@ -28,9 +24,10 @@
 <script>
 import PageTitle from "@/components/template/PageTitle";
 import LectureSchedule from "@/components/admin/schedule/LectureSchedule";
+import CourseSchedule from "@/components/admin/schedule/CourseSchedule";
 
 export default {
   name: "SchedulePages",
-  components: { PageTitle, LectureSchedule }
+  components: { PageTitle, LectureSchedule, CourseSchedule }
 };
 </script>

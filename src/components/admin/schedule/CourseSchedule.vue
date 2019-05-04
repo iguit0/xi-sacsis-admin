@@ -3,6 +3,18 @@
     <b-form>
       <input id="course-id" type="hidden" v-model="course.id">
       <b-row>
+        <b-col md="4">
+          {{courses}}
+          <b-form-group label="Selecionar minicurso:">
+            <v-select
+              label="nome"
+              id="user"
+              v-model="user"
+              :options="users"
+              placeholder="Selecione uma opção"
+            ></v-select>
+          </b-form-group>
+        </b-col>
         <b-col md="2">
           <b-form-group label="Local" description="Exemplo: PVA 235">
             <b-input type="number" placeholder="Local" v-model="course.local"/>
@@ -50,6 +62,8 @@
 <script>
 import DatePick from "vue-date-pick";
 import "vue-date-pick/dist/vueDatePick.css";
+import api from "@/services/api";
+import { showError, showSuccess } from "@/global";
 
 export default {
   name: "CourseSchedule",
@@ -70,8 +84,25 @@ export default {
         "Outubro",
         "Novembro",
         "Dezembro"
-      ]
+      ],
+      courses: [],
+      course: {}
     };
+  },
+  methods: {
+    loadCourses() {
+      api.get("/admin/course").then(res => {
+        if (res.status === 200) {
+          this.courses = res.data.minicursos;
+        } else {
+          let errorMsg = res.data.message;
+          showError(errorMsg);
+        }
+      });
+    }
+  },
+  mounted() {
+    this.loadCourses();
   }
 };
 </script>
