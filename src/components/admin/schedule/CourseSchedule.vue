@@ -1,34 +1,28 @@
 <template>
   <div class="course-schedule">
     <b-form>
-      <input id="course-id" type="hidden" v-model="course.id">
       <b-row>
         <b-col md="4">
-          {{courses}}
-          <b-form-group label="Selecionar minicurso:">
-            <v-select
-              label="nome"
-              id="user"
-              v-model="user"
-              :options="users"
-              placeholder="Selecione uma opção"
-            ></v-select>
-          </b-form-group>
-        </b-col>
-        <b-col md="2">
-          <b-form-group label="Local" description="Exemplo: PVA 235">
-            <b-input type="number" placeholder="Local" v-model="course.local"/>
+          <b-form-group
+            label="Selecionar minicurso:"
+            label-for="course"
+            description="Padrão: (Nome Minicurso) • (Ministrante)"
+          >
+            <v-select :options="courses" placeholder="Selecione uma opção">
+              <!-- sem opcoes -->
+              <slot name="no-options">Não encontramos nenhum minicurso.</slot>
+              <!-- ./sem opcoes -->
+            </v-select>
           </b-form-group>
         </b-col>
         <b-col md="2">
           <b-form-group
-            label="Data Início"
+            label="Data Início:"
             label-for="course-start"
             description="Selecione a data e depois horário"
           >
             <date-pick
               id="course-start"
-              v-model="course.data_inicio"
               prevMonthCaption="Mês Anterior"
               nextMonthCaption="Próximo Mês"
               setTimeCaption="Horário:"
@@ -40,10 +34,9 @@
           </b-form-group>
         </b-col>
         <b-col md="2">
-          <b-form-group label="Data Fim" label-for="course-end">
+          <b-form-group label="Data Fim:" label-for="course-end">
             <date-pick
               id="course-end"
-              v-model="course.data_fim"
               prevMonthCaption="Mês Anterior"
               nextMonthCaption="Próximo Mês"
               setTimeCaption="Horário:"
@@ -53,6 +46,29 @@
               :format="'DD-MM-YYYY HH:mm'"
             />
           </b-form-group>
+        </b-col>
+        <b-col md="2">
+          <b-form-group label="Local:" description="Exemplo: PVA 235" label-for="course-location">
+            <b-input type="text" id="course-location" placeholder="Local"/>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col md="2">
+          <b-form-group label="Turma:" label-for="course-turma">
+            <b-input type="number" id="course-turma" placeholder="Turma"/>
+          </b-form-group>
+        </b-col>
+        <b-col md="2">
+          <b-form-group label="Vagas:" label-for="course-vacancies">
+            <b-input type="number" id="course-vacancies" placeholder="Vagas"/>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col xs="6" class="mb-3">
+          <b-btn variant="primary" v-if="mode === 'save'">Salvar</b-btn>
+          <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
         </b-col>
       </b-row>
     </b-form>
@@ -85,8 +101,9 @@ export default {
         "Novembro",
         "Dezembro"
       ],
+      mode: "save",
       courses: [],
-      course: {}
+      course: null
     };
   },
   methods: {
@@ -99,10 +116,14 @@ export default {
           showError(errorMsg);
         }
       });
+    },
+    reset() {
+      this.mode = "save";
+      this.loadCourses();
     }
   },
   mounted() {
-    this.loadCourses();
+    //this.loadCourses();
   }
 };
 </script>

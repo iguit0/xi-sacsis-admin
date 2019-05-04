@@ -1,14 +1,40 @@
 <template>
   <div class="lecture-schedule">
-    <b-form v-if="lectures && lectures.length">
+    <b-form>
       <input id="lecture-id" type="hidden" v-model="lecture.id">
       <b-row>
-        <b-col md="3" sm="6">
+        <b-col md="5">
+          <b-form-group
+            label="Selecione a palestra:"
+            description="Padrão: (Nome do minicurso) • (Ministrante)"
+            label-for="lecture"
+          >
+            <v-select
+              id="lecture"
+              label="titulo"
+              v-model="selected"
+              :options="lectures"
+              placeholder="Selecione uma opção"
+            >
+              <!-- dropdown pra selecionar -->
+              <template slot="option" slot-scope="option">{{option.titulo}} • {{option.ministrante}}</template>
+              <!-- ./dropdown pra selecionar -->
+              <!-- método ja selecionado -->
+              <template slot="selected-option" slot-scope="option">
+                <div class="selected d-center">{{option.titulo}} • {{option.ministrante}}</div>
+              </template>
+              <!-- ./metodo ja selecionado -->
+              <!-- sem opcoes -->
+              <slot name="no-options">Não encontramos nenhuma palestra.</slot>
+              <!-- ./sem opcoes -->
+            </v-select>
+          </b-form-group>
+        </b-col>
+        <b-col md="2">
           <b-form-group label="Local:" label-for="lecture-location" description="Exemplo: PVA 235">
             <b-form-input
               id="lecture-location"
               type="text"
-              required
               v-model="lecture.local"
               placeholder="Local"
               :readonly="mode === 'remove'"
@@ -71,7 +97,10 @@
       </b-row>
     </b-form>
 
-    <h2 class="text-center text-uppercase" v-else>Nenhuma palestra cadastrada!</h2>
+    <h2
+      class="text-center text-uppercase"
+      v-if="!lectures && !lectures.length"
+    >Nenhuma palestra cadastrada!</h2>
 
     <!-- TABELA -->
     <b-table
@@ -94,9 +123,6 @@
         </h6>
       </template>
       <template slot="actions" slot-scope="data">
-        <b-btn size="sm" variant="primary" class="mr-2">
-          <v-icon name="hand-pointer"/>
-        </b-btn>
         <b-btn size="sm" variant="warning" @click="selectLecture(data.item)" class="mr-2">
           <v-icon name="edit"/>
         </b-btn>
@@ -150,6 +176,7 @@ export default {
       incomplete: true,
       mode: "save",
       lecture: {},
+      selected: null,
       lectures: [],
       fields: [
         { key: "id", label: "Código", sortable: true },
@@ -164,17 +191,18 @@ export default {
     save() {
       let parsedLecture = JSON.parse(JSON.stringify(this.lecture));
       const data = {
+        lecture_id: selected.id,
         local: parsedLecture.local,
         data_inicio: parsedLecture.data_inicio,
         data_fim: parsedLecture.data_fim
       };
-      api.post("admin/schedule?formtype=lecture", data).then(res => {
+      api.post("/admin/schedule?formtype=lecture", data).then(res => {
         if (res.status === 200) {
-          let successMsg = response.data.message;
+          let successMsg = res.data.message;
           showSuccess(successMsg);
           this.reset();
         } else {
-          let errorMsg = response.data.message;
+          let errorMsg = res.data.message;
           showError(errorMsg);
           this.reset();
         }
@@ -191,6 +219,7 @@ export default {
     reset() {
       this.mode = "save";
       this.lecture = {};
+      this.selected = null;
       this.incomplete = true;
       this.loadLectures();
     },

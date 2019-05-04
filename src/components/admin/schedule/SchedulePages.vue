@@ -12,7 +12,7 @@
               <LectureSchedule/>
             </b-tab>
             <b-tab title="Outros eventos">
-              <h1 align="center">Teste</h1>
+              <EventSchedule/>
             </b-tab>
           </b-tabs>
         </b-card>
@@ -25,9 +25,10 @@
 import PageTitle from "@/components/template/PageTitle";
 import LectureSchedule from "@/components/admin/schedule/LectureSchedule";
 import CourseSchedule from "@/components/admin/schedule/CourseSchedule";
+import EventSchedule from "@/components/admin/schedule/EventSchedule";
 
 export default {
   name: "SchedulePages",
-  components: { PageTitle, LectureSchedule, CourseSchedule }
+  components: { PageTitle, LectureSchedule, CourseSchedule, EventSchedule }
 };
 </script>

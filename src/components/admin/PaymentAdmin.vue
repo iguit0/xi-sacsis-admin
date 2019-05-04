@@ -1,6 +1,7 @@
 <template>
   <div class="payment-admin">
     <b-form>
+      <input id="payment-id" type="hidden" v-model="payment.id">
       <b-row>
         <b-col md="4">
           <b-form-group
