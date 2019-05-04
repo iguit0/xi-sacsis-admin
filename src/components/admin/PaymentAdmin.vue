@@ -47,7 +47,7 @@
               <!-- ./dropdown pra selecionar -->
               <!-- método ja selecionado -->
               <template slot="selected-option" slot-scope="option">
-                <div class="selected d-center">{{option.valor}}</div>
+                <div class="selected d-center">{{option.valor}} • {{option.admin_nome}}</div>
               </template>
               <!-- ./metodo ja selecionado -->
               <!-- sem opcoes -->
