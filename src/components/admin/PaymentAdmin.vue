@@ -200,18 +200,9 @@ export default {
       fields: [
         { key: "user_nome", label: "Participante", sortable: true },
         { key: "valor", label: "Valor", sortable: true },
-        { key: "lote_id", label: "Código Lote", sortable: true },
         {
           key: "data_pagamento",
           label: "Pago em",
-          formatter: value =>
-            moment(String(value))
-              .locale("pt-br")
-              .format("lll")
-        },
-        {
-          key: "data_modificacao",
-          label: "Modificado em",
           formatter: value =>
             moment(String(value))
               .locale("pt-br")

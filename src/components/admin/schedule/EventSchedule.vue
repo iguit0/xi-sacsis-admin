@@ -57,6 +57,18 @@
         </b-col>
       </b-row>
     </b-form>
+    <b-row>
+        <b-col xs="6" class="mb-3">
+          <b-btn
+            variant="primary"
+            :disabled="incomplete"
+            v-if="mode === 'save'"
+            @click="save"
+          >Salvar</b-btn>
+          <b-btn variant="danger" v-if="mode === 'remove'">Excluir</b-btn>
+          <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
+        </b-col>
+      </b-row>
   </div>
 </template>
 
@@ -83,7 +95,8 @@ export default {
         "Outubro",
         "Novembro",
         "Dezembro"
-      ]
+      ],
+      mode: 'save'
     };
   }
 };
