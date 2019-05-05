@@ -79,7 +79,7 @@
 import DatePick from "vue-date-pick";
 import "vue-date-pick/dist/vueDatePick.css";
 import api from "@/services/api";
-import { showError, showSuccess } from "@/global";
+import { showError } from "@/global";
 
 export default {
   name: "CourseSchedule",

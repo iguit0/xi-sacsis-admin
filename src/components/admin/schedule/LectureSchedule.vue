@@ -144,7 +144,7 @@
 </template>
 
 <script>
-import { baseApiUrl, showError, showSuccess } from "@/global";
+import { showError, showSuccess } from "@/global";
 import api from "@/services/api";
 import DatePick from "vue-date-pick";
 import "vue-date-pick/dist/vueDatePick.css";
@@ -190,8 +190,9 @@ export default {
   methods: {
     save() {
       let parsedLecture = JSON.parse(JSON.stringify(this.lecture));
+      let parsedSelected = JSON.parse(JSON.stringify(this.selected));
       const data = {
-        lecture_id: selected.id,
+        lecture_id: parsedSelected.id,
         local: parsedLecture.local,
         data_inicio: parsedLecture.data_inicio,
         data_fim: parsedLecture.data_fim

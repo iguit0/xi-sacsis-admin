@@ -91,7 +91,7 @@ export default {
         },
         {
           text: "Programação",
-          data: { icon: "calendar-alt", name: "ViewSchedule" }
+          data: { icon: "calendar-alt", name: "ScheduleView" }
         },
         {
           text: "Sair",
@@ -110,9 +110,13 @@ export default {
           data: { icon: "user-circle", name: "AccountPages" }
         },
         {
-          text: "Administração",
-          data: { icon: "cogs", name: "adminPages" },
+          text: "Gerenciar",
+          data: { icon: "tools" },
           children: [
+            {
+              text: "Administração",
+              data: { icon: "cogs", name: "adminPages" }
+            },
             {
               text: "Programação",
               data: { icon: "calendar-check", name: "SchedulePages" }
@@ -121,7 +125,7 @@ export default {
         },
         {
           text: "Ver Programação",
-          data: { icon: "calendar-alt" }
+          data: { icon: "calendar-alt", name: "ScheduleView" }
         },
         {
           text: "Sair",

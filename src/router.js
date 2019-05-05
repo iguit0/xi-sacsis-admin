@@ -25,7 +25,8 @@ const routes = [
     },
     {
         path: '/programacao',
-        name: 'ViewSchedule',
+        name: 'ScheduleView',
+        component: () => import('./components/template/Schedule.vue'),
         meta: { requiresLogin: true }
     },
     {

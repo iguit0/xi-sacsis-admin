@@ -51,7 +51,8 @@
       >
         <b-form-checkbox
           disabled
-          :state="editedUser.status_pago"
+          id="input-7"
+          v-model="editedUser.status_pago"
           switch
         >{{ editedUser.status_pago ? 'Sim' : 'Não'}}</b-form-checkbox>
       </b-form-group>
