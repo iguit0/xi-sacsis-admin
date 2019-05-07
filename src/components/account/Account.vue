@@ -47,7 +47,7 @@
         id="input-group-7"
         label="Pago:"
         label-for="input-7"
-        description="O participante só poderá se inscrever nos minicursos oferecidos apos o pagamento ter sido realizado."
+        description="O participante só poderá se inscrever nos minicursos oferecidos após o pagamento ter sido realizado."
       >
         <b-form-checkbox
           disabled

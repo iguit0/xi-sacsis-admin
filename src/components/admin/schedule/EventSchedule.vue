@@ -4,13 +4,14 @@
       <b-row>
         <b-col md="3">
           <b-form-group label="Título:" description="Exemplo: Campeonato de CSGO">
-            <b-input type="text" placeholder="Título"/>
+            <b-input type="text" placeholder="Título" v-model="event.titulo"/>
           </b-form-group>
         </b-col>
         <b-col md="3">
           <b-form-group label="Descrição" label-for="event-description">
             <b-form-textarea
-              id="speaker-description"
+              v-model="event.descricao"
+              id="event-description"
               type="text"
               rows="3"
               no-resize
@@ -20,7 +21,7 @@
         </b-col>
         <b-col md="2">
           <b-form-group label="Local:" description="Exemplo: PVA 235">
-            <b-input type="text" placeholder="Local"/>
+            <b-input type="text" v-model="event.local" placeholder="Local"/>
           </b-form-group>
         </b-col>
         <b-col md="2">
@@ -31,6 +32,7 @@
           >
             <date-pick
               id="event-start"
+              v-model="event.data_inicio"
               prevMonthCaption="Mês Anterior"
               nextMonthCaption="Próximo Mês"
               setTimeCaption="Horário:"
@@ -45,6 +47,7 @@
           <b-form-group label="Data Fim:" label-for="event-end">
             <date-pick
               id="event-end"
+              v-model="event.data_fim"
               prevMonthCaption="Mês Anterior"
               nextMonthCaption="Próximo Mês"
               setTimeCaption="Horário:"
@@ -58,23 +61,19 @@
       </b-row>
     </b-form>
     <b-row>
-        <b-col xs="6" class="mb-3">
-          <b-btn
-            variant="primary"
-            :disabled="incomplete"
-            v-if="mode === 'save'"
-            @click="save"
-          >Salvar</b-btn>
-          <b-btn variant="danger" v-if="mode === 'remove'">Excluir</b-btn>
-          <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
-        </b-col>
-      </b-row>
+      <b-col xs="6" class="mb-3">
+        <b-btn variant="primary" v-if="mode === 'save'" @click="save">Salvar</b-btn>
+        <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
 <script>
 import DatePick from "vue-date-pick";
 import "vue-date-pick/dist/vueDatePick.css";
+import api from "@/services/api";
+import { showError, showSuccess } from "@/global";
 
 export default {
   name: "EventSchedule",
@@ -96,8 +95,35 @@ export default {
         "Novembro",
         "Dezembro"
       ],
-      mode: 'save'
+      mode: "save",
+      event: {},
+      events: []
     };
+  },
+  methods: {
+    save() {
+      let parsedEvent = JSON.parse(JSON.stringify(this.event));
+      const data = {
+        local: parsedEvent.local,
+        data_inicio: parsedEvent.data_inicio,
+        data_fim: parsedEvent.data_fim,
+        titulo: parsedEvent.titulo,
+        descricao: parsedEvent.descricao
+      };
+      api.post("/admin/schedule?formtype=other", data).then(res => {
+        if (res.status === 200) {
+          showSuccess(res.data.message);
+          this.reset();
+        } else {
+          showError(res.data.message);
+          this.reset();
+        }
+      });
+    },
+    reset() {
+      this.mode = "save";
+      this.event = {};
+    }
   }
 };
 </script>
