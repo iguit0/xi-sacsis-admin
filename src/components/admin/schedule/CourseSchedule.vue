@@ -1,6 +1,6 @@
 <template>
   <div class="course-schedule">
-    <b-form>
+    <b-form v-if="courses && courses.length">
       <b-row>
         <b-col md="4">
           <b-form-group
@@ -72,6 +72,7 @@
         </b-col>
       </b-row>
     </b-form>
+    <h2 class="text-center">Não há minicursos cadastrados</h2>
   </div>
 </template>
 
