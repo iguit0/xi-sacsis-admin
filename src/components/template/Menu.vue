@@ -120,6 +120,10 @@ export default {
             {
               text: "Programação",
               data: { icon: "calendar-check", name: "SchedulePages" }
+            },
+            {
+              text: "Ministrantes",
+              data: { icon: "person-booth", name: "GuestsPages" }
             }
           ]
         },

@@ -41,6 +41,11 @@ const routes = [
         component: () => import('./components/template/Login.vue')
     },
     {
+        path: '/admin-ministrantes',
+        name: 'GuestsPages',
+        component: () => import('./components/admin/GuestsPages.vue')
+    },
+    {
         path: '/cadastro-palestrante',
         name: 'FormSpeakerSignup',
         component: () => import('./components/admin/FormSpeakerSignup.vue')

@@ -12,6 +12,7 @@ import './plugins/form-wizard'
 import './plugins/mq'
 import './plugins/sweetalert'
 import './plugins/v-select'
+import './plugins/clipboard'
 
 Vue.config.productionTip = false;
 
