@@ -21,6 +21,13 @@
         />
       </b-input-group>
 
+      <b-input-group class="mb-3" v-if="showSignup">
+        <b-input-group-text slot="prepend">
+          <v-icon name="venus-mars"/>
+        </b-input-group-text>
+        <b-form-select required v-model="user.sexo" :options="optionsGender"></b-form-select>
+      </b-input-group>
+
       <b-input-group class="mb-3" v-if="!recoverPass">
         <b-input-group-text slot="prepend">
           <v-icon name="envelope"/>
@@ -220,6 +227,7 @@ export default {
       showSignup: false,
       recoverPass: false,
       user: {
+        sexo: null,
         shirtSize: null
       },
       optionsShirt: [
@@ -229,6 +237,11 @@ export default {
         { value: "G", text: "G" },
         { value: "GG", text: "GG" },
         { value: "XL", text: "XL" }
+      ],
+      optionsGender: [
+        { value: null, text: "Selecione um gênero" },
+        { value: "Masculino", text: "Masculino" },
+        { value: "Feminino", text: "Feminino" }
       ]
     };
   },
@@ -324,6 +337,11 @@ export default {
           this.errors.push(msg);
           showError(msg);
           this.isLoading = false;
+        } else if (this.user.sexo === null) {
+          let msg = "Escolha um gênero";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
         }
       }
 
@@ -369,6 +387,7 @@ export default {
         cpf: newUser.cpf,
         rg: newUser.rg,
         senha: newUser.password,
+        sexo: newUser.sexo,
         camiseta: newUser.shirtSize
       };
       axios.post(`${baseApiUrl}/user`, data).then(response => {

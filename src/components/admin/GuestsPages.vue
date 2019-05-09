@@ -33,7 +33,7 @@
           </b-col>
         </b-row>
         <b-row>
-          <b-col>
+          <b-col md="10">
             <h2
               class="text-center"
               v-if="selectedTime"
@@ -65,7 +65,7 @@ export default {
     return {
       selectedType: null,
       selectedTime: null,
-      copyData: "Gere um link válido primeiro!",
+      copyData: "Gere um link válido!",
       expirationTime: [
         { value: null, text: "Selecione uma opção" },
         { value: "1", text: "1 dia" },

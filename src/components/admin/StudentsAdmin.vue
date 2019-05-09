@@ -68,6 +68,16 @@
             />
           </b-form-group>
         </b-col>
+        <b-col md="4">
+          <b-form-group label="Gênero:" label-for="user-gender" v-if="mode === 'save'">
+            <b-form-radio-group
+              id="user-gender"
+              v-model="student.sexo"
+              :options="optionsGender"
+              class="mt-3"
+            />
+          </b-form-group>
+        </b-col>
       </b-row>
 
       <b-row>
@@ -163,6 +173,10 @@ export default {
         { value: "G", text: "G" },
         { value: "GG", text: "GG" }
       ],
+      optionsGender: [
+        { value: "Masculino", text: "Masculino" },
+        { value: "Feminino", text: "Feminino" }
+      ],
       student: {
         camiseta: null
       },
@@ -188,6 +202,7 @@ export default {
         cpf: parsedStudent.cpf,
         rg: parsedStudent.rg,
         camiseta: parsedStudent.camiseta,
+        sexo: parsedStudent.sexo,
         admin: parsedStudent.admin
       };
       axios
