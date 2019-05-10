@@ -1,6 +1,6 @@
 <template>
   <div class="lecture-schedule">
-    <b-form>
+    <b-form v-if="lectures && lectures.length">
       <input id="lecture-id" type="hidden" v-model="lecture.id">
       <b-row>
         <b-col md="5">
@@ -97,10 +97,7 @@
       </b-row>
     </b-form>
 
-    <h2
-      class="text-center text-uppercase"
-      v-if="!lectures && !lectures.length"
-    >Nenhuma palestra cadastrada!</h2>
+    <h2 class="text-center text-uppercase" v-else>Não há nenhuma palestra cadastrada</h2>
 
     <!-- TABELA -->
     <b-table

@@ -46,14 +46,21 @@ const routes = [
         component: () => import('./components/admin/GuestsPages.vue')
     },
     {
-        path: '/cadastro-palestrante',
+        path: '/cadastro-palestrante/:token',
         name: 'FormSpeakerSignup',
-        component: () => import('./components/admin/FormSpeakerSignup.vue')
+        component: () => import('./components/admin/FormSpeakerSignup.vue'),
+        props: true
     },
     {
-        path: '/cadastro-ministrante',
+        path: '/cadastro-ministrante/:token',
         name: 'FormTeacherSignup',
-        component: () => import('./components/admin/FormTeacherSignup.vue')
+        component: () => import('./components/admin/FormTeacherSignup.vue'),
+        props: true
+    },
+    {
+        path: '*',
+        name: 'NotFound',
+        component: () => import('./components/template/404.vue')
     }
 ]
 

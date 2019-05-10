@@ -72,7 +72,46 @@
         </b-col>
       </b-row>
     </b-form>
-    <h2 class="text-center">Não há minicursos cadastrados</h2>
+    <h2 class="text-center text-uppercase">Não há minicursos cadastrados</h2>
+
+    <!-- TABELA -->
+    <b-table
+      striped
+      bordered
+      caption-top
+      show-empty
+      :fields="fields"
+      :items="courses"
+      empty-text="Não há nenhum minicurso cadastrado"
+    >
+      <template slot="table-caption" v-if="totalRows">
+        <h6 align="right">
+          <strong>{{totalRows}} minicurso encontradas</strong>
+        </h6>
+      </template>
+      <template slot="table-caption" v-else>
+        <h6 align="right">
+          <strong>Nenhum minicursos encontrado</strong>
+        </h6>
+      </template>
+      <template slot="actions" slot-scope="data">
+        <b-btn size="sm" variant="warning" @click="selectCourse(data.item)" class="mr-2">
+          <v-icon name="edit"/>
+        </b-btn>
+      </template>
+    </b-table>
+    <!-- ./TABELA -->
+    <b-row>
+      <b-col xs="12" class="text-center">
+        <b-pagination
+          align="center"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          v-model="currentPage"
+          class="text-center"
+        />
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -102,6 +141,14 @@ export default {
         "Novembro",
         "Dezembro"
       ],
+      currentPage: 1,
+      perPage: 5,
+      pageOptions: [5, 10, 15],
+      totalRows: 0,
+      fields: [
+        { key: "id", label: "Código", sortable: true },
+        { key: "actions", label: "Ações" }
+      ],
       mode: "save",
       courses: [],
       course: null
@@ -112,9 +159,6 @@ export default {
       api.get("/admin/course").then(res => {
         if (res.status === 200) {
           this.courses = res.data.minicursos;
-        } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
         }
       });
     },
@@ -124,7 +168,7 @@ export default {
     }
   },
   mounted() {
-    //this.loadCourses();
+    this.loadCourses();
   }
 };
 </script>
