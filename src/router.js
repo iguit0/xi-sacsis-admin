@@ -46,13 +46,13 @@ const routes = [
         component: () => import('./components/admin/GuestsPages.vue')
     },
     {
-        path: '/cadastro-palestrante/:token',
+        path: '/cadastro-palestra/:token',
         name: 'FormSpeakerSignup',
         component: () => import('./components/admin/FormSpeakerSignup.vue'),
         props: true
     },
     {
-        path: '/cadastro-ministrante/:token',
+        path: '/cadastro-minicurso/:token',
         name: 'FormTeacherSignup',
         component: () => import('./components/admin/FormTeacherSignup.vue'),
         props: true

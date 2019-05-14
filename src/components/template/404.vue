@@ -3,7 +3,7 @@
     <div class="error">
       <h1>404</h1>
       <p>Esta página não existe ou você não tem autorização</p>
-      <b-btn size="lg" variant="primary" block>
+      <b-btn @click="$router.go(-1)" size="lg" variant="primary" block>
         <v-icon scale="1.5" name="home" class="mr-1"/>Voltar a página inicial
       </b-btn>
     </div>
