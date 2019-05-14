@@ -180,32 +180,28 @@
                 <b-input v-model="speaker.rg" readonly type="number" placeholder="RG"/>
               </b-form-group>
             </b-form>
-            <!-- ./personal content -->
-            <b-form>
-              <b-form-group id="input-group-9" label="Título:" label-for="input-9">
-                <b-input
-                  v-model="speaker.titulo"
-                  placeholder="Machine Learning no século XXI"
-                  id="input-9"
-                  readonly
-                />
-              </b-form-group>
-              <b-form-group id="input-group-10" label="Conteúdo:" label-for="input-10">
-                <b-form-textarea
-                  id="input-10"
-                  v-model="speaker.conteudo"
-                  readonly
-                  placeholder="A palestra irá abordar..."
-                  no-resize
-                  no-auto-shrink
-                  rows="3"
-                  max-rows="6"
-                ></b-form-textarea>
-              </b-form-group>
-            </b-form>
+            <b-form-group id="input-group-9" label="Título:" label-for="input-9">
+              <b-input
+                v-model="speaker.titulo"
+                placeholder="Machine Learning no século XXI"
+                id="input-9"
+                readonly
+              />
+            </b-form-group>
+            <b-form-group id="input-group-10" label="Conteúdo:" label-for="input-10">
+              <b-form-textarea
+                id="input-10"
+                v-model="speaker.conteudo"
+                readonly
+                placeholder="A palestra irá abordar..."
+                no-resize
+                no-auto-shrink
+                rows="3"
+                max-rows="6"
+              ></b-form-textarea>
+            </b-form-group>
             <!-- ./confirmacao -->
           </tab-content>
-          <div class="loader" v-if="loadingWizard"></div>
           <div v-if="errorMsg">
             <span class="error">{{errorMsg}}</span>
           </div>
@@ -224,11 +220,10 @@ export default {
   name: "FormSpeakerSignup",
   data() {
     return {
-      loadingWizard: false,
       errorMsg: null,
       speaker: {
-        name: "",
-        description: ""
+        nome: "",
+        resumo: ""
       }
     };
   },
@@ -300,6 +295,10 @@ export default {
           showError(msg);
         } else if (!this.speaker.conteudo) {
           let msg = "Conteúdo da palestra é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+        } else if (!this.speaker.avatar) {
+          let msg = "Foto é obrigatório";
           this.errors.push(msg);
           showError(msg);
         }
