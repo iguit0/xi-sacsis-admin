@@ -241,7 +241,7 @@ export default {
         lote_id: parsedTicket.id
       };
       api.post("/admin/payment", data).then(res => {
-        if (res.status === 200) {
+        if (res.status === 201) {
           let successMsg = res.data.message;
           showSuccess(successMsg);
           this.reset();
