@@ -8,7 +8,21 @@
             label-for="course"
             description="Padrão: (Nome Minicurso) • (Ministrante)"
           >
-            <v-select :options="courses" placeholder="Selecione uma opção">
+            <v-select
+              id="course"
+              label="titulo"
+              v-model="selected"
+              :options="courses"
+              placeholder="Selecione uma opção"
+            >
+              <!-- dropdown pra selecionar -->
+              <template slot="option" slot-scope="option">{{option.titulo}} • {{option.ministrante}}</template>
+              <!-- ./dropdown pra selecionar -->
+              <!-- método ja selecionado -->
+              <template slot="selected-option" slot-scope="option">
+                <div class="selected d-center">{{option.titulo}} • {{option.ministrante}}</div>
+              </template>
+              <!-- ./metodo ja selecionado -->
               <!-- sem opcoes -->
               <slot name="no-options">Não encontramos nenhum minicurso.</slot>
               <!-- ./sem opcoes -->
@@ -23,6 +37,8 @@
           >
             <date-pick
               id="course-start"
+              v-model="course.data_inicio"
+              :inputAttributes="{readonly: true}"
               prevMonthCaption="Mês Anterior"
               nextMonthCaption="Próximo Mês"
               setTimeCaption="Horário:"
@@ -37,6 +53,8 @@
           <b-form-group label="Data Fim:" label-for="course-end">
             <date-pick
               id="course-end"
+              v-model="course.data_fim"
+              :inputAttributes="{readonly: true}"
               prevMonthCaption="Mês Anterior"
               nextMonthCaption="Próximo Mês"
               setTimeCaption="Horário:"
@@ -49,30 +67,35 @@
         </b-col>
         <b-col md="2">
           <b-form-group label="Local:" description="Exemplo: PVA 235" label-for="course-location">
-            <b-input type="text" id="course-location" placeholder="Local"/>
+            <b-input type="text" v-model="course.local" id="course-location" placeholder="Local"/>
           </b-form-group>
         </b-col>
       </b-row>
       <b-row>
         <b-col md="2">
           <b-form-group label="Turma:" label-for="course-turma">
-            <b-input type="number" id="course-turma" placeholder="Turma"/>
+            <b-input type="number" id="course-turma" v-model="course.turma" placeholder="Turma"/>
           </b-form-group>
         </b-col>
         <b-col md="2">
           <b-form-group label="Vagas:" label-for="course-vacancies">
-            <b-input type="number" id="course-vacancies" placeholder="Vagas"/>
+            <b-input
+              type="number"
+              v-model="course.vagas"
+              id="course-vacancies"
+              placeholder="Vagas"
+            />
           </b-form-group>
         </b-col>
       </b-row>
       <b-row>
         <b-col xs="6" class="mb-3">
-          <b-btn variant="primary" v-if="mode === 'save'">Salvar</b-btn>
+          <b-btn variant="primary" :disabled="incomplete" v-if="mode === 'save'">Salvar</b-btn>
           <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
         </b-col>
       </b-row>
     </b-form>
-    <h2 class="text-center text-uppercase">Não há minicursos cadastrados</h2>
+    <h2 v-else class="text-center text-uppercase">Não há minicursos cadastrados</h2>
 
     <!-- TABELA -->
     <b-table
@@ -119,12 +142,14 @@
 import DatePick from "vue-date-pick";
 import "vue-date-pick/dist/vueDatePick.css";
 import api from "@/services/api";
+import { showError, showSuccess } from "@/global";
 
 export default {
   name: "CourseSchedule",
   components: { DatePick },
   data() {
     return {
+      incomplete: true,
       weekDays: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
       months: [
         "Janeiro",
@@ -144,25 +169,61 @@ export default {
       perPage: 5,
       pageOptions: [5, 10, 15],
       totalRows: 0,
+      selected: null,
+      data_inicio: null,
+      data_fim: null,
       fields: [
         { key: "id", label: "Código", sortable: true },
+        { key: "titulo", label: "Título", sortable: true },
+        { key: "conteudo", label: "Descrição" },
+        { key: "ministrante", label: "Ministrante" },
         { key: "actions", label: "Ações" }
       ],
       mode: "save",
       courses: [],
-      course: null
+      course: {}
     };
   },
   methods: {
+    save() {
+      let parsedCourse = JSON.parse(JSON.stringify(this.course));
+      let parsedSelected = JSON.parse(JSON.stringify(this.selected));
+      const data = {
+        course_id: parsedSelected.id,
+        local: parsedCourse.local,
+        data_inicio: parsedCourse.data_inicio,
+        data_fim: parsedCourse.data_fim,
+        vagas: parsedCourse.vagas,
+        turma: parsedCourse.turma
+      };
+      api.post("/admin/schedule?formtype=course", data).then(res => {
+        if (res.status === 200) {
+          showSuccess(res.data.message);
+          this.reset();
+        } else {
+          showError(res.data.message);
+          this.reset();
+        }
+      });
+    },
     loadCourses() {
       api.get("/admin/course").then(res => {
         if (res.status === 200) {
           this.courses = res.data.minicursos;
+          this.totalRows = res.data.minicursos.length;
         }
       });
     },
+    selectedCourse(course, mode = "save") {
+      this.mode = mode;
+      this.course = { ...course };
+      this.incomplete = false;
+    },
     reset() {
       this.mode = "save";
+      this.course = {};
+      this.selected = null;
+      this.incomplete = true;
       this.loadCourses();
     }
   },
