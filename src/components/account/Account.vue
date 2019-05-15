@@ -40,7 +40,7 @@
       </b-form-group>
 
       <b-form-group id="input-group-6" label="Camiseta:" label-for="input-6">
-        <b-form-select id="input-6" v-model="editedUser.camiseta" :options="optionsShirt"/>
+        <b-form-select id="input-6" v-model="editedUser.camiseta" :options="optionsShirt" disabled/>
       </b-form-group>
 
       <b-form-group
