@@ -17,7 +17,9 @@ api.interceptors.request.use((config) => {
         } else {
             delete config.headers.Authorization;
         }
-    } catch { }
+    } catch {
+        return config;
+    }
     return config;
 })
 
