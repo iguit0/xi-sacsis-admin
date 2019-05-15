@@ -165,7 +165,7 @@
 </template>
 
 <script>
-import { baseApiUrl, showError, showSuccess } from "@/global";
+import { showError, showSuccess } from "@/global";
 import api from "@/services/api";
 
 export default {
@@ -246,11 +246,11 @@ export default {
       const id = this.speaker.id;
       api.delete(`/admin/speaker/${id}`).then(res => {
         if (res.status === 200) {
-          let successMsg = response.data.message;
+          let successMsg = res.data.message;
           showSuccess(successMsg);
           this.reset();
         } else {
-          let errorMsg = response.data.message;
+          let errorMsg = res.data.message;
           showError(errorMsg);
           this.reset();
         }

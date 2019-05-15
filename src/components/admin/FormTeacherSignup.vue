@@ -236,7 +236,7 @@ export default {
       axios
         .post(`${baseApiUrl}/speaker/?token=${this.token}`, data)
         .then(res => {
-          if (response.status === 200) {
+          if (res.status === 200) {
             showSuccess(res.data.message);
           } else {
             showError(res.data.message);
@@ -295,9 +295,6 @@ export default {
     handleErrorMessage(errorMsg) {
       this.errorMsg = errorMsg;
     }
-  },
-  mounted() {
-    console.log(this.token);
   }
 };
 </script>

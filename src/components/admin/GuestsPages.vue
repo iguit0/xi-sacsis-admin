@@ -39,7 +39,12 @@
               v-if="selectedTime"
             >O convidado tem {{selectedTime}} dia(s) para preencher o formulário</h2>
             <b-input-group class="mt-3">
-              <b-input type="text" v-model="copyData" :disabled="!copyData" placeholder="Gere um link válido"/>
+              <b-input
+                type="text"
+                v-model="copyData"
+                :disabled="!copyData"
+                placeholder="Gere um link válido"
+              />
               <b-input-group-append>
                 <b-btn v-clipboard="copyData">
                   <v-icon name="copy" scale="1.2"/>
@@ -56,7 +61,7 @@
 <script>
 import PageTitle from "@/components/template/PageTitle";
 import api from "@/services/api";
-import { baseApiUrl, showError, showSuccess } from "@/global";
+import { showError, showSuccess } from "@/global";
 
 export default {
   name: "GuestsPages",
@@ -93,10 +98,10 @@ export default {
           if (res.status === 201) {
             let generatedToken = res.data.token;
             let url = window.location.hostname;
-            if (this.selectedType === 'course') {
-              this.copyData = `${url}/cadastro-minicurso/${generatedToken}`
-            } else if (this.selectedType === 'lecture') {
-              this.copyData = `${url}/cadastro-palestra/${generatedToken}`
+            if (this.selectedType === "course") {
+              this.copyData = `${url}/cadastro-minicurso/${generatedToken}`;
+            } else if (this.selectedType === "lecture") {
+              this.copyData = `${url}/cadastro-palestra/${generatedToken}`;
             }
             showSuccess(res.data.message);
             this.reset();
