@@ -1,7 +1,16 @@
 <template>
   <div class="auth-content">
     <div class="auth-modal">
-      <b-img :src="require('@/assets/img/logo.png')" class="mb-3"/>
+      <b-img
+        :src="require('@/assets/img/logo.png')"
+        class="mb-3 d-none d-md-block d-lg-block d-xl-block"
+      />
+      <b-img
+        :src="require('@/assets/img/logo.png')"
+        width="250px"
+        height="100px"
+        class="mb-3 d-sm-block d-xs-block d-md-none d-lg-none d-xl-none"
+      />
       <hr>
       <div class="auth-title" v-if="!recoverPass">{{ showSignup ? 'CADASTRO' : 'LOGIN' }}</div>
       <div class="auth-title" v-else>ESQUECI MINHA SENHA</div>
