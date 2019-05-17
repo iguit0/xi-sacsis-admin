@@ -179,8 +179,7 @@ export default {
         vagas: parsedCourse.vagas,
         turma: parsedCourse.turma
       };
-      console.log(data);
-      /*api.post("/admin/schedule?formtype=course", data).then(res => {
+      api.post("/admin/schedule?formtype=course", data).then(res => {
         if (res.status === 200) {
           showSuccess(res.data.message);
           this.reset();
@@ -188,7 +187,7 @@ export default {
           showError(res.data.message);
           this.reset();
         }
-      });*/
+      });
     },
     loadCourses() {
       this.isLoading = true;

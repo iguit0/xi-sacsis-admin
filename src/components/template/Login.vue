@@ -167,6 +167,11 @@
           :options="optionsShirt"
           required
         />
+        <b-input-group-append>
+          <b-button v-b-modal.modal-1 variant="info">
+            <v-icon name="info-circle"/>
+          </b-button>
+        </b-input-group-append>
       </b-input-group>
 
       <VueLoadingButton
@@ -208,6 +213,10 @@
         <span v-if="!recoverPass">Esqueci minha senha!</span>
         <span v-else>Lembrou a senha? Entre aqui!</span>
       </a>
+
+      <b-modal id="modal-1" title="Guia Camisetas" ok-only centered>
+        <b-img :src="require('../../assets/img/guia-camisetas.jpeg')"/>
+      </b-modal>
     </div>
   </div>
 </template>
@@ -244,8 +253,7 @@ export default {
         { value: "P", text: "P" },
         { value: "M", text: "M" },
         { value: "G", text: "G" },
-        { value: "GG", text: "GG" },
-        { value: "XL", text: "XL" }
+        { value: "GG", text: "GG" }
       ],
       optionsGender: [
         { value: null, text: "Selecione um gênero" },

@@ -244,7 +244,7 @@ export default {
         user_id: parsedUser.id,
         lote_id: parsedTicket.id
       };
-      /*api[method]("/admin/payment", data).then(res => {
+      api[method]("/admin/payment", data).then(res => {
         if (res.status === 201) {
           showSuccess(res.data.message);
           this.reset();
@@ -252,7 +252,7 @@ export default {
           showError(res.data.message);
           this.reset();
         }
-      });*/
+      });
     },
     loadUsers() {
       api.get("/admin/user?onlyadm=0&loadname=1").then(res => {

@@ -1,7 +1,39 @@
 <template>
   <div class="schedule-page">
     <PageTitle icon="calendar-alt" main="Ver Programação" sub="Visualizar todos os eventos"/>
-    <ViewSchedule :schedule="schedule"/>
+    <b-card no-body>
+      <b-tabs pills card vertical>
+        <b-tab title="Dia 1" active>
+          <section class="timeline" v-if="schedule && schedule.length">
+            <ul>
+              <li v-for="(info, index) in schedule" :key="index">
+                <span></span>
+                <div>{{ info.school }}</div>
+                <div>{{ info.address }}</div>
+                <div>{{ info.course }}</div>
+                <div class="year">
+                  <span>{{ info.yearEnd }}</span>
+                  <span>{{ info.yearStart }}</span>
+                </div>
+              </li>
+            </ul>
+          </section>
+          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
+        </b-tab>
+        <b-tab title="Dia 2">
+          <b-card-text>Tab Contents 2</b-card-text>
+        </b-tab>
+        <b-tab title="Dia 3">
+          <b-card-text>Tab Contents 3</b-card-text>
+        </b-tab>
+        <b-tab title="Dia 4">
+          <b-card-text>Tab Contents 3</b-card-text>
+        </b-tab>
+        <b-tab title="Dia 5">
+          <b-card-text>Tab Contents 3</b-card-text>
+        </b-tab>
+      </b-tabs>
+    </b-card>
   </div>
 </template>
 
@@ -9,14 +41,14 @@
 import { showError } from "@/global";
 import api from "@/services/api";
 import PageTitle from "@/components/template/PageTitle";
-import ViewSchedule from "@/components/user/ViewSchedule";
 
 export default {
   name: "ScheduleView",
-  components: { PageTitle, ViewSchedule },
+  components: { PageTitle },
   data() {
     return {
-      schedule: []
+      schedule: [],
+      msgError: ""
     };
   },
   methods: {
@@ -25,6 +57,7 @@ export default {
         if (res.status === 200) {
           this.schedule = res.data;
         } else {
+          this.msgError = res.data.message;
           showError(res.data.message);
         }
       });
