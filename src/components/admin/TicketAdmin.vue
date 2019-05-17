@@ -95,7 +95,12 @@ export default {
       mode: "save",
       fields: [
         { key: "id", label: "Código", sortable: true },
-        { key: "valor", label: "Valor", sortable: true },
+        {
+          key: "valor",
+          label: "Valor",
+          sortable: true,
+          formatter: value => "R$" + value + ",00"
+        },
         { key: "admin_nome", label: "Responsável", sortable: true },
         {
           key: "data_criacao",

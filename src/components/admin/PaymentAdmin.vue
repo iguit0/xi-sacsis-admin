@@ -202,7 +202,12 @@ export default {
       tickets: [],
       fields: [
         { key: "user_nome", label: "Participante", sortable: true },
-        { key: "valor", label: "Valor", sortable: true },
+        {
+          key: "valor",
+          label: "Valor",
+          sortable: true,
+          formatter: value => "R$" + value + ",00"
+        },
         {
           key: "data_pagamento",
           label: "Pago em",
@@ -292,7 +297,8 @@ export default {
     selectPayment(payment, mode = "save") {
       this.user = {
         id: payment.user_id,
-        nome: payment.user_nome
+        nome: payment.user_nome,
+        matricula: payment.matricula
       };
       this.ticket = {
         id: payment.lote_id,
