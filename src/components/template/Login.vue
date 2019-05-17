@@ -249,8 +249,8 @@ export default {
       ],
       optionsGender: [
         { value: null, text: "Selecione um gênero" },
-        { value: "Masculino", text: "Masculino" },
-        { value: "Feminino", text: "Feminino" }
+        { value: 0, text: "Masculino" },
+        { value: 1, text: "Feminino" }
       ]
     };
   },
@@ -402,13 +402,11 @@ export default {
       axios.post(`${baseApiUrl}/user`, data).then(response => {
         if (response.status === 201) {
           this.isLoading = false;
-          let successMsg = response.data.message;
-          showSuccess(successMsg);
+          showSuccess(response.data.message);
           this.user = {};
           this.showSignup = false;
         } else {
-          let errorMsg = response.data.message;
-          showError(errorMsg);
+          showError(response.data.message);
           this.isLoading = false;
         }
       });

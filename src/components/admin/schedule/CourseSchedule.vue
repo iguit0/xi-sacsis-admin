@@ -33,35 +33,31 @@
           <b-form-group
             label="Data Início:"
             label-for="course-start"
-            description="Selecione a data e depois horário"
+            description="Exemplo: 07/06/2019 14:00"
           >
-            <date-pick
+            <the-mask
+              label="Date"
               id="course-start"
+              mask="##/##/#### ##:##"
+              placeholder="Data Início"
               v-model="course.data_inicio"
-              :inputAttributes="{readonly: true}"
-              prevMonthCaption="Mês Anterior"
-              nextMonthCaption="Próximo Mês"
-              setTimeCaption="Horário:"
-              :weekdays="weekDays"
-              :months="months"
-              :pickTime="true"
-              :format="'DD-MM-YYYY HH:mm'"
+              class="form-control"
+              required
+              :masked="false"
             />
           </b-form-group>
         </b-col>
         <b-col md="2">
           <b-form-group label="Data Fim:" label-for="course-end">
-            <date-pick
+            <the-mask
+              label="Date"
               id="course-end"
+              mask="##/##/#### ##:##"
+              placeholder="Data Fim"
               v-model="course.data_fim"
-              :inputAttributes="{readonly: true}"
-              prevMonthCaption="Mês Anterior"
-              nextMonthCaption="Próximo Mês"
-              setTimeCaption="Horário:"
-              :weekdays="weekDays"
-              :months="months"
-              :pickTime="true"
-              :format="'DD-MM-YYYY HH:mm'"
+              class="form-control"
+              required
+              :masked="false"
             />
           </b-form-group>
         </b-col>
@@ -90,12 +86,17 @@
       </b-row>
       <b-row>
         <b-col xs="6" class="mb-3">
-          <b-btn variant="primary" :disabled="incomplete" v-if="mode === 'save'">Salvar</b-btn>
+          <b-btn variant="primary" v-if="mode === 'save'" @click="save">Salvar</b-btn>
           <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
         </b-col>
       </b-row>
     </b-form>
-    <h2 v-else class="text-center text-uppercase">Não há minicursos cadastrados</h2>
+    <h2 v-if="empty" class="text-center text-uppercase">Não há minicursos cadastrados</h2>
+
+    <div class="text-center" v-if="isLoading">
+      <b-spinner variant="dark"></b-spinner>
+      <h4 class="mt-2 text-center text-uppercase">CARREGANDO...</h4>
+    </div>
 
     <!-- TABELA -->
     <b-table
@@ -139,39 +140,21 @@
 </template>
 
 <script>
-import DatePick from "vue-date-pick";
-import "vue-date-pick/dist/vueDatePick.css";
 import api from "@/services/api";
 import { showError, showSuccess } from "@/global";
 
 export default {
   name: "CourseSchedule",
-  components: { DatePick },
   data() {
     return {
       incomplete: true,
-      weekDays: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
-      months: [
-        "Janeiro",
-        "Fevereiro",
-        "Março",
-        "Abril",
-        "Maio",
-        "Junho",
-        "Julho",
-        "Agosto",
-        "Setembro",
-        "Outubro",
-        "Novembro",
-        "Dezembro"
-      ],
+      isLoading: false,
+      empty: false,
       currentPage: 1,
       perPage: 5,
       pageOptions: [5, 10, 15],
       totalRows: 0,
       selected: null,
-      data_inicio: null,
-      data_fim: null,
       fields: [
         { key: "id", label: "Código", sortable: true },
         { key: "titulo", label: "Título", sortable: true },
@@ -196,7 +179,8 @@ export default {
         vagas: parsedCourse.vagas,
         turma: parsedCourse.turma
       };
-      api.post("/admin/schedule?formtype=course", data).then(res => {
+      console.log(data);
+      /*api.post("/admin/schedule?formtype=course", data).then(res => {
         if (res.status === 200) {
           showSuccess(res.data.message);
           this.reset();
@@ -204,17 +188,23 @@ export default {
           showError(res.data.message);
           this.reset();
         }
-      });
+      });*/
     },
     loadCourses() {
+      this.isLoading = true;
       api.get("/admin/course").then(res => {
         if (res.status === 200) {
           this.courses = res.data.minicursos;
           this.totalRows = res.data.minicursos.length;
+          this.isLoading = false;
+        } else {
+          this.isLoading = false;
+          this.empty = true;
+          showError(res.data.message);
         }
       });
     },
-    selectedCourse(course, mode = "save") {
+    selectCourse(course, mode = "save") {
       this.mode = mode;
       this.course = { ...course };
       this.incomplete = false;
@@ -232,51 +222,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.vdpArrowPrev:after {
-  border-right-color: #333;
-}
-
-.vdpArrowNext:after {
-  border-left-color: #333;
-}
-
-.vdpCell.selectable:hover .vdpCellContent,
-.vdpCell.selected .vdpCellContent {
-  background: #333;
-}
-
-.vdpCell.today {
-  color: #333;
-}
-
-.vdpTimeUnit > input:hover,
-.vdpTimeUnit > input:focus {
-  border-bottom-color: #333;
-}
-
-.vdpComponent.vdpWithInput > input {
-  display: block;
-  width: 100%;
-  height: calc(1.5em + 0.75rem + 2px);
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-}
-
-.vdpComponent.vdpWithInput > input:focus {
-  color: #495057;
-  background-color: #fff;
-  border-color: #80bdff;
-  outline: 0;
-  -webkit-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-</style>

@@ -122,10 +122,12 @@ export default {
   methods: {
     save() {
       let parsedTicket = JSON.parse(JSON.stringify(this.ticket));
+      const method = parsedTicket.id ? "put" : "post";
       const data = {
+        id: parsedTicket.id,
         valor: parsedTicket.valor
       };
-      api.post("/admin/payment/lot", data).then(response => {
+      api[method]("/admin/payment/lot", data).then(response => {
         if (response.status === 200 || response.status === 201) {
           let successMsg = response.data.message;
           showSuccess(successMsg);

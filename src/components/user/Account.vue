@@ -6,7 +6,7 @@
         id="input-group-1"
         label="E-mail:"
         label-for="input-1"
-        description="Nunca iremos compartilhar seu e-mail"
+        description="Nunca iremos compartilhar seu e-mail com ninguém!"
       >
         <b-form-input
           id="input-1"
@@ -21,7 +21,16 @@
         <b-form-input id="input-2" v-model="editedUser.nome" placeholder="Digite nome"></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-3" label="Matricula:" label-for="input-3">
+      <b-form-group id="input-group-33" label="Gênero:" label-for="input-33">
+        <b-form-checkbox
+          disabled
+          id="input-33"
+          v-model="editedUser.sexo"
+          switch
+        >{{ editedUser.sexo === 0 ? 'Masculino' : 'Feminino' }}</b-form-checkbox>
+      </b-form-group>
+
+      <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">
         <b-form-input id="input-3" v-model="editedUser.matricula" placeholder="Digite matrícula"></b-form-input>
       </b-form-group>
 
@@ -36,10 +45,15 @@
       </b-form-group>
 
       <b-form-group id="input-group-5" label="RG:" label-for="input-5">
-        <b-form-input id="input-5" v-model="editedUser.rg" placeholder="Digite RG"/>
+        <b-form-input id="input-5" v-model="editedUser.rg"/>
       </b-form-group>
 
-      <b-form-group id="input-group-6" label="Camiseta:" label-for="input-6">
+      <b-form-group
+        id="input-group-6"
+        label="Camiseta:"
+        label-for="input-6"
+        description="Escolheu tamanho errado? Entre em contato com a organização do evento"
+      >
         <b-form-select id="input-6" v-model="editedUser.camiseta" :options="optionsShirt" disabled/>
       </b-form-group>
 
@@ -47,7 +61,7 @@
         id="input-group-7"
         label="Pago:"
         label-for="input-7"
-        description="O participante só poderá se inscrever nos minicursos oferecidos após o pagamento ter sido realizado."
+        description="Assim que seu pagamento ser confirmado pela organização, você poderá se inscrever nos minicursos"
       >
         <b-form-checkbox
           disabled

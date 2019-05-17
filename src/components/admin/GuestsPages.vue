@@ -70,7 +70,7 @@ export default {
     return {
       selectedType: null,
       selectedTime: null,
-      copyData: null,
+      copyData: "",
       expirationTime: [
         { value: null, text: "Selecione uma opção" },
         { value: "1", text: "1 dia" },

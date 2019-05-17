@@ -1,7 +1,11 @@
 <template>
   <div class="home">
     <PageTitle icon="home" main="Dashboard" :sub="username"/>
-    <div class="stats">
+    <div class="text-center" v-if="isLoading">
+      <b-spinner variant="dark"></b-spinner>
+      <h4 class="mt-2 text-center text-uppercase">CARREGANDO...</h4>
+    </div>
+    <div class="stats" v-else>
       <Stat
         v-if="participants"
         title="Participantes"
@@ -31,6 +35,7 @@ export default {
   name: "Home",
   data() {
     return {
+      isLoading: false,
       participants: 0,
       courses: 0,
       lectures: 0
@@ -46,13 +51,13 @@ export default {
   },
   methods: {
     getEventData() {
+      this.isLoading = true;
       // dados usuarios
       api.get("/admin/user").then(res => {
         if (res.status === 200) {
           this.participants = res.data.usuarios.length;
         } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
+          showError(res.data.message);
         }
       });
 
@@ -61,8 +66,7 @@ export default {
         if (res.status === 200) {
           this.courses = res.data.minicursos.length;
         } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
+          showError(res.data.message);
         }
       });
 
@@ -71,10 +75,10 @@ export default {
         if (res.status === 200) {
           this.lectures = res.data.palestras.length;
         } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
+          showError(res.data.message);
         }
       });
+      this.isLoading = false;
     }
   },
   mounted() {

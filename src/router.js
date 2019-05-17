@@ -32,7 +32,7 @@ const routes = [
     {
         path: '/minha-conta',
         name: 'AccountPages',
-        component: () => import('./components/account/Account.vue'),
+        component: () => import('./components/user/Account.vue'),
         meta: { requiresLogin: true }
     },
     {

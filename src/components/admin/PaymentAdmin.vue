@@ -94,7 +94,7 @@
     >
       <template slot="table-caption" v-if="totalRows">
         <h6 align="right">
-          <strong>{{totalRows}} pagementos encontrados</strong>
+          <strong>{{totalRows}} pagamentos encontrados</strong>
         </h6>
       </template>
       <template slot="table-caption" v-else>
@@ -103,6 +103,9 @@
         </h6>
       </template>
       <template slot="actions" slot-scope="data">
+        <b-btn size="sm" variant="warning" @click="selectPayment(data.item)" class="mr-2">
+          <v-icon name="edit"/>
+        </b-btn>
         <b-btn
           size="sm"
           variant="primary"
@@ -236,28 +239,27 @@ export default {
     save() {
       let parsedTicket = JSON.parse(JSON.stringify(this.ticket));
       let parsedUser = JSON.parse(JSON.stringify(this.user));
+      const method = parsedTicket.id ? "put" : "post";
       const data = {
         user_id: parsedUser.id,
         lote_id: parsedTicket.id
       };
-      api.post("/admin/payment", data).then(res => {
+      /*api[method]("/admin/payment", data).then(res => {
         if (res.status === 201) {
-          let successMsg = res.data.message;
-          showSuccess(successMsg);
+          showSuccess(res.data.message);
           this.reset();
         } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
+          showError(res.data.message);
+          this.reset();
         }
-      });
+      });*/
     },
     loadUsers() {
       api.get("/admin/user?onlyadm=0&loadname=1").then(res => {
         if (res.status === 200) {
           this.users = res.data;
         } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
+          showError(res.data.message);
         }
       });
     },
@@ -265,9 +267,9 @@ export default {
       api.get("/admin/payment").then(res => {
         if (res.status === 200) {
           this.payments = res.data.pagamentos;
+          this.totalRows = res.data.pagamentos.length;
         } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
+          showError(res.data.message);
         }
       });
     },
@@ -276,8 +278,7 @@ export default {
         if (res.status === 200) {
           this.tickets = res.data.lotes;
         } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
+          showError(res.data.message);
         }
       });
     },
@@ -289,6 +290,15 @@ export default {
       this.loadPayments();
     },
     selectPayment(payment, mode = "save") {
+      this.user = {
+        id: payment.user_id,
+        nome: payment.user_nome
+      };
+      this.ticket = {
+        id: payment.lote_id,
+        valor: payment.valor,
+        admin_nome: payment.admin_nome
+      };
       this.mode = mode;
       this.payment = { ...payment };
       this.incomplete = false;

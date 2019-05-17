@@ -99,7 +99,12 @@
       </b-row>
     </b-form>
 
-    <h2 class="text-center text-uppercase" v-else>Nenhum estudante cadastrado!</h2>
+    <h2 class="text-center text-uppercase" v-if="empty">Nenhum estudante cadastrado!</h2>
+
+    <div class="text-center" v-if="isLoading">
+      <b-spinner variant="dark"></b-spinner>
+      <h4 class="mt-2 text-center text-uppercase">CARREGANDO...</h4>
+    </div>
 
     <!-- TABELA -->
     <b-table
@@ -180,6 +185,8 @@ export default {
       student: {
         camiseta: null
       },
+      isLoading: false,
+      empty: false,
       students: [],
       fields: [
         { key: "matricula", label: "Matrícula", sortable: true },
@@ -225,12 +232,10 @@ export default {
       const id = this.student.id;
       api.delete(`/admin/user/${id}`).then(response => {
         if (response.status === 200) {
-          let successMsg = response.data.message;
-          showSuccess(successMsg);
+          showSuccess(response.data.message);
           this.reset();
         } else {
-          let errorMsg = response.data.message;
-          showError(errorMsg);
+          showError(response.data.message);
           this.reset();
         }
       });
@@ -242,14 +247,18 @@ export default {
       this.loadStudents();
     },
     loadStudents() {
-      axios
-        .get(`${baseApiUrl}/admin/user`, {
-          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
-        })
-        .then(res => {
+      this.isLoading = true;
+      api.get("/admin/user").then(res => {
+        if (res.status === 200) {
           this.students = res.data.usuarios;
           this.totalRows = res.data.usuarios.length;
-        });
+          this.isLoading = false;
+        } else {
+          this.isLoading = false;
+          this.empty = true;
+          showError(res.data.message);
+        }
+      });
     },
     selectStudent(student, mode = "save") {
       this.mode = mode;
