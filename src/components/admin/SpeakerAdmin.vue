@@ -85,11 +85,11 @@
         </h6>
       </template>
       <template slot="actions" slot-scope="data">
-        <b-btn size="sm" variant="primary" @click="info(data.item, $event.target)" class="mr-2">
-          <v-icon name="info-circle"/>
-        </b-btn>
         <b-btn size="sm" variant="warning" @click="selectSpeaker(data.item)" class="mr-2">
           <v-icon name="edit"/>
+        </b-btn>
+        <b-btn size="sm" variant="primary" @click="info(data.item, $event.target)" class="mr-2">
+          <v-icon name="info-circle"/>
         </b-btn>
         <b-btn size="sm" variant="danger" @click="selectSpeaker(data.item, 'remove')" class="mr-2">
           <v-icon name="trash-alt"/>
@@ -119,45 +119,45 @@
       @hide="resetInfoModal"
     >
       <ul>
-        <li class="py-1">
+        <li class="py-1" v-if="content.nome">
           Nome:
           <span class="font-weight-bold">{{content.nome}}</span>
         </li>
-        <li class="py-1">
+        <li class="py-1" v-if="content.resumo">
           Resumo:
           <span class="font-weight-bold">{{content.resumo}}</span>
         </li>
-        <li class="py-1">
+        <li class="py-1" v-if="content.rg">
           RG:
           <span class="font-weight-bold">{{content.rg}}</span>
         </li>
-        <li class="py-1">
+        <li class="py-1" v-if="content.cpf">
           CPF:
           <span class="font-weight-bold">{{content.cpf}}</span>
         </li>
-        <li class="py-1">
+        <li class="py-1" v-if="content.ocupacao">
+          Ocupação:
+          <span class="font-weight-bold">{{content.ocupacao}}</span>
+        </li>
+        <li class="py-1" v-if="content.facebook">
           Facebook:
           <span class="font-weight-bold">{{content.facebook}}</span>
         </li>
-        <li>
+        <li class="py-1" v-if="content.instagram">
           Instagram:
           <span class="font-weight-bold">{{content.instagram}}</span>
         </li>
-        <li class="py-1">
-          E-mail:
-          <span class="font-weight-bold">{{content.email}}</span>
-        </li>
-        <li class="py-1">
-          Telefone:
-          <span class="font-weight-bold">{{content.telefone}}</span>
-        </li>
-        <li class="py-1">
+        <li class="py-1" v-if="content.site">
           Site:
           <span class="font-weight-bold">{{content.site}}</span>
         </li>
-        <li class="py-1">
-          Ocupação:
-          <span class="font-weight-bold">{{content.ocupacao}}</span>
+        <li class="py-1" v-if="content.email">
+          E-mail:
+          <span class="font-weight-bold">{{content.email}}</span>
+        </li>
+        <li class="py-1" v-if="content.telefone">
+          Telefone:
+          <span class="font-weight-bold">{{content.telefone}}</span>
         </li>
       </ul>
     </b-modal>
@@ -210,8 +210,7 @@ export default {
         if (res.status === 200) {
           this.speakers = res.data.ministrantes;
         } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
+          showError(res.data.message);
         }
       });
     },

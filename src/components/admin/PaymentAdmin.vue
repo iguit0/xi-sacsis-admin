@@ -114,6 +114,15 @@
         >
           <v-icon name="info-circle"/>
         </b-btn>
+        <b-btn
+          size="sm"
+          :disabled="data.item.status === 'Invalidado'"
+          variant="danger"
+          class="mr-2"
+          @click="invalidPayment(data.item)"
+        >
+          <v-icon name="thumbs-down"/>
+        </b-btn>
       </template>
     </b-table>
     <!-- ./TABELA -->
@@ -140,29 +149,29 @@
       @hide="resetPaymentModal"
     >
       <ul>
-        <li class="py-1">
+        <li class="py-1" v-if="paymentContent.user_nome">
           Nome:
           <span class="font-weight-bold">{{paymentContent.user_nome}}</span>
         </li>
-        <li>
+        <li class="py-1" v-if="paymentContent.admin_nome">
           Autorizado por:
           <span class="font-weight-bold">{{paymentContent.admin_nome}}</span>
         </li>
-        <li>
+        <li class="py-1" v-if="paymentContent.lote_id">
           Lote Número:
           <span class="font-weight-bold">{{paymentContent.lote_id}}</span>
         </li>
-        <li>
+        <li class="py-1" v-if="paymentContent.valor">
           Lote Valor:
           <span class="font-weight-bold">{{paymentContent.valor}}</span>
         </li>
-        <li>
+        <li class="py-1" v-if="paymentContent.data_pagamento">
           Data Pagamento:
           <span
             class="font-weight-bold"
           >{{paymentContent.data_pagamento | formatDate}}</span>
         </li>
-        <li>
+        <li class="py-1" v-if="paymentContent.data_modificacao">
           Data Modificação:
           <span
             class="font-weight-bold"
@@ -202,6 +211,7 @@ export default {
       tickets: [],
       fields: [
         { key: "user_nome", label: "Participante", sortable: true },
+        { key: "status", label: "Status" },
         {
           key: "valor",
           label: "Valor",
@@ -209,8 +219,8 @@ export default {
           formatter: value => "R$" + value + ",00"
         },
         {
-          key: "data_pagamento",
-          label: "Pago em",
+          key: "data_modificacao",
+          label: "Última modificação",
           formatter: value =>
             moment(String(value))
               .locale("pt-br")
@@ -241,6 +251,40 @@ export default {
       this.paymentContent = "";
       this.paymentModal.content = "";
     },
+    invalidPayment(payment) {
+      const id = payment.user_id;
+      this.$swal({
+        position: "center",
+        title: `Pagamento de ${payment.user_nome}`,
+        text: "Deseja invalidar este pagamento?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sim, invalidar!",
+        cancelButtonText: "Cancelar"
+      }).then(result => {
+        if (result.value) {
+          api.delete(`/admin/payment/${id}`).then(res => {
+            if (res.status === 200) {
+              showSuccess(res.data.message);
+              this.reset();
+            } else {
+              showError(res.data.message);
+              this.reset();
+            }
+          });
+          this.$swal({
+            position: "center",
+            type: "success",
+            title: `Pagamento de ${payment.user_nome}`,
+            text: "Você invalidou o pagamento!",
+            showConfirmButton: false,
+            timer: 1000
+          });
+        }
+      });
+    },
     save() {
       let parsedTicket = JSON.parse(JSON.stringify(this.ticket));
       let parsedUser = JSON.parse(JSON.stringify(this.user));
@@ -250,7 +294,7 @@ export default {
         lote_id: parsedTicket.id
       };
       api[method]("/admin/payment", data).then(res => {
-        if (res.status === 201) {
+        if (res.status === 201 || res.status === 200) {
           showSuccess(res.data.message);
           this.reset();
         } else {

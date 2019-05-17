@@ -21,16 +21,20 @@
           <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
         </b-tab>
         <b-tab title="Dia 2">
-          <b-card-text>Tab Contents 2</b-card-text>
+          <b-card-text v-if="schedule && schedule.length">Tab Contents 2</b-card-text>
+          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
         </b-tab>
         <b-tab title="Dia 3">
-          <b-card-text>Tab Contents 3</b-card-text>
+          <b-card-text v-if="schedule && schedule.length">Tab Contents 3</b-card-text>
+          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
         </b-tab>
         <b-tab title="Dia 4">
-          <b-card-text>Tab Contents 3</b-card-text>
+          <b-card-text v-if="schedule && schedule.length">Tab Contents 4</b-card-text>
+          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
         </b-tab>
         <b-tab title="Dia 5">
-          <b-card-text>Tab Contents 3</b-card-text>
+          <b-card-text v-if="schedule && schedule.length">Tab Contents 5</b-card-text>
+          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
         </b-tab>
       </b-tabs>
     </b-card>

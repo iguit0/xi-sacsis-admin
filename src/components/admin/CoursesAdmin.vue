@@ -108,9 +108,8 @@
 </template>
 
 <script>
-import { baseApiUrl, showError, showSuccess } from "@/global";
+import { showError, showSuccess } from "@/global";
 import api from "@/services/api";
-import axios from "axios";
 import moment from "moment";
 
 export default {
@@ -142,32 +141,24 @@ export default {
         titulo: parsedCourse.titulo,
         conteudo: parsedCourse.conteudo
       };
-      axios
-        .put(`${baseApiUrl}/admin/course`, data, {
-          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
-        })
-        .then(res => {
-          if (res.status === 200) {
-            let successMsg = res.data.message;
-            showSuccess(successMsg);
-            this.reset();
-          } else {
-            let errorMsg = res.data.message;
-            showError(errorMsg);
-            this.reset();
-          }
-        });
+      api.put("/admin/course", data).then(res => {
+        if (res.status === 200) {
+          showSuccess(res.data.message);
+          this.reset();
+        } else {
+          showError(res.data.message);
+          this.reset();
+        }
+      });
     },
     remove() {
       const id = this.course.id;
       api.delete(`/admin/course/${id}`).then(response => {
         if (response.status === 200) {
-          let successMsg = response.data.message;
-          showSuccess(successMsg);
+          showSuccess(response.data.message);
           this.reset();
         } else {
-          let errorMsg = response.data.message;
-          showError(errorMsg);
+          showError(response.data.message);
           this.reset();
         }
       });
@@ -176,6 +167,7 @@ export default {
       this.mode = "save";
       this.course = {};
       this.incomplete = true;
+      this.loadCourses();
     },
     loadCourses() {
       api.get("/admin/course").then(res => {

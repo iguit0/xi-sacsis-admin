@@ -105,9 +105,8 @@
 </template>
 
 <script>
-import { baseApiUrl, showError, showSuccess } from "@/global";
+import { showError, showSuccess } from "@/global";
 import api from "@/services/api";
-import axios from "axios";
 
 export default {
   name: "PresentationAdmin",
@@ -138,45 +137,33 @@ export default {
         titulo: parsedPresentation.titulo,
         conteudo: parsedPresentation.conteudo
       };
-      axios
-        .put(`${baseApiUrl}/admin/lecture`, data, {
-          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
-        })
-        .then(res => {
-          if (res.status === 200) {
-            let successMsg = res.data.message;
-            showSuccess(successMsg);
-            this.reset();
-          } else {
-            let errorMsg = res.data.message;
-            showError(errorMsg);
-            this.reset();
-          }
-        });
+      api.put("/admin/lecture", data).then(res => {
+        if (res.status === 200) {
+          showSuccess(res.data.message);
+          this.reset();
+        } else {
+          showError(res.data.message);
+          this.reset();
+        }
+      });
     },
     remove() {
       const id = this.presentation.id;
-      api.delete(`/admin/lecture/${id}`).then(response => {
-        if (response.status === 200) {
-          let successMsg = response.data.message;
-          showSuccess(successMsg);
+      api.delete(`/admin/lecture/${id}`).then(res => {
+        if (res.status === 200) {
+          showSuccess(res.data.message);
           this.reset();
         } else {
-          let errorMsg = response.data.message;
-          showError(errorMsg);
+          showError(res.data.message);
           this.reset();
         }
       });
     },
     loadPresentations() {
-      axios
-        .get(`${baseApiUrl}/admin/lecture?loadtitle=0`, {
-          headers: { Authorization: `Bearer ${this.$store.getters.getToken}` }
-        })
-        .then(res => {
-          this.presentations = res.data.palestras;
-          this.totalRows = res.data.palestras.length;
-        });
+      api.get("/admin/lecture?loadtitle=0").then(res => {
+        this.presentations = res.data.palestras;
+        this.totalRows = res.data.palestras.length;
+      });
     },
     selectSpeaker(presentation, mode = "save") {
       this.mode = mode;
