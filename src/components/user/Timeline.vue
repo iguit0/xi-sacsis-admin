@@ -3,6 +3,7 @@
     <div class="cd-timeline-block" v-for="(item) in day" :key="item.id">
       <div class="cd-timeline-img cd-picture">
         <b-img v-if="item.avatar" :src="item.avatar" :alt="item.ministrante"/>
+        <b-img src="https://cdn3.iconfinder.com/data/icons/stars-5/512/gold_star-512.png" v-else/>
       </div>
       <!-- minicurso -->
       <div class="cd-timeline-content" v-if="item.minicurso">
@@ -14,6 +15,10 @@
         <p>
           <v-icon name="map-marker-alt" class="mr-1"/>
           {{item.local}}
+        </p>
+        <p>
+          <v-icon name="id-badge" class="mr-1"/>
+          Turma: {{item.turma}}
         </p>
         <p>
           <v-icon name="chair" class="mr-1"/>
