@@ -30,6 +30,12 @@ const routes = [
         meta: { requiresLogin: true }
     },
     {
+        path: '/relatorios',
+        name: 'ReportsPage',
+        component: () => import('./components/admin/ReportsPage.vue'),
+        meta: { requiresLogin: true, requiresAdmin: true }
+    },
+    {
         path: '/minha-conta',
         name: 'AccountPages',
         component: () => import('./components/user/Account.vue'),

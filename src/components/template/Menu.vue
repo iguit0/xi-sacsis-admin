@@ -124,6 +124,10 @@ export default {
             {
               text: "Ministrantes",
               data: { icon: "person-booth", name: "GuestsPages" }
+            },
+            {
+              text: "Relatórios",
+              data: { icon: "scroll", name: "ReportsPage" }
             }
           ]
         },
