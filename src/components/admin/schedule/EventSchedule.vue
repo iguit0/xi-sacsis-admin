@@ -182,7 +182,6 @@ export default {
         )
         .then(res => {
           if (res.status === 200) {
-            console.log(res.data.other);
             this.events = res.data.other;
             this.totalRows = res.data.other.length;
           } else {
