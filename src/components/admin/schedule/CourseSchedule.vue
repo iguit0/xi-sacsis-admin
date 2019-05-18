@@ -186,7 +186,26 @@ export default {
         { key: "titulo", label: "Título", sortable: true },
         {
           key: "dia",
-          label: "Dia"
+          label: "Dia",
+          formatter: value => {
+            switch (value) {
+              case 0:
+                return (value = "Segunda-Feira");
+                break;
+              case 1:
+                return (value = "Terça-Feira");
+                break;
+              case 2:
+                return (value = "Quarta-Feira");
+                break;
+              case 3:
+                return (value = "Quinta-Feira");
+                break;
+              case 4:
+                return (value = "Sexta-Feira");
+                break;
+            }
+          }
         },
         { key: "local", label: "Local", sortable: true },
         { key: "turma", label: "Turma" },

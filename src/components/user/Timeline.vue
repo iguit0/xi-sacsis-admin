@@ -132,10 +132,6 @@ xnugget info
   display: inline-block;
 }
 
-.cd-nugget-info span svg {
-  display: block;
-}
-
 .cd-nugget-info .cd-nugget-info-arrow {
   fill: #718ca1;
 }
@@ -250,36 +246,6 @@ xcarbonads
 @media only screen and (min-width: 1170px) {
   #carbonads-container {
     display: block;
-  }
-}
-
-/* -------------------------------- 
-
-Main components 
-
--------------------------------- */
-header {
-  height: 200px;
-  line-height: 200px;
-  text-align: center;
-  background: #303e49;
-}
-
-header h1 {
-  color: white;
-  font-size: 18px;
-  font-size: 1.125rem;
-}
-
-@media only screen and (min-width: 1170px) {
-  header {
-    height: 300px;
-    line-height: 300px;
-  }
-
-  header h1 {
-    font-size: 24px;
-    font-size: 1.5rem;
   }
 }
 
