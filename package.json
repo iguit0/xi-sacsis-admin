@@ -21,6 +21,7 @@
     "vue": "2.5.17",
     "vue-awesome": "^3.4.0",
     "vue-clipboards": "^1.2.4",
+    "vue-ctk-date-time-picker": "^2.1.1",
     "vue-date-pick": "^1.1.0",
     "vue-form-wizard": "^0.8.4",
     "vue-gravatar": "1.2.1",

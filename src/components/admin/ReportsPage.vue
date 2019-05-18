@@ -49,7 +49,6 @@
 
 <script>
 import PageTitle from "@/components/template/PageTitle";
-import api from "@/services/api";
 import { showSuccess, showError, baseApiUrl } from "@/global";
 import axios from "axios";
 
@@ -59,7 +58,8 @@ export default {
   data() {
     return {
       isLoading: false,
-      filetype: 0
+      filetype: 0,
+      responseType: ""
     };
   },
   methods: {
@@ -67,6 +67,7 @@ export default {
       let filename = "xisacsis_dados_programacao";
       if (type === "csv") {
         this.filetype = 1;
+        this.responseType = "arraybuffer";
       } else {
         this.filetype = 0;
       }
@@ -77,9 +78,10 @@ export default {
             this.filetype
           }&filename=${filename}`,
           {
+            responseType: "blob",
             headers: {
               Authorization: `Bearer ${this.$store.getters.getToken}`,
-              responseType: "arraybuffer"
+              responseType: this.responseType
             }
           }
         )
@@ -105,6 +107,7 @@ export default {
       let filename = "xisacsis_dados_programacao";
       if (type === "csv") {
         this.filetype = 1;
+        this.responseType = "arraybuffer";
       } else {
         this.filetype = 0;
       }
@@ -115,9 +118,10 @@ export default {
             this.filetype
           }&filename=${filename}`,
           {
+            responseType: "blob",
             headers: {
               Authorization: `Bearer ${this.$store.getters.getToken}`,
-              responseType: "arraybuffer"
+              responseType: this.responseType
             }
           }
         )
