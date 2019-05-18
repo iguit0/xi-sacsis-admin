@@ -230,20 +230,6 @@ export default {
         titulo: lecture.titulo,
         ministrante: lecture.ministrante
       };
-      lecture.data_inicio =
-        moment(String(lecture.data_inicio))
-          .locale("pt-br")
-          .format("L") +
-        moment(String(lecture.data_inicio))
-          .locale("pt-br")
-          .format("LT");
-      lecture.data_fim =
-        moment(String(lecture.data_fim))
-          .locale("pt-br")
-          .format("L") +
-        moment(String(lecture.data_fim))
-          .locale("pt-br")
-          .format("LT");
       this.lecture = { ...lecture };
       this.incomplete = false;
     }

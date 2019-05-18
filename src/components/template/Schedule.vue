@@ -1,28 +1,34 @@
 <template>
-  <div class="schedule-page">
-    <PageTitle icon="calendar-alt" main="Ver Programação" sub="Visualizar todos os eventos"/>
-    <b-tabs active-nav-item-class="font-weight-bold text-uppercase text-secondary">
-      <b-tab title="Dia 1" active>
-        <Timeline :day="segunda" v-if="segunda && segunda.length"/>
-        <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
-      </b-tab>
-      <b-tab title="Dia 2">
-        <Timeline :day="terça" v-if="terça && terça.length"/>
-        <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
-      </b-tab>
-      <b-tab title="Dia 3">
-        <Timeline :day="quarta" v-if="quarta && quarta.length"/>
-        <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
-      </b-tab>
-      <b-tab title="Dia 4">
-        <Timeline :day="quinta" v-if="quinta && quinta.length"/>
-        <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
-      </b-tab>
-      <b-tab title="Dia 5">
-        <Timeline :day="sexta" v-if="sexta && sexta.length"/>
-        <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
-      </b-tab>
-    </b-tabs>
+  <div>
+    <div class="text-center mt-5 pt-5" v-if="isLoading">
+      <b-spinner variant="dark"></b-spinner>
+      <h4 class="mt-2 text-center text-uppercase">CARREGANDO...</h4>
+    </div>
+    <div class="schedule-page" v-else>
+      <PageTitle icon="calendar-alt" main="Ver Programação" sub="Visualizar todos os eventos"/>
+      <b-tabs active-nav-item-class="font-weight-bold text-uppercase text-secondary">
+        <b-tab title="Dia 1" active>
+          <Timeline :day="segunda" v-if="segunda && segunda.length"/>
+          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
+        </b-tab>
+        <b-tab title="Dia 2">
+          <Timeline :day="terça" v-if="terça && terça.length"/>
+          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
+        </b-tab>
+        <b-tab title="Dia 3">
+          <Timeline :day="quarta" v-if="quarta && quarta.length"/>
+          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
+        </b-tab>
+        <b-tab title="Dia 4">
+          <Timeline :day="quinta" v-if="quinta && quinta.length"/>
+          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
+        </b-tab>
+        <b-tab title="Dia 5">
+          <Timeline :day="sexta" v-if="sexta && sexta.length"/>
+          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
+        </b-tab>
+      </b-tabs>
+    </div>
   </div>
 </template>
 
@@ -43,11 +49,13 @@ export default {
       quarta: [],
       quinta: [],
       sexta: [],
-      msgError: ""
+      msgError: "",
+      isLoading: false
     };
   },
   methods: {
     getSchedule() {
+      this.isLoading = true;
       api.get("/schedule").then(res => {
         if (res.status === 200) {
           this.segunda = res.data[0];
@@ -59,6 +67,7 @@ export default {
           showError(res.data.message);
         }
       });
+      this.isLoading = false;
     }
   },
   mounted() {

@@ -86,7 +86,8 @@ export default {
         {
           text: "Minicursos",
           data: {
-            icon: "chalkboard-teacher"
+            icon: "chalkboard-teacher",
+            name: "CoursesList"
           }
         },
         {

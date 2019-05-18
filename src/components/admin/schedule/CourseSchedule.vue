@@ -167,7 +167,6 @@
 <script>
 import api from "@/services/api";
 import { showError, showSuccess } from "@/global";
-import moment from "moment";
 
 export default {
   name: "CourseSchedule",
@@ -274,20 +273,6 @@ export default {
         titulo: course.titulo,
         ministrante: course.ministrante
       };
-      course.data_inicio =
-        moment(String(course.data_inicio))
-          .locale("pt-br")
-          .format("L") +
-        moment(String(course.data_inicio))
-          .locale("pt-br")
-          .format("LT");
-      course.data_fim =
-        moment(String(course.data_fim))
-          .locale("pt-br")
-          .format("L") +
-        moment(String(course.data_fim))
-          .locale("pt-br")
-          .format("LT");
       this.course = { ...course };
       this.incomplete = false;
     },

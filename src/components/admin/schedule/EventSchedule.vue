@@ -126,7 +126,6 @@
 <script>
 import api from "@/services/api";
 import { showError, showSuccess } from "@/global";
-import moment from "moment";
 
 export default {
   name: "EventSchedule",
@@ -239,20 +238,6 @@ export default {
     },
     selectEvent(event, mode = "save") {
       this.mode = mode;
-      event.data_inicio =
-        moment(String(event.data_inicio))
-          .locale("pt-br")
-          .format("L") +
-        moment(String(event.data_inicio))
-          .locale("pt-br")
-          .format("LT");
-      event.data_fim =
-        moment(String(event.data_fim))
-          .locale("pt-br")
-          .format("L") +
-        moment(String(event.data_fim))
-          .locale("pt-br")
-          .format("LT");
       this.event = { ...event };
     }
   },

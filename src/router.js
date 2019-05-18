@@ -30,6 +30,12 @@ const routes = [
         meta: { requiresLogin: true }
     },
     {
+        path: '/minicursos',
+        name: 'CoursesList',
+        component: () => import('./components/user/Courses.vue'),
+        meta: { requiresLogin: true }
+    },
+    {
         path: '/relatorios',
         name: 'ReportsPage',
         component: () => import('./components/admin/ReportsPage.vue'),
@@ -49,7 +55,8 @@ const routes = [
     {
         path: '/admin-ministrantes',
         name: 'GuestsPages',
-        component: () => import('./components/admin/GuestsPages.vue')
+        component: () => import('./components/admin/GuestsPages.vue'),
+        meta: { requiresLogin: true, requiresAdmin: true }
     },
     {
         path: '/cadastro-palestra/:token',
