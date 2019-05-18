@@ -72,7 +72,7 @@
       </b-row>
       <b-row>
         <b-col xs="6" class="mb-3">
-          <b-btn variant="primary" v-if="mode === 'save'" @click="save">Salvar</b-btn>
+          <b-btn variant="primary" v-if="mode === 'save'" @click="checkForm">Salvar</b-btn>
           <b-btn variant="danger" v-if="mode === 'remove'">Excluir</b-btn>
           <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
         </b-col>
@@ -166,6 +166,37 @@ export default {
     };
   },
   methods: {
+    checkForm(e) {
+      this.errors = [];
+
+      if (!this.event.titulo) {
+        let msg = "Título é obrigatório";
+        this.errors.push(msg);
+        showError(msg);
+      } else if (!this.event.descricao) {
+        let msg = "Descrição é obrigatório";
+        this.errors.push(msg);
+        showError(msg);
+      } else if (!this.event.local) {
+        let msg = "Local é obrigatório";
+        this.errors.push(msg);
+        showError(msg);
+      } else if (!this.event.data_inicio) {
+        let msg = "Data início é obrigatório";
+        this.errors.push(msg);
+        showError(msg);
+      } else if (!this.event.data_fim) {
+        let msg = "Data Fim é obrigatório";
+        this.errors.push(msg);
+        showError(msg);
+      }
+
+      if (!this.errors.length) {
+        return this.save();
+      }
+
+      e.preventDefault();
+    },
     save() {
       let parsedEvent = JSON.parse(JSON.stringify(this.event));
       const method = parsedEvent.id ? "put" : "post";
