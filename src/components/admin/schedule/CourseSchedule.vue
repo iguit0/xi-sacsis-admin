@@ -11,8 +11,9 @@
             <v-select
               id="course"
               label="titulo"
+              :disabled="mode === 'remove'"
               v-model="selected"
-              :options="courses"
+              :options="coursesSelect"
               placeholder="Selecione uma opção"
             >
               <!-- dropdown pra selecionar -->
@@ -42,6 +43,7 @@
               placeholder="Data Início"
               v-model="course.data_inicio"
               class="form-control"
+              :readonly="mode === 'remove'"
               required
               :masked="false"
             />
@@ -56,6 +58,7 @@
               placeholder="Data Fim"
               v-model="course.data_fim"
               class="form-control"
+              :readonly="mode === 'remove'"
               required
               :masked="false"
             />
@@ -63,19 +66,32 @@
         </b-col>
         <b-col md="2">
           <b-form-group label="Local:" description="Exemplo: PVA 235" label-for="course-location">
-            <b-input type="text" v-model="course.local" id="course-location" placeholder="Local"/>
+            <b-input
+              type="text"
+              :readonly="mode === 'remove'"
+              v-model="course.local"
+              id="course-location"
+              placeholder="Local"
+            />
           </b-form-group>
         </b-col>
       </b-row>
       <b-row>
         <b-col md="2">
           <b-form-group label="Turma:" label-for="course-turma">
-            <b-input type="number" id="course-turma" v-model="course.turma" placeholder="Turma"/>
+            <b-input
+              type="number"
+              :readonly="mode === 'remove'"
+              id="course-turma"
+              v-model="course.turma"
+              placeholder="Turma"
+            />
           </b-form-group>
         </b-col>
         <b-col md="2">
           <b-form-group label="Vagas:" label-for="course-vacancies">
             <b-input
+              :readonly="mode === 'remove'"
               type="number"
               v-model="course.vagas"
               id="course-vacancies"
@@ -86,7 +102,13 @@
       </b-row>
       <b-row>
         <b-col xs="6" class="mb-3">
-          <b-btn variant="primary" v-if="mode === 'save'" @click="save">Salvar</b-btn>
+          <b-btn
+            variant="primary"
+            :disabled="incomplete"
+            v-if="mode === 'save'"
+            @click="save"
+          >Salvar</b-btn>
+          <b-btn variant="danger" v-if="mode === 'remove'" @click="remove">Excluir</b-btn>
           <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
         </b-col>
       </b-row>
@@ -122,6 +144,9 @@
         <b-btn size="sm" variant="warning" @click="selectCourse(data.item)" class="mr-2">
           <v-icon name="edit"/>
         </b-btn>
+        <b-btn size="sm" variant="danger" @click="selectCourse(data.item, 'remove')" class="mr-2">
+          <v-icon name="trash-alt"/>
+        </b-btn>
       </template>
     </b-table>
     <!-- ./TABELA -->
@@ -142,11 +167,13 @@
 <script>
 import api from "@/services/api";
 import { showError, showSuccess } from "@/global";
+import moment from "moment";
 
 export default {
   name: "CourseSchedule",
   data() {
     return {
+      coursesSelect: [],
       incomplete: true,
       isLoading: false,
       empty: false,
@@ -156,10 +183,14 @@ export default {
       totalRows: 0,
       selected: null,
       fields: [
-        { key: "id", label: "Código", sortable: true },
         { key: "titulo", label: "Título", sortable: true },
-        { key: "conteudo", label: "Descrição" },
-        { key: "ministrante", label: "Ministrante" },
+        {
+          key: "dia",
+          label: "Dia"
+        },
+        { key: "local", label: "Local", sortable: true },
+        { key: "turma", label: "Turma" },
+        { key: "vagas", label: "Vagas", sortable: true },
         { key: "actions", label: "Ações" }
       ],
       mode: "save",
@@ -171,6 +202,7 @@ export default {
     save() {
       let parsedCourse = JSON.parse(JSON.stringify(this.course));
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
+      const method = parsedSelected.id ? "put" : "post";
       const data = {
         course_id: parsedSelected.id,
         local: parsedCourse.local,
@@ -179,7 +211,7 @@ export default {
         vagas: parsedCourse.vagas,
         turma: parsedCourse.turma
       };
-      api.post("/admin/schedule?formtype=course", data).then(res => {
+      api[method]("/admin/schedule?formtype=course", data).then(res => {
         if (res.status === 200) {
           showSuccess(res.data.message);
           this.reset();
@@ -189,12 +221,31 @@ export default {
         }
       });
     },
+    remove() {
+      const id = this.course.id;
+      api.delete(`/admin/schedule/${id}`).then(res => {
+        if (res.status === 200) {
+          showSuccess(res.data.message);
+          this.reset();
+        } else {
+          showError(res.data.message);
+          this.reset();
+        }
+      });
+    },
+    loadSelect() {
+      api.get("/admin/course?loadtitle=1").then(res => {
+        if (res.status === 200) {
+          this.coursesSelect = res.data.values;
+        }
+      });
+    },
     loadCourses() {
       this.isLoading = true;
-      api.get("/admin/course").then(res => {
+      api.get("/admin/schedule").then(res => {
         if (res.status === 200) {
-          this.courses = res.data.minicursos;
-          this.totalRows = res.data.minicursos.length;
+          this.courses = res.data.course;
+          this.totalRows = res.data.course.length;
           this.isLoading = false;
         } else {
           this.isLoading = false;
@@ -205,6 +256,24 @@ export default {
     },
     selectCourse(course, mode = "save") {
       this.mode = mode;
+      this.selected = {
+        titulo: course.titulo,
+        ministrante: course.ministrante
+      };
+      course.data_inicio =
+        moment(String(course.data_inicio))
+          .locale("pt-br")
+          .format("L") +
+        moment(String(course.data_inicio))
+          .locale("pt-br")
+          .format("LT");
+      course.data_fim =
+        moment(String(course.data_fim))
+          .locale("pt-br")
+          .format("L") +
+        moment(String(course.data_fim))
+          .locale("pt-br")
+          .format("LT");
       this.course = { ...course };
       this.incomplete = false;
     },
@@ -214,9 +283,11 @@ export default {
       this.selected = null;
       this.incomplete = true;
       this.loadCourses();
+      this.loadSelect();
     }
   },
   mounted() {
+    this.loadSelect();
     this.loadCourses();
   }
 };

@@ -27,7 +27,7 @@
           id="input-33"
           v-model="editedUser.sexo"
           switch
-        >{{ editedUser.sexo === 0 ? 'Masculino' : 'Feminino' }}</b-form-checkbox>
+        >{{ editedUser.sexo ? 'Masculino' : 'Feminino' }}</b-form-checkbox>
       </b-form-group>
 
       <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">

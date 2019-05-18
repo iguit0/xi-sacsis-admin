@@ -39,6 +39,17 @@
             />
           </b-form-group>
         </b-col>
+        <b-col md="3" sm="2">
+          <b-form-group label="Ocupação:" label-for="course-ocupation">
+            <b-input
+              id="course-ocupation"
+              type="text"
+              v-model="speaker.ocupacao"
+              placeholder="Ocupação"
+              :readonly="mode === 'remove'"
+            />
+          </b-form-group>
+        </b-col>
       </b-row>
       <b-row>
         <b-col xs="6" class="mb-3">
@@ -85,9 +96,6 @@
         </h6>
       </template>
       <template slot="actions" slot-scope="data">
-        <b-btn size="sm" variant="warning" @click="selectSpeaker(data.item)" class="mr-2">
-          <v-icon name="edit"/>
-        </b-btn>
         <b-btn size="sm" variant="primary" @click="info(data.item, $event.target)" class="mr-2">
           <v-icon name="info-circle"/>
         </b-btn>
@@ -245,12 +253,10 @@ export default {
       const id = this.speaker.id;
       api.delete(`/admin/speaker/${id}`).then(res => {
         if (res.status === 200) {
-          let successMsg = res.data.message;
-          showSuccess(successMsg);
+          showSuccess(res.data.message);
           this.reset();
         } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
+          showError(res.data.message);
           this.reset();
         }
       });

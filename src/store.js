@@ -40,6 +40,12 @@ export default new Vuex.Store({
         },
     },
     getters: {
+        permissionLevel(state) {
+            if (state.user.admin)
+                return 1;
+            else
+                return 0;
+        },
         getUserData(state) {
             return state.user.dados
         },

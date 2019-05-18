@@ -125,7 +125,6 @@ export default {
       course: {},
       courses: [],
       fields: [
-        { key: "id", label: "Código", sortable: true },
         { key: "titulo", label: "Título", sortable: true },
         { key: "conteudo", label: "Descrição" },
         { key: "ministrante", label: "Ministrante" },

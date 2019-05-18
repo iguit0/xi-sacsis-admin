@@ -1,11 +1,7 @@
 <template>
   <div class="home">
     <PageTitle icon="home" main="Dashboard" :sub="username"/>
-    <div class="text-center" v-if="isLoading">
-      <b-spinner variant="dark"></b-spinner>
-      <h4 class="mt-2 text-center text-uppercase">CARREGANDO...</h4>
-    </div>
-    <div class="stats" v-else>
+    <div class="stats" v-if="isAdmin">
       <Stat
         v-if="participants"
         title="Participantes"
@@ -22,6 +18,9 @@
       />
       <Stat v-if="lectures" title="Palestras" :value="lectures" icon="microphone" color="#3CB371"/>
     </div>
+    <div v-else>
+      <h2>Escopo participante</h2>
+    </div>
   </div>
 </template>
 
@@ -35,7 +34,7 @@ export default {
   name: "Home",
   data() {
     return {
-      isLoading: false,
+      isAdmin: this.$store.getters.permissionLevel,
       participants: 0,
       courses: 0,
       lectures: 0
@@ -82,7 +81,9 @@ export default {
     }
   },
   mounted() {
-    this.getEventData();
+    if (this.isAdmin) {
+      this.getEventData();
+    }
   }
 };
 </script>

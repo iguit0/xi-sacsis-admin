@@ -1,43 +1,24 @@
 <template>
   <div class="schedule-page">
     <PageTitle icon="calendar-alt" main="Ver Programação" sub="Visualizar todos os eventos"/>
-    <b-card no-body>
-      <b-tabs pills card vertical>
-        <b-tab title="Dia 1" active>
-          <section class="timeline" v-if="schedule && schedule.length">
-            <ul>
-              <li v-for="(info, index) in schedule" :key="index">
-                <span></span>
-                <div>{{ info.school }}</div>
-                <div>{{ info.address }}</div>
-                <div>{{ info.course }}</div>
-                <div class="year">
-                  <span>{{ info.yearEnd }}</span>
-                  <span>{{ info.yearStart }}</span>
-                </div>
-              </li>
-            </ul>
-          </section>
-          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
-        </b-tab>
-        <b-tab title="Dia 2">
-          <b-card-text v-if="schedule && schedule.length">Tab Contents 2</b-card-text>
-          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
-        </b-tab>
-        <b-tab title="Dia 3">
-          <b-card-text v-if="schedule && schedule.length">Tab Contents 3</b-card-text>
-          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
-        </b-tab>
-        <b-tab title="Dia 4">
-          <b-card-text v-if="schedule && schedule.length">Tab Contents 4</b-card-text>
-          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
-        </b-tab>
-        <b-tab title="Dia 5">
-          <b-card-text v-if="schedule && schedule.length">Tab Contents 5</b-card-text>
-          <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
-        </b-tab>
-      </b-tabs>
-    </b-card>
+    <b-tabs active-nav-item-class="font-weight-bold text-uppercase text-secondary">
+      <b-tab title="Dia 1" active>
+        <Timeline :day="sexta" v-if="sexta && sexta.length"/>
+        <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
+      </b-tab>
+      <b-tab title="Dia 2">
+        <p>I'm the second tab</p>
+      </b-tab>
+      <b-tab title="Dia 3">
+        <p>I'm the second tab</p>
+      </b-tab>
+      <b-tab title="Dia 4">
+        <p>I'm the second tab</p>
+      </b-tab>
+      <b-tab title="Dia 5">
+        <p>I'm the second tab</p>
+      </b-tab>
+    </b-tabs>
   </div>
 </template>
 
@@ -45,13 +26,19 @@
 import { showError } from "@/global";
 import api from "@/services/api";
 import PageTitle from "@/components/template/PageTitle";
+import Timeline from "@/components/user/Timeline";
 
 export default {
   name: "ScheduleView",
-  components: { PageTitle },
+  components: { PageTitle, Timeline },
   data() {
     return {
       schedule: [],
+      segunda: [],
+      terça: [],
+      quarta: [],
+      quinta: [],
+      sexta: [],
       msgError: ""
     };
   },
@@ -59,9 +46,12 @@ export default {
     getSchedule() {
       api.get("/schedule").then(res => {
         if (res.status === 200) {
-          this.schedule = res.data;
+          this.segunda = res.data[0];
+          this.terça = res.data[1];
+          this.quarta = res.data[2];
+          this.quinta = res.data[3];
+          this.sexta = res.data[5];
         } else {
-          this.msgError = res.data.message;
           showError(res.data.message);
         }
       });

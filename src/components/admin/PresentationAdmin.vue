@@ -121,7 +121,6 @@ export default {
       presentation: {},
       presentations: [],
       fields: [
-        { key: "id", label: "Código", sortable: true },
         { key: "titulo", label: "Título", sortable: true },
         { key: "conteudo", label: "Descrição" },
         { key: "ministrante", label: "Palestrante" },

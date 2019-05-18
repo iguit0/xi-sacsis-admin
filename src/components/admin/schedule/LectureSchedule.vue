@@ -6,11 +6,12 @@
         <b-col md="5">
           <b-form-group
             label="Selecione a palestra:"
-            description="Padrão: (Nome do minicurso) • (Ministrante)"
+            description="Padrão: (Nome do minicurso) • (Palestrante)"
             label-for="lecture"
           >
             <v-select
               id="lecture"
+              :disabled="mode === 'remove'"
               label="titulo"
               v-model="selected"
               :options="lectures"
@@ -45,35 +46,33 @@
           <b-form-group
             label="Data Início"
             label-for="lecture-start"
-            description="Selecione a data e depois horário"
+            description="Digite data e depois horário"
           >
-            <date-pick
+            <the-mask
+              label="Date"
               id="lecture-start"
+              mask="##/##/#### ##:##"
+              placeholder="Data Início"
+              :readonly="mode === 'remove'"
               v-model="lecture.data_inicio"
-              :inputAttributes="{readonly: true}"
-              prevMonthCaption="Mês Anterior"
-              nextMonthCaption="Próximo Mês"
-              setTimeCaption="Horário:"
-              :weekdays="weekDays"
-              :months="months"
-              :pickTime="true"
-              :format="'DD-MM-YYYY HH:mm'"
+              class="form-control"
+              required
+              :masked="false"
             />
           </b-form-group>
         </b-col>
         <b-col md="2" sm="6">
           <b-form-group label="Data Fim" label-for="lecture-end">
-            <date-pick
+            <the-mask
+              label="Date"
               id="lecture-end"
+              mask="##/##/#### ##:##"
+              placeholder="Data Fim"
               v-model="lecture.data_fim"
-              :inputAttributes="{readonly: true}"
-              prevMonthCaption="Mês Anterior"
-              nextMonthCaption="Próximo Mês"
-              setTimeCaption="Horário:"
-              :weekdays="weekDays"
-              :months="months"
-              :pickTime="true"
-              :format="'DD-MM-YYYY HH:mm'"
+              class="form-control"
+              :readonly="mode === 'remove'"
+              required
+              :masked="false"
             />
           </b-form-group>
         </b-col>
@@ -116,12 +115,15 @@
       </template>
       <template slot="table-caption" v-else>
         <h6 align="right">
-          <strong>Nenhum palestras encontrado</strong>
+          <strong>Nenhuma palestra encontrada</strong>
         </h6>
       </template>
       <template slot="actions" slot-scope="data">
         <b-btn size="sm" variant="warning" @click="selectLecture(data.item)" class="mr-2">
           <v-icon name="edit"/>
+        </b-btn>
+        <b-btn size="sm" variant="danger" @click="selectLecture(data.item, 'remove')" class="mr-2">
+          <v-icon name="trash-alt"/>
         </b-btn>
       </template>
     </b-table>
@@ -143,29 +145,12 @@
 <script>
 import { showError, showSuccess } from "@/global";
 import api from "@/services/api";
-import DatePick from "vue-date-pick";
-import "vue-date-pick/dist/vueDatePick.css";
+import moment from "moment";
 
 export default {
   name: "LectureSchedule",
-  components: { DatePick },
   data() {
     return {
-      weekDays: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Do"],
-      months: [
-        "Janeiro",
-        "Fevereiro",
-        "Março",
-        "Abril",
-        "Maio",
-        "Junho",
-        "Julho",
-        "Agosto",
-        "Setembro",
-        "Outubro",
-        "Novembro",
-        "Dezembro"
-      ],
       currentPage: 1,
       perPage: 5,
       pageOptions: [5, 10, 15],
@@ -176,9 +161,8 @@ export default {
       selected: null,
       lectures: [],
       fields: [
-        { key: "id", label: "Código", sortable: true },
         { key: "titulo", label: "Título", sortable: true },
-        { key: "conteudo", label: "Descrição" },
+        { key: "local", label: "Local" },
         { key: "ministrante", label: "Palestrante", sortable: true },
         { key: "actions", label: "Ações" }
       ]
@@ -188,29 +172,30 @@ export default {
     save() {
       let parsedLecture = JSON.parse(JSON.stringify(this.lecture));
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
+      const method = parsedSelected.id ? "put" : "post";
       const data = {
         lecture_id: parsedSelected.id,
         local: parsedLecture.local,
         data_inicio: parsedLecture.data_inicio,
         data_fim: parsedLecture.data_fim
       };
-      api.post("/admin/schedule?formtype=lecture", data).then(res => {
-        if (res.status === 200) {
-          let successMsg = res.data.message;
-          showSuccess(successMsg);
+      api[method]("/admin/schedule?formtype=lecture", data).then(res => {
+        if (res.status === 200 || res.status === 201) {
+          showSuccess(res.data.message);
           this.reset();
         } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
+          showError(res.data.message);
           this.reset();
         }
       });
     },
     loadLectures() {
-      api.get("/admin/lecture?loadtitle=0").then(res => {
+      api.get("/admin/schedule").then(res => {
         if (res.status === 200) {
-          this.lectures = res.data.palestras;
-          this.totalRows = res.data.palestras.length;
+          this.lectures = res.data.lecture;
+          this.totalRows = res.data.lecture.length;
+        } else {
+          showError(res.data.message);
         }
       });
     },
@@ -223,6 +208,24 @@ export default {
     },
     selectLecture(lecture, mode = "save") {
       this.mode = mode;
+      this.selected = {
+        titulo: lecture.titulo,
+        ministrante: lecture.ministrante
+      };
+      lecture.data_inicio =
+        moment(String(lecture.data_inicio))
+          .locale("pt-br")
+          .format("L") +
+        moment(String(lecture.data_inicio))
+          .locale("pt-br")
+          .format("LT");
+      lecture.data_fim =
+        moment(String(lecture.data_fim))
+          .locale("pt-br")
+          .format("L") +
+        moment(String(lecture.data_fim))
+          .locale("pt-br")
+          .format("LT");
       this.lecture = { ...lecture };
       this.incomplete = false;
     }
@@ -232,51 +235,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.vdpArrowPrev:after {
-  border-right-color: #333;
-}
-
-.vdpArrowNext:after {
-  border-left-color: #333;
-}
-
-.vdpCell.selectable:hover .vdpCellContent,
-.vdpCell.selected .vdpCellContent {
-  background: #333;
-}
-
-.vdpCell.today {
-  color: #333;
-}
-
-.vdpTimeUnit > input:hover,
-.vdpTimeUnit > input:focus {
-  border-bottom-color: #333;
-}
-
-.vdpComponent.vdpWithInput > input {
-  display: block;
-  width: 100%;
-  height: calc(1.5em + 0.75rem + 2px);
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-}
-
-.vdpComponent.vdpWithInput > input:focus {
-  color: #495057;
-  background-color: #fff;
-  border-color: #80bdff;
-  outline: 0;
-  -webkit-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-</style>
