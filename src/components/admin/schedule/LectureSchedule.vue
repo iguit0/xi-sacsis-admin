@@ -162,6 +162,7 @@ export default {
       lectures: [],
       fields: [
         { key: "titulo", label: "Título", sortable: true },
+        { key: "dia", label: "Dia" },
         { key: "local", label: "Local" },
         { key: "ministrante", label: "Palestrante", sortable: true },
         { key: "actions", label: "Ações" }

@@ -142,8 +142,8 @@ export default {
       fields: [
         { key: "titulo", label: "Título", sortable: true },
         { key: "dia", label: "Dia" },
-        { key: "descricao", label: "Descrição" },
         { key: "local", label: "Local" },
+        { key: "descricao", label: "Descrição" },
         { key: "actions", label: "Ações" }
       ]
     };

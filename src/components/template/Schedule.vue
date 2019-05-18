@@ -3,20 +3,24 @@
     <PageTitle icon="calendar-alt" main="Ver Programação" sub="Visualizar todos os eventos"/>
     <b-tabs active-nav-item-class="font-weight-bold text-uppercase text-secondary">
       <b-tab title="Dia 1" active>
-        <Timeline :day="sexta" v-if="sexta && sexta.length"/>
+        <Timeline :day="segunda" v-if="segunda && segunda.length"/>
         <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
       </b-tab>
       <b-tab title="Dia 2">
-        <p>I'm the second tab</p>
+        <Timeline :day="terça" v-if="terça && terça.length"/>
+        <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
       </b-tab>
       <b-tab title="Dia 3">
-        <p>I'm the second tab</p>
+        <Timeline :day="quarta" v-if="quarta && quarta.length"/>
+        <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
       </b-tab>
       <b-tab title="Dia 4">
-        <p>I'm the second tab</p>
+        <Timeline :day="quinta" v-if="quinta && quinta.length"/>
+        <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
       </b-tab>
       <b-tab title="Dia 5">
-        <p>I'm the second tab</p>
+        <Timeline :day="sexta" v-if="sexta && sexta.length"/>
+        <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
       </b-tab>
     </b-tabs>
   </div>
@@ -50,7 +54,7 @@ export default {
           this.terça = res.data[1];
           this.quarta = res.data[2];
           this.quinta = res.data[3];
-          this.sexta = res.data[5];
+          this.sexta = res.data[4];
         } else {
           showError(res.data.message);
         }
