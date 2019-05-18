@@ -145,7 +145,6 @@
 <script>
 import { showError, showSuccess } from "@/global";
 import api from "@/services/api";
-import moment from "moment";
 
 export default {
   name: "LectureSchedule",
