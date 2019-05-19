@@ -194,6 +194,10 @@ export default {
                 return (value = "Quinta-Feira");
               case 4:
                 return (value = "Sexta-Feira");
+              case 5:
+                return (value = "Sábado");
+              case 6:
+                return (value = "Domingo");
             }
           }
         },
