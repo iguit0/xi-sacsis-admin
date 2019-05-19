@@ -12,6 +12,7 @@
         :sub="`${courses.length} opções disponíveis`"
         :rightInfo="`A e B`"
       />
+      <div class="text-center title">{{option1}} e {{option2}}</div>
       <b-container fluid>
         <b-row>
           <b-col>
