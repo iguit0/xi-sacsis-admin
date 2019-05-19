@@ -44,9 +44,9 @@ export default {
         cancelButtonText: "Cancelar"
       }).then(result => {
         if (result.value) {
-          this.$store.commit("setUser", null);
           localStorage.removeItem(userKey);
           this.$router.push({ name: "auth" });
+          this.$store.commit("setUser", null);
           this.$swal({
             position: "center",
             type: "success",
