@@ -218,7 +218,7 @@ export default {
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
       const method = parsedSelected.id ? "put" : "post";
       const data = {
-        course_id: parsedSelected.id,
+        course_id: parsedCourse.course_id,
         id: parsedCourse.id,
         dia: parsedCourse.dia,
         local: parsedCourse.local,

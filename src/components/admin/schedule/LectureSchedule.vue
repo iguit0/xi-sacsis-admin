@@ -189,10 +189,10 @@ export default {
     save() {
       let parsedLecture = JSON.parse(JSON.stringify(this.lecture));
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
-      const method = parsedLecture.id ? "put" : "post";
+      const method = parsedSelected.id ? "put" : "post";
       const data = {
         id: parsedLecture.id,
-        lecture_id: parsedSelected.id,
+        lecture_id: parsedLecture.lecture_id,
         dia: parsedLecture.dia,
         local: parsedLecture.local,
         data_inicio: parsedLecture.data_inicio,
