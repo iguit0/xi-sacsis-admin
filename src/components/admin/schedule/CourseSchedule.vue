@@ -133,12 +133,12 @@
     >
       <template slot="table-caption" v-if="totalRows">
         <h6 align="right">
-          <strong>{{totalRows}} minicurso encontradas</strong>
+          <strong>{{totalRows}} minicursos encontrados</strong>
         </h6>
       </template>
       <template slot="table-caption" v-else>
         <h6 align="right">
-          <strong>Nenhum minicursos encontrado</strong>
+          <strong>Nenhum minicurso encontrado</strong>
         </h6>
       </template>
       <template slot="actions" slot-scope="data">
@@ -216,19 +216,17 @@ export default {
     save() {
       let parsedCourse = JSON.parse(JSON.stringify(this.course));
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
+      const method = parsedSelected.id ? "put" : "post";
       const data = {
+        course_id: parsedSelected.id,
         id: parsedCourse.id,
         dia: parsedCourse.dia,
-        course_id: parsedSelected.id,
         local: parsedCourse.local,
-        data_inicio: "2019-04-20T12:14:00.000000",
-        data_fim: "2019-04-20T12:15:30.000000",
+        data_inicio: parsedCourse.data_inicio,
+        data_fim: parsedCourse.data_fim,
         vagas: parsedCourse.vagas,
         turma: parsedCourse.turma
       };
-      const method = parsedSelected.id ? "put" : "post";
-      console.log("metodo ->", method);
-      console.log("data", data);
       api[method]("/admin/schedule?formtype=course", data).then(res => {
         if (res.status === 200) {
           showSuccess(res.data.message);

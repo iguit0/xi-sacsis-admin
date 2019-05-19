@@ -3,7 +3,7 @@
     <div class="user-button">
       <span class="d-none d-sm-block">{{user.dados.nome}}</span>
       <div class="user-dropdown-img">
-        <Gravatar :email="user.dados.email" alt="User img"/>
+        <avatar :fullname="user.dados.nome" :size="37"></avatar>
       </div>
       <v-icon name="angle-down"/>
     </div>
@@ -24,11 +24,11 @@
 <script>
 import { userKey } from "@/global";
 import { mapState } from "vuex";
-import Gravatar from "vue-gravatar";
+import Avatar from "vue-avatar-component";
 
 export default {
   name: "UserDropdown",
-  components: { Gravatar },
+  components: { Avatar },
   computed: { ...mapState(["user"]) },
   methods: {
     logout() {
@@ -44,8 +44,8 @@ export default {
         cancelButtonText: "Cancelar"
       }).then(result => {
         if (result.value) {
-          localStorage.removeItem(userKey);
           this.$store.commit("setUser", null);
+          localStorage.removeItem(userKey);
           this.$router.push({ name: "auth" });
           this.$swal({
             position: "center",

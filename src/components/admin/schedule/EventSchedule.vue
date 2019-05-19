@@ -1,6 +1,7 @@
 <template>
   <div class="event-schedule">
     <b-form>
+      <input id="event-id" type="hidden" v-model="event.id">
       <b-row>
         <b-col md="3">
           <b-form-group label="Título:" description="Exemplo: Campeonato de CSGO">

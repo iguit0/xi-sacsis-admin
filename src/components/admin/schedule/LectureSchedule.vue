@@ -110,7 +110,7 @@
     >
       <template slot="table-caption" v-if="totalRows">
         <h6 align="right">
-          <strong>{{totalRows}} palestra encontradas</strong>
+          <strong>{{totalRows}} palestras encontradas</strong>
         </h6>
       </template>
       <template slot="table-caption" v-else>
@@ -189,15 +189,15 @@ export default {
     save() {
       let parsedLecture = JSON.parse(JSON.stringify(this.lecture));
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
-      const method = parsedSelected.id ? "put" : "post";
+      const method = parsedLecture.id ? "put" : "post";
       const data = {
+        id: parsedLecture.id,
         lecture_id: parsedSelected.id,
+        dia: parsedLecture.dia,
         local: parsedLecture.local,
         data_inicio: parsedLecture.data_inicio,
         data_fim: parsedLecture.data_fim
       };
-      console.log(parsedSelected);
-      console.log(parsedLecture);
       api[method]("/admin/schedule?formtype=lecture", data).then(res => {
         if (res.status === 200 || res.status === 201) {
           showSuccess(res.data.message);
