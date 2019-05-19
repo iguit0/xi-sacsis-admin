@@ -1,6 +1,7 @@
 <template>
   <div class="course-schedule">
     <b-form v-if="courses && courses.length">
+      <input id="course-id" type="hidden" v-model="course.id">
       <b-row>
         <b-col md="4">
           <b-form-group
@@ -215,15 +216,19 @@ export default {
     save() {
       let parsedCourse = JSON.parse(JSON.stringify(this.course));
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
-      const method = parsedSelected.id ? "put" : "post";
       const data = {
+        id: parsedCourse.id,
+        dia: parsedCourse.dia,
         course_id: parsedSelected.id,
         local: parsedCourse.local,
-        data_inicio: parsedCourse.data_inicio,
-        data_fim: parsedCourse.data_fim,
+        data_inicio: "2019-04-20T12:14:00.000000",
+        data_fim: "2019-04-20T12:15:30.000000",
         vagas: parsedCourse.vagas,
         turma: parsedCourse.turma
       };
+      const method = parsedSelected.id ? "put" : "post";
+      console.log("metodo ->", method);
+      console.log("data", data);
       api[method]("/admin/schedule?formtype=course", data).then(res => {
         if (res.status === 200) {
           showSuccess(res.data.message);
@@ -270,6 +275,7 @@ export default {
     selectCourse(course, mode = "save") {
       this.mode = mode;
       this.selected = {
+        id: course.id,
         titulo: course.titulo,
         ministrante: course.ministrante
       };

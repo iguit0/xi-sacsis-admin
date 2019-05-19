@@ -220,11 +220,7 @@ export default {
         },
         {
           key: "data_modificacao",
-          label: "Última modificação",
-          formatter: value =>
-            moment(String(value))
-              .locale("pt-br")
-              .format("lll")
+          label: "Última modificação"
         },
         { key: "actions", label: "Ações" }
       ]

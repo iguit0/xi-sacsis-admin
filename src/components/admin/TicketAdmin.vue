@@ -104,19 +104,11 @@ export default {
         { key: "admin_nome", label: "Responsável", sortable: true },
         {
           key: "data_criacao",
-          label: "Criado em",
-          formatter: value =>
-            moment(String(value))
-              .locale("pt-br")
-              .format("lll")
+          label: "Criado em"
         },
         {
           key: "data_modificacao",
-          label: "Modificado em",
-          formatter: value =>
-            moment(String(value))
-              .locale("pt-br")
-              .format("lll")
+          label: "Modificado em"
         },
         { key: "actions", label: "Ações" }
       ],

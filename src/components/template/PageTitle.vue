@@ -4,6 +4,7 @@
       <v-icon v-if="icon" :name="icon" scale="2.5"/>
       {{main}}
     </h1>
+    <h2 v-if="rightInfo" class="float-right">Você selecionou {{rightInfo}}</h2>
     <h2>{{sub}}</h2>
     <hr>
   </div>
@@ -12,7 +13,7 @@
 <script>
 export default {
   name: "PageTitle",
-  props: ["icon", "main", "sub"]
+  props: ["icon", "main", "sub", "rightInfo"]
 };
 </script>
 

@@ -202,6 +202,7 @@ export default {
       const data = {
         id: parsedEvent.id,
         local: parsedEvent.local,
+        dia: parsedEvent.dia,
         data_inicio: parsedEvent.data_inicio,
         data_fim: parsedEvent.data_fim,
         titulo: parsedEvent.titulo,

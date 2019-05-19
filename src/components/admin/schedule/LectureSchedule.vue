@@ -196,6 +196,8 @@ export default {
         data_inicio: parsedLecture.data_inicio,
         data_fim: parsedLecture.data_fim
       };
+      console.log(parsedSelected);
+      console.log(parsedLecture);
       api[method]("/admin/schedule?formtype=lecture", data).then(res => {
         if (res.status === 200 || res.status === 201) {
           showSuccess(res.data.message);
@@ -226,6 +228,7 @@ export default {
     selectLecture(lecture, mode = "save") {
       this.mode = mode;
       this.selected = {
+        id: lecture.id,
         titulo: lecture.titulo,
         ministrante: lecture.ministrante
       };

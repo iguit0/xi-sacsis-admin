@@ -46,6 +46,13 @@ export default new Vuex.Store({
             else
                 return 0;
         },
+        getStatusPayment(state) {
+            if (state.user.dados.status_pago) {
+                return true;
+            } else {
+                return false
+            }
+        },
         getUserData(state) {
             return state.user.dados
         },
