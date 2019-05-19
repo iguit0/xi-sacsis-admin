@@ -79,12 +79,7 @@
       </b-row>
       <b-row>
         <b-col xs="6" class="mb-3">
-          <b-btn
-            variant="primary"
-            :disabled="incomplete"
-            v-if="mode === 'save'"
-            @click="save"
-          >Salvar</b-btn>
+          <b-btn variant="primary" v-if="mode === 'save'" @click="checkForm">Salvar</b-btn>
           <b-btn variant="danger" v-if="mode === 'remove'">Excluir</b-btn>
           <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
         </b-col>
@@ -154,7 +149,6 @@ export default {
       perPage: 5,
       pageOptions: [5, 10, 15],
       totalRows: 0,
-      incomplete: true,
       mode: "save",
       lecture: {},
       selected: null,
@@ -186,17 +180,57 @@ export default {
     };
   },
   methods: {
+    formatDateTime(value) {
+      return (
+        value.substring(0, 2) +
+        "/" +
+        value.substring(2, 4) +
+        "/" +
+        value.substring(4, 8) +
+        " " +
+        value.substring(8, 10) +
+        ":" +
+        value.substring(10, 12)
+      );
+    },
+    checkForm(e) {
+      this.errors = [];
+
+      if (!this.selected) {
+        let msg = "Selecione uma palestra";
+        this.errors.push(msg);
+        showError(msg);
+      } else if (!this.lecture.data_inicio) {
+        let msg = "Selecione uma data de ínicio";
+        this.errors.push(msg);
+        showError(msg);
+      } else if (!this.lecture.data_fim) {
+        let msg = "Selecione uma data fim";
+        this.errors.push(msg);
+        showError(msg);
+      } else if (!this.lecture.local) {
+        let msg = "Informe um local";
+        this.errors.push(msg);
+        showError(msg);
+      }
+
+      if (!this.errors.length) {
+        return this.save();
+      }
+
+      e.preventDefault();
+    },
     save() {
       let parsedLecture = JSON.parse(JSON.stringify(this.lecture));
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
-      const method = parsedSelected.id ? "put" : "post";
+      const method = parsedLecture.id ? "put" : "post";
       const data = {
         id: parsedLecture.id,
-        lecture_id: parsedLecture.lecture_id,
+        lecture_id: parsedSelected.id,
         dia: parsedLecture.dia,
         local: parsedLecture.local,
-        data_inicio: parsedLecture.data_inicio,
-        data_fim: parsedLecture.data_fim
+        data_inicio: this.formatDateTime(parsedLecture.data_inicio),
+        data_fim: this.formatDateTime(parsedLecture.data_fim)
       };
       api[method]("/admin/schedule?formtype=lecture", data).then(res => {
         if (res.status === 200 || res.status === 201) {
@@ -222,7 +256,6 @@ export default {
       this.mode = "save";
       this.lecture = {};
       this.selected = null;
-      this.incomplete = true;
       this.loadLectures();
     },
     selectLecture(lecture, mode = "save") {
@@ -233,7 +266,6 @@ export default {
         ministrante: lecture.ministrante
       };
       this.lecture = { ...lecture };
-      this.incomplete = false;
     }
   },
   mounted() {

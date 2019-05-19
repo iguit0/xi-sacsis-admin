@@ -227,6 +227,10 @@ export default {
         let msg = "Cadastre uma turma";
         this.errors.push(msg);
         showError(msg);
+      } else if (!this.course.local) {
+        let msg = "Informe um local";
+        this.errors.push(msg);
+        showError(msg);
       } else if (!this.course.vagas) {
         let msg = "Cadastre um número de vagas";
         this.errors.push(msg);
@@ -239,23 +243,35 @@ export default {
 
       e.preventDefault();
     },
+    formatDateTime(value) {
+      return (
+        value.substring(0, 2) +
+        "/" +
+        value.substring(2, 4) +
+        "/" +
+        value.substring(4, 8) +
+        " " +
+        value.substring(8, 10) +
+        ":" +
+        value.substring(10, 12)
+      );
+    },
     save() {
       let parsedCourse = JSON.parse(JSON.stringify(this.course));
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
       const method = parsedCourse.id ? "put" : "post";
-      console.log(method);
       const data = {
-        course_id: parsedCourse.course_id,
+        course_id: parsedSelected.id,
         id: parsedCourse.id,
         dia: parsedCourse.dia,
         local: parsedCourse.local,
-        data_inicio: parsedCourse.data_inicio,
-        data_fim: parsedCourse.data_fim,
+        data_inicio: this.formatDateTime(parsedCourse.data_inicio),
+        data_fim: this.formatDateTime(parsedCourse.data_fim),
         vagas: parsedCourse.vagas,
         turma: parsedCourse.turma
       };
       api[method]("/admin/schedule?formtype=course", data).then(res => {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           showSuccess(res.data.message);
           this.reset();
         } else {

@@ -74,7 +74,7 @@
       <b-row>
         <b-col xs="6" class="mb-3">
           <b-btn variant="primary" v-if="mode === 'save'" @click="checkForm">Salvar</b-btn>
-          <b-btn variant="danger" v-if="mode === 'remove'">Excluir</b-btn>
+          <b-btn variant="danger" v-if="mode === 'remove'" @click="remove">Excluir</b-btn>
           <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
         </b-col>
       </b-row>
@@ -166,6 +166,19 @@ export default {
     };
   },
   methods: {
+    formatDateTime(value) {
+      return (
+        value.substring(0, 2) +
+        "/" +
+        value.substring(2, 4) +
+        "/" +
+        value.substring(4, 8) +
+        " " +
+        value.substring(8, 10) +
+        ":" +
+        value.substring(10, 12)
+      );
+    },
     checkForm(e) {
       this.errors = [];
 
@@ -204,12 +217,24 @@ export default {
         id: parsedEvent.id,
         local: parsedEvent.local,
         dia: parsedEvent.dia,
-        data_inicio: parsedEvent.data_inicio,
-        data_fim: parsedEvent.data_fim,
+        data_inicio: this.formatDateTime(parsedEvent.data_inicio),
+        data_fim: this.formatDateTime(parsedEvent.data_fim),
         titulo: parsedEvent.titulo,
         descricao: parsedEvent.descricao
       };
       api[method]("/admin/schedule?formtype=other", data).then(res => {
+        if (res.status === 200) {
+          showSuccess(res.data.message);
+          this.reset();
+        } else {
+          showError(res.data.message);
+          this.reset();
+        }
+      });
+    },
+    remove() {
+      const id = this.course.id;
+      api.delete(`/admin/schedule/${id}`).then(res => {
         if (res.status === 200) {
           showSuccess(res.data.message);
           this.reset();
