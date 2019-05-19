@@ -1,86 +1,97 @@
 <template>
-  <div class="personal-data">
-    <PageTitle icon="user-circle" main="Minha conta" sub="Gerencie suas informações"/>
-    <b-form>
-      <b-form-group
-        id="input-group-1"
-        label="E-mail:"
-        label-for="input-1"
-        description="Nunca iremos compartilhar seu e-mail com ninguém!"
-      >
-        <b-form-input
-          id="input-1"
-          v-model="editedUser.email"
-          type="email"
-          readonly
-          placeholder="Digite e-mail"
-        ></b-form-input>
-      </b-form-group>
+  <div>
+    <div v-if="isLoading" class="py-2 mt-2 text-center">
+      <b-spinner style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
+      <h2 class="text-center text-uppercase mt-1">CARREGANDO...</h2>
+    </div>
+    <div class="personal-data" v-else>
+      <PageTitle icon="user-circle" main="Minha conta" sub="Gerencie suas informações"/>
+      <b-form>
+        <b-form-group
+          id="input-group-1"
+          label="E-mail:"
+          label-for="input-1"
+          description="Nunca iremos compartilhar seu e-mail com ninguém!"
+        >
+          <b-form-input
+            id="input-1"
+            v-model="editedUser.email"
+            type="email"
+            readonly
+            placeholder="Digite e-mail"
+          ></b-form-input>
+        </b-form-group>
 
-      <b-form-group id="input-group-2" label="Nome:" label-for="input-2">
-        <b-form-input id="input-2" v-model="editedUser.nome" placeholder="Digite nome"></b-form-input>
-      </b-form-group>
+        <b-form-group id="input-group-2" label="Nome:" label-for="input-2">
+          <b-form-input id="input-2" v-model="editedUser.nome" placeholder="Digite nome"></b-form-input>
+        </b-form-group>
 
-      <b-form-group id="input-group-33" label="Gênero:" label-for="input-33">
-        <b-form-checkbox
-          disabled
-          id="input-33"
-          v-model="editedUser.sexo"
-          switch
-        >{{ editedUser.sexo ? 'Masculino' : 'Feminino' }}</b-form-checkbox>
-      </b-form-group>
+        <b-form-group id="input-group-33" label="Gênero:" label-for="input-33">
+          <b-form-checkbox
+            disabled
+            id="input-33"
+            v-model="editedUser.sexo"
+            switch
+          >{{ editedUser.sexo ? 'Masculino' : 'Feminino' }}</b-form-checkbox>
+        </b-form-group>
 
-      <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">
-        <b-form-input id="input-3" v-model="editedUser.matricula" placeholder="Digite matrícula"></b-form-input>
-      </b-form-group>
+        <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">
+          <b-form-input id="input-3" v-model="editedUser.matricula" placeholder="Digite matrícula"></b-form-input>
+        </b-form-group>
 
-      <b-form-group id="input-group-4" label="CPF:" label-for="input-4">
-        <the-mask
-          id="input-4"
-          v-model="editedUser.cpf"
-          placeholder="CPF"
-          class="form-control"
-          :mask="['###.###.###-##']"
-        />
-      </b-form-group>
+        <b-form-group id="input-group-4" label="CPF:" label-for="input-4">
+          <the-mask
+            id="input-4"
+            v-model="editedUser.cpf"
+            placeholder="CPF"
+            class="form-control"
+            :mask="['###.###.###-##']"
+          />
+        </b-form-group>
 
-      <b-form-group id="input-group-5" label="RG:" label-for="input-5">
-        <b-form-input id="input-5" v-model="editedUser.rg"/>
-      </b-form-group>
+        <b-form-group id="input-group-5" label="RG:" label-for="input-5">
+          <b-form-input id="input-5" v-model="editedUser.rg"/>
+        </b-form-group>
 
-      <b-form-group
-        id="input-group-6"
-        label="Camiseta:"
-        label-for="input-6"
-        description="Escolheu tamanho errado? Entre em contato com a organização do evento"
-      >
-        <b-form-select id="input-6" v-model="editedUser.camiseta" :options="optionsShirt" disabled/>
-      </b-form-group>
+        <b-form-group
+          id="input-group-6"
+          label="Camiseta:"
+          label-for="input-6"
+          description="Escolheu tamanho errado? Entre em contato com a organização do evento"
+        >
+          <b-form-select
+            id="input-6"
+            v-model="editedUser.camiseta"
+            :options="optionsShirt"
+            disabled
+          />
+        </b-form-group>
 
-      <b-form-group
-        id="input-group-7"
-        label="Pago:"
-        label-for="input-7"
-        description="Assim que seu pagamento ser confirmado pela organização, você poderá se inscrever nos minicursos"
-      >
-        <b-form-checkbox
-          disabled
-          id="input-7"
-          v-model="editedUser.status_pago"
-          switch
-        >{{ editedUser.status_pago ? 'Sim' : 'Não'}}</b-form-checkbox>
-      </b-form-group>
+        <b-form-group
+          id="input-group-7"
+          label="Pago:"
+          label-for="input-7"
+          description="Assim que seu pagamento ser confirmado pela organização, você poderá se inscrever nos minicursos"
+        >
+          <b-form-checkbox
+            disabled
+            id="input-7"
+            v-model="editedUser.status_pago"
+            switch
+          >{{ editedUser.status_pago ? 'Sim' : 'Não'}}</b-form-checkbox>
+        </b-form-group>
 
-      <VueLoadingButton
-        aria-label="Editar Dados de Usuário"
-        class="btn btn-warning btn-block"
-        :styled="isStyled"
-        @click.native="editUser"
-        :loading="isLoading"
-      >
-        <v-icon name="edit" scale="1.5" class="mr-1"/>Editar
-      </VueLoadingButton>
-    </b-form>
+        <VueLoadingButton
+          aria-label="Editar Dados de Usuário"
+          class="btn btn-warning btn-block"
+          :styled="isStyled"
+          @click.native="editUser"
+          :loading="isLoading"
+        >
+          <v-icon name="edit" scale="1.5" class="mr-1"/>Editar
+        </VueLoadingButton>
+      </b-form>
+    </div>
   </div>
 </template>
 
@@ -122,21 +133,24 @@ export default {
         matricula: parsedUser.matricula,
         camiseta: parsedUser.camiseta
       };
-      api.put("/user", data).then(response => {
-        if (response.status === 200) {
-          let successMsg = response.data.message;
-          showSuccess(successMsg);
-          this.isLoading = false;
+      api.put("/user", data).then(res => {
+        if (res.status === 200) {
+          showSuccess(res.data.message);
         } else {
-          let errorMsg = response.data.message;
-          showError(errorMsg);
-          this.isLoading = false;
+          showError(res.data.message);
         }
       });
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000);
     }
   },
   mounted() {
+    this.isLoading = true;
     this.editedUser = this.user.dados;
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
   }
 };
 </script>

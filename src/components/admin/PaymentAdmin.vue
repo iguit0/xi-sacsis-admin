@@ -163,19 +163,15 @@
         </li>
         <li class="py-1" v-if="paymentContent.valor">
           Lote Valor:
-          <span class="font-weight-bold">{{paymentContent.valor}}</span>
+          <span class="font-weight-bold">{{'R$'+paymentContent.valor+',00'}}</span>
         </li>
         <li class="py-1" v-if="paymentContent.data_pagamento">
           Data Pagamento:
-          <span
-            class="font-weight-bold"
-          >{{paymentContent.data_pagamento | formatDate}}</span>
+          <span class="font-weight-bold">{{paymentContent.data_pagamento}}</span>
         </li>
         <li class="py-1" v-if="paymentContent.data_modificacao">
           Data Modificação:
-          <span
-            class="font-weight-bold"
-          >{{paymentContent.data_modificacao | formatDate}}</span>
+          <span class="font-weight-bold">{{paymentContent.data_modificacao}}</span>
         </li>
       </ul>
     </b-modal>
@@ -185,7 +181,6 @@
 <script>
 import { showError, showSuccess } from "@/global";
 import api from "@/services/api";
-import moment from "moment";
 
 export default {
   name: "PaymentAdmin",
@@ -225,15 +220,6 @@ export default {
         { key: "actions", label: "Ações" }
       ]
     };
-  },
-  filters: {
-    formatDate(value) {
-      if (value) {
-        return moment(String(value))
-          .locale("pt-br")
-          .format("lll");
-      }
-    }
   },
   methods: {
     paymentInfo(item, button) {

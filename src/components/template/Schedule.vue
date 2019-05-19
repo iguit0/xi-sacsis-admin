@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="text-center mt-5 pt-5" v-if="isLoading">
-      <b-spinner variant="dark"></b-spinner>
-      <h4 class="mt-2 text-center text-uppercase">CARREGANDO...</h4>
+    <div v-if="isLoading" class="py-2 mt-2 text-center">
+      <b-spinner style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
+      <h2 class="text-center text-uppercase mt-1">CARREGANDO...</h2>
     </div>
     <div class="schedule-page" v-else>
       <PageTitle icon="calendar-alt" main="Ver Programação" sub="Visualizar todos os eventos"/>
@@ -67,7 +67,9 @@ export default {
           showError(res.data.message);
         }
       });
-      this.isLoading = false;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000);
     }
   },
   mounted() {
