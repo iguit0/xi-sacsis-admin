@@ -5,14 +5,14 @@
       <h2 class="text-center text-uppercase mt-1">CARREGANDO...</h2>
     </div>
 
-    <div v-else>
+    <div v-if="payment">
       <PageTitle
         icon="chalkboard-teacher"
         main="Minicursos"
         :sub="`${courses.length} opções disponíveis`"
         :rightInfo="`A e B`"
       />
-      <b-container v-if="payment" fluid>
+      <b-container fluid>
         <b-row>
           <b-col>
             <h2 class="text-center text-uppercase">Opção 1</h2>
@@ -92,9 +92,9 @@
           <span class="text-uppercase">salvar</span>
         </b-btn>
       </b-container>
-      <div v-else>
-        <h2 class="mt-2 text-center text-uppercase">Seu pagamento ainda não foi verificado!</h2>
-      </div>
+    </div>
+    <div v-else>
+      <h2 class="mt-2 text-center text-uppercase">Seu pagamento ainda não foi verificado!</h2>
     </div>
   </div>
 </template>

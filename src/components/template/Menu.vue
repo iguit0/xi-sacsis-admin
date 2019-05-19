@@ -133,6 +133,13 @@ export default {
           ]
         },
         {
+          text: "Minicursos",
+          data: {
+            icon: "chalkboard-teacher",
+            name: "CoursesList"
+          }
+        },
+        {
           text: "Ver Programação",
           data: { icon: "calendar-alt", name: "ScheduleView" }
         },
