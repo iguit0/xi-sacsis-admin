@@ -103,12 +103,7 @@
       </b-row>
       <b-row>
         <b-col xs="6" class="mb-3">
-          <b-btn
-            variant="primary"
-            :disabled="incomplete"
-            v-if="mode === 'save'"
-            @click="save"
-          >Salvar</b-btn>
+          <b-btn variant="primary" v-if="mode === 'save'" @click="checkForm">Salvar</b-btn>
           <b-btn variant="danger" v-if="mode === 'remove'" @click="remove">Excluir</b-btn>
           <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
         </b-col>
@@ -213,10 +208,42 @@ export default {
     };
   },
   methods: {
+    checkForm(e) {
+      this.errors = [];
+
+      if (!this.selected) {
+        let msg = "Selecione um minicurso";
+        this.errors.push(msg);
+        showError(msg);
+      } else if (!this.course.data_inicio) {
+        let msg = "Selecione uma data de ínicio";
+        this.errors.push(msg);
+        showError(msg);
+      } else if (!this.course.data_fim) {
+        let msg = "Selecione uma data fim";
+        this.errors.push(msg);
+        showError(msg);
+      } else if (!this.course.turma) {
+        let msg = "Cadastre uma turma";
+        this.errors.push(msg);
+        showError(msg);
+      } else if (!this.course.vagas) {
+        let msg = "Cadastre um número de vagas";
+        this.errors.push(msg);
+        showError(msg);
+      }
+
+      if (!this.errors.length) {
+        return this.save();
+      }
+
+      e.preventDefault();
+    },
     save() {
       let parsedCourse = JSON.parse(JSON.stringify(this.course));
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
-      const method = parsedSelected.id ? "put" : "post";
+      const method = parsedCourse.id ? "put" : "post";
+      console.log(method);
       const data = {
         course_id: parsedCourse.course_id,
         id: parsedCourse.id,
