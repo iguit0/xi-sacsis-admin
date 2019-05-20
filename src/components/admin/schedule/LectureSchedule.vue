@@ -14,7 +14,7 @@
               :disabled="mode === 'remove'"
               label="titulo"
               v-model="selected"
-              :options="lectures"
+              :options="lectureSelect"
               placeholder="Selecione uma opção"
             >
               <!-- dropdown pra selecionar -->
@@ -145,6 +145,7 @@ export default {
   name: "LectureSchedule",
   data() {
     return {
+      lectureSelect: [],
       currentPage: 1,
       perPage: 5,
       pageOptions: [5, 10, 15],
@@ -269,6 +270,13 @@ export default {
         }
       });
     },
+    loadSelect() {
+      api.get("/admin/lecture?loadtitle=1").then(res => {
+        if (res.status === 200) {
+          this.lectureSelect = res.data.values;
+        }
+      });
+    },
     loadLectures() {
       api.get("/admin/schedule").then(res => {
         if (res.status === 200) {
@@ -279,12 +287,6 @@ export default {
         }
       });
     },
-    reset() {
-      this.mode = "save";
-      this.lecture = {};
-      this.selected = null;
-      this.loadLectures();
-    },
     selectLecture(lecture, mode = "save") {
       this.mode = mode;
       this.selected = {
@@ -293,10 +295,18 @@ export default {
         ministrante: lecture.ministrante
       };
       this.lecture = { ...lecture };
+    },
+    reset() {
+      this.mode = "save";
+      this.lecture = {};
+      this.selected = null;
+      this.loadLectures();
+      this.loadSelect();
     }
   },
   mounted() {
     this.loadLectures();
+    this.loadSelect();
   }
 };
 </script>
