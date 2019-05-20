@@ -80,7 +80,7 @@
       <b-row>
         <b-col xs="6" class="mb-3">
           <b-btn variant="primary" v-if="mode === 'save'" @click="checkForm">Salvar</b-btn>
-          <b-btn variant="danger" v-if="mode === 'remove'">Excluir</b-btn>
+          <b-btn variant="danger" v-if="mode === 'remove'" @click="remove">Excluir</b-btn>
           <b-btn class="ml-2" @click="reset">Cancelar</b-btn>
         </b-col>
         <b-col xs="6">
@@ -228,16 +228,35 @@ export default {
       let parsedLecture = JSON.parse(JSON.stringify(this.lecture));
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
       const method = parsedLecture.id ? "put" : "post";
+      if (method === "post") {
+        parsedLecture.data_inicio = this.formatDateTime(
+          parsedLecture.data_inicio
+        );
+        parsedLecture.data_fim = this.formatDateTime(parsedLecture.data_fim);
+        parsedLecture.lecture_id = parsedSelected.id;
+      }
       const data = {
+        lecture_id: parsedLecture.lecture_id,
         id: parsedLecture.id,
-        lecture_id: parsedSelected.id,
         dia: parsedLecture.dia,
         local: parsedLecture.local,
-        data_inicio: this.formatDateTime(parsedLecture.data_inicio),
-        data_fim: this.formatDateTime(parsedLecture.data_fim)
+        data_inicio: parsedLecture.data_inicio,
+        data_fim: parsedLecture.data_fim
       };
       api[method]("/admin/schedule?formtype=lecture", data).then(res => {
         if (res.status === 200 || res.status === 201) {
+          showSuccess(res.data.message);
+          this.reset();
+        } else {
+          showError(res.data.message);
+          this.reset();
+        }
+      });
+    },
+    remove() {
+      const id = this.lecture.id;
+      api.delete(`/admin/schedule/${id}`).then(res => {
+        if (res.status === 200) {
           showSuccess(res.data.message);
           this.reset();
         } else {

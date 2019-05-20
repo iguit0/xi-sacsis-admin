@@ -217,17 +217,21 @@ export default {
     save() {
       let parsedEvent = JSON.parse(JSON.stringify(this.event));
       const method = parsedEvent.id ? "put" : "post";
+      if (method === "post") {
+        parsedEvent.data_inicio = this.formatDateTime(parsedEvent.data_inicio);
+        parsedEvent.data_fim = this.formatDateTime(parsedEvent.data_fim);
+      }
       const data = {
         id: parsedEvent.id,
         local: parsedEvent.local,
         dia: parsedEvent.dia,
-        data_inicio: this.formatDateTime(parsedEvent.data_inicio),
-        data_fim: this.formatDateTime(parsedEvent.data_fim),
+        data_inicio: parsedEvent.data_inicio,
+        data_fim: parsedEvent.data_fim,
         titulo: parsedEvent.titulo,
         descricao: parsedEvent.descricao
       };
       api[method]("/admin/schedule?formtype=other", data).then(res => {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           showSuccess(res.data.message);
           this.reset();
         } else {
@@ -237,7 +241,7 @@ export default {
       });
     },
     remove() {
-      const id = this.course.id;
+      const id = this.event.id;
       api.delete(`/admin/schedule/${id}`).then(res => {
         if (res.status === 200) {
           showSuccess(res.data.message);

@@ -264,7 +264,6 @@ export default {
       let parsedCourse = JSON.parse(JSON.stringify(this.course));
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
       const method = parsedCourse.id ? "put" : "post";
-      console.log(method);
       if (method === "post") {
         parsedCourse.data_inicio = this.formatDateTime(
           parsedCourse.data_inicio
@@ -282,7 +281,6 @@ export default {
         vagas: parsedCourse.vagas,
         turma: parsedCourse.turma
       };
-      console.log(data);
       api[method]("/admin/schedule?formtype=course", data).then(res => {
         if (res.status === 200 || res.status === 201) {
           showSuccess(res.data.message);
@@ -316,7 +314,6 @@ export default {
       this.isLoading = true;
       api.get("/admin/schedule").then(res => {
         if (res.status === 200) {
-          console.log(res.data.course);
           this.courses = res.data.course;
           this.totalRows = res.data.course.length;
           this.isLoading = false;
@@ -334,7 +331,6 @@ export default {
         titulo: course.titulo,
         ministrante: course.ministrante
       };
-      console.log(course.data_inicio);
       this.course = { ...course };
       this.incomplete = false;
     },
