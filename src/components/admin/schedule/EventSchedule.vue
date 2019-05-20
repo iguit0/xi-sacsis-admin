@@ -221,6 +221,10 @@ export default {
         parsedEvent.data_inicio = this.formatDateTime(parsedEvent.data_inicio);
         parsedEvent.data_fim = this.formatDateTime(parsedEvent.data_fim);
       }
+      if (parsedEvent.data_inicio.length === 12)
+        parsedEvent.data_inicio = this.formatDateTime(parsedEvent.data_inicio);
+      if (parsedEvent.data_fim.length === 12)
+        parsedEvent.data_fim = this.formatDateTime(parsedEvent.data_fim);
       const data = {
         id: parsedEvent.id,
         local: parsedEvent.local,

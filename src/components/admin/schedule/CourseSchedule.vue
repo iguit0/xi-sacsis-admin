@@ -265,12 +265,14 @@ export default {
       let parsedSelected = JSON.parse(JSON.stringify(this.selected));
       const method = parsedCourse.id ? "put" : "post";
       if (method === "post") {
-        parsedCourse.data_inicio = this.formatDateTime(
-          parsedCourse.data_inicio
-        );
+        parsedCourse.data_inicio = this.formatDateTime(parsedCourse.data_inicio);
         parsedCourse.data_fim = this.formatDateTime(parsedCourse.data_fim);
         parsedCourse.course_id = parsedSelected.id;
       }
+      if (parsedCourse.data_inicio.length === 12)
+        parsedCourse.data_inicio = this.formatDateTime(parsedCourse.data_inicio);
+      if (parsedCourse.data_fim.length === 12)
+        parsedCourse.data_fim = this.formatDateTime(parsedCourse.data_fim);
       const data = {
         course_id: parsedCourse.course_id,
         id: parsedCourse.id,

@@ -235,6 +235,10 @@ export default {
         parsedLecture.data_fim = this.formatDateTime(parsedLecture.data_fim);
         parsedLecture.lecture_id = parsedSelected.id;
       }
+      if (parsedLecture.data_inicio.length === 12)
+        parsedLecture.data_inicio = this.formatDateTime(parsedLecture.data_inicio);
+      if (parsedLecture.data_fim.length === 12)
+        parsedLecture.data_fim = this.formatDateTime(parsedLecture.data_fim);
       const data = {
         lecture_id: parsedLecture.lecture_id,
         id: parsedLecture.id,
