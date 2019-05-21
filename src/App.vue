@@ -45,7 +45,12 @@ export default {
           this.$store.commit("setUser", userData);
         } else {
           localStorage.removeItem(userKey);
-          this.$router.push({ name: "auth" });
+          if (sessionStorage.getItem("vuex") ){
+            sessionStorage.removeItem("vuex");
+            document.location.reload(true);
+          } else {
+            this.$router.push({ name: "auth" });
+          }
         }
       });
 
