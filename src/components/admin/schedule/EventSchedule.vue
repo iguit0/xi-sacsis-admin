@@ -92,7 +92,7 @@
     >
       <template slot="table-caption" v-if="totalRows">
         <h6 align="right">
-          <strong>{{totalRows}} evento encontrados</strong>
+          <strong>{{totalRows}} eventos encontrados</strong>
         </h6>
       </template>
       <template slot="table-caption" v-else>

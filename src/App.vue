@@ -2,22 +2,59 @@
   <div id="app" :class="{'hide-menu': !isMenuVisible || !user}">
     <Header title="XI SACSIS" :hideToggle="!user" :hideUserDropdown="!user"/>
     <Menu v-if="user"/>
-    <Content/>
+    <Loading v-if="isValidating"/>
+    <Content v-else/>
     <Footer/>
   </div>
 </template>
 
 <script>
+import { userKey, showError } from "@/global";
 import { mapState } from "vuex";
 import Menu from "@/components/template/Menu";
 import Footer from "@/components/template/Footer";
 import Header from "@/components/template/Header";
 import Content from "@/components/template/Content";
+import Loading from "@/components/template/Loading";
+import api from "@/services/api";
 
 export default {
   name: "App",
-  components: { Menu, Footer, Header, Content },
-  computed: mapState(["isMenuVisible", "user"])
+  components: { Menu, Footer, Header, Content, Loading },
+  computed: mapState(["isMenuVisible", "user"]),
+  data() {
+    return {
+      isValidating: true
+    };
+  },
+  methods: {
+    async validateToken() {
+      this.isValidating = true;
+
+      const json = localStorage.getItem(userKey);
+      const userData = JSON.parse(json);
+
+      if (!userData) {
+        this.isValidating = false;
+        showError("Sessão expirada!");
+        return this.$router.push({ name: "auth" });
+      }
+
+      const res = await api.put("/login", userData);
+
+      if (res.data) {
+        this.$store.commit("setUser", userData);
+      } else {
+        localStorage.removeItem(userKey);
+        this.$router.push({ name: "auth" });
+      }
+
+      this.isValidating = false;
+    }
+  },
+  created() {
+    this.validateToken();
+  }
 };
 </script>
 

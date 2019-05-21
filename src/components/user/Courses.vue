@@ -5,14 +5,14 @@
       <h2 class="text-center text-uppercase mt-1">CARREGANDO...</h2>
     </div>
 
-    <div v-if="payment">
+    <div>
       <PageTitle
         icon="chalkboard-teacher"
         main="Minicursos"
         :sub="`${courses.length} opções disponíveis`"
-        :rightInfo="`A e B`"
+        :firstOption="option1"
+        :secondOption="option2"
       />
-      <div class="text-center title">{{option1}} e {{option2}}</div>
       <b-container fluid>
         <b-row>
           <b-col>
@@ -88,14 +88,18 @@
             </b-card>
           </b-col>
         </b-row>
-        <b-btn variant="success" block size="lg">
+        <b-btn :disabled="!option1 || !option2" variant="success" block size="lg" v-if="payment">
           <v-icon name="save" scale="1.5" class="mr-1"/>
           <span class="text-uppercase">salvar</span>
         </b-btn>
+        <div v-else>
+          <h2 class="mt-2 text-center text-uppercase">Seu pagamento ainda não foi verificado!</h2>
+        </div>
+        <span
+          class="text-muted float-right"
+          v-if="!option1 || !option2"
+        >Escolha duas opções de minicurso</span>
       </b-container>
-    </div>
-    <div v-else>
-      <h2 class="mt-2 text-center text-uppercase">Seu pagamento ainda não foi verificado!</h2>
     </div>
   </div>
 </template>
@@ -123,6 +127,9 @@ export default {
     }
   },
   methods: {
+    confirm() {
+      console.log("Você escolheu a opção" + this.option1 + "e " + this.option2);
+    },
     getCourses() {
       this.isLoading = true;
       api.get("/schedule/course").then(res => {

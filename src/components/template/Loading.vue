@@ -1,6 +1,7 @@
 <template>
   <div class="loading">
-    <b-spinner label="Spinning"></b-spinner>
+    <h4 class="mt-2 text-center text-uppercase">CARREGANDO...</h4>
+    <b-spinner type="grow" variant="dark"></b-spinner>
   </div>
 </template>
 

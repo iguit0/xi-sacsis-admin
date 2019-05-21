@@ -45,8 +45,8 @@ export default {
       }).then(result => {
         if (result.value) {
           localStorage.removeItem(userKey);
-          this.$router.push({ name: "auth" });
           this.$store.commit("setUser", null);
+          this.$router.push({ name: "auth" });
           this.$swal({
             position: "center",
             type: "success",

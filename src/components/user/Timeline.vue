@@ -69,6 +69,7 @@ export default {
   name: "Timeline"
 };
 </script>
+
 <style scoped>
 img {
   max-width: 100%;

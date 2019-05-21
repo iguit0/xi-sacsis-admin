@@ -93,7 +93,7 @@ router.beforeEach((to, from, next) => {
 
     // verificar se usuario eh admin
     if (to.matched.some(record => record.meta.requiresAdmin)) {
-        user && user.admin == true ? next() : next({ path: '/entrar' })
+        user && user.jwt_token && user.admin ? next() : next({ path: '/entrar' })
     } else {
         next()
     }
