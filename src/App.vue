@@ -36,7 +36,6 @@ export default {
 
       if (!userData) {
         this.isValidating = false;
-        showError("Sessão expirada!");
         return this.$router.push({ name: "auth" });
       }
 
@@ -57,6 +56,7 @@ export default {
           sessionStorage.removeItem("vuex");
           document.location.reload(true);
         } else {
+          showError("Sessão expirada!");
           this.$router.push({ name: "auth" });
         }
       }
