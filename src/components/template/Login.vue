@@ -12,8 +12,9 @@
         class="mb-3 d-sm-block d-xs-block d-md-none d-lg-none d-xl-none"
       />
       <hr>
-      <div class="auth-title" v-if="!recoverPass">{{ showSignup ? 'CADASTRO' : 'LOGIN' }}</div>
-      <div class="auth-title" v-else>ESQUECI MINHA SENHA</div>
+      <div class="auth-title" v-if="!recoverPass && !changePass">{{ showSignup ? 'CADASTRO' : 'LOGIN' }}</div>
+      <div class="auth-title" v-else-if="recoverPass">ESQUECI MINHA SENHA</div>
+      <div class="auth-title" v-else-if="changePass">INSIRA SUA NOVA SENHA</div>
 
       <b-input-group class="mb-3" v-if="showSignup">
         <b-input-group-text slot="prepend">
@@ -37,12 +38,13 @@
         <b-form-select required v-model="user.sexo" :options="optionsGender"></b-form-select>
       </b-input-group>
 
-      <b-input-group class="mb-3" v-if="!recoverPass">
+      <b-input-group class="mb-3" v-if="!recoverPass && !changePass">
         <b-input-group-text slot="prepend">
           <v-icon name="envelope"/>
         </b-input-group-text>
         <b-input
           v-on:keyup.enter="checkForm"
+          v-if="!changePass"
           v-model="user.email"
           name="email"
           type="email"
@@ -103,6 +105,24 @@
         </b-input-group-text>
       </b-input-group>
 
+      <b-input-group class="mb-3" v-else-if="changePass">
+        <b-input-group-text slot="prepend">
+          <v-icon name="key"/>
+        </b-input-group-text>
+        <b-input
+          v-on:keyup.enter="checkForm"
+          v-model="user.password"
+          name="password"
+          type="text"
+          placeholder="Senha"
+          class="form-control"
+          required
+        />
+        <b-input-group-text slot="append" @click="showPassword">
+          <v-icon name="eye"/>
+        </b-input-group-text>
+      </b-input-group>
+
       <b-input-group class="mb-3" v-if="showSignup">
         <b-input-group-text slot="prepend">
           <v-icon name="key"/>
@@ -110,6 +130,21 @@
         <b-input
           v-on:keyup.enter="checkForm"
           v-if="showSignup"
+          v-model="user.confirmPassword"
+          type="password"
+          placeholder="Confirme a Senha"
+          class="form-control"
+          required
+        />
+      </b-input-group>
+
+      <b-input-group class="mb-3" v-if="changePass">
+        <b-input-group-text slot="prepend">
+          <v-icon name="key"/>
+        </b-input-group-text>
+        <b-input
+          v-on:keyup.enter="checkForm"
+          v-if="changePass"
           v-model="user.confirmPassword"
           type="password"
           placeholder="Confirme a Senha"
@@ -190,9 +225,19 @@
         :styled="isStyled"
         @click.native="checkForm"
         :loading="isLoading"
-        v-else-if="!showSignup && !recoverPass"
+        v-else-if="!showSignup && !recoverPass && !changePass"
       >
         <v-icon name="sign-in-alt" scale="1.5" class="mr-1"/>Entrar
+      </VueLoadingButton>
+      <VueLoadingButton
+        aria-label="Salvar nova senha"
+        class="btn btn-success btn-block"
+        :styled="isStyled"
+        @click.native="checkForm"
+        :loading="isLoading"
+        v-else-if="changePass"
+      >
+        <v-icon name="sign-in-alt" scale="1.5" class="mr-1"/>Salvar nova senha
       </VueLoadingButton>
       <VueLoadingButton
         aria-label="Recuperar Senha"
@@ -207,11 +252,11 @@
 
       <a href @click.prevent="toggleSignup" class="mt-3">
         <span v-if="showSignup">Já tem cadastro? Acesse o Login!</span>
-        <span v-else-if="!showSignup">Não tem cadastro? Registre-se aqui!</span>
+        <span v-else-if="!showSignup && !changePass">Não tem cadastro? Registre-se aqui!</span>
       </a>
       <a href @click.prevent="toggleRecover" class="mt-2">
-        <span v-if="!recoverPass">Esqueci minha senha!</span>
-        <span v-else>Lembrou a senha? Entre aqui!</span>
+        <span v-if="!recoverPass && !changePass">Esqueci minha senha!</span>
+        <span v-else-if="!changePass">Lembrou a senha? Entre aqui!</span>
       </a>
 
       <b-modal id="modal-1" title="Guia Camisetas" ok-only centered>
@@ -244,6 +289,8 @@ export default {
       showPass: false,
       showSignup: false,
       recoverPass: false,
+      changePass: false,
+      loginData: null,
       user: {
         sexo: null,
         shirtSize: null
@@ -272,7 +319,24 @@ export default {
       this.errors = [];
       this.isLoading = true;
 
-      if (this.recoverPass) {
+      if (this.changePass) {
+        if (!this.user.password) {
+          let msg = "Senha é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } else if (!this.user.confirmPassword) {
+          let msg = "Confirme sua senha";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } else if (this.user.password != this.user.confirmPassword) {
+          let msg = "Senha e Confirmar senha não são iguais";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        }
+      } else if (this.recoverPass) {
         if (!this.user.email) {
           let msg = "E-mail é obrigatório";
           this.errors.push(msg);
@@ -368,7 +432,10 @@ export default {
           this.isLoading = false;
         }
       }
-      if (!this.errors.length && this.recoverPass) {
+      if (!this.errors.length && this.changePass) {
+        this.isLoading = false;
+        return this.newPass();
+      } if (!this.errors.length && this.recoverPass) {
         this.isLoading = false;
         return this.resetPass();
       } else if (!this.errors.length && !this.showSignup) {
@@ -398,9 +465,11 @@ export default {
             let welcomeMsg = `Bem Vindo (a), ` + this.$store.getters.getUsername;
             showWelcome(welcomeMsg);
           } else {
-            let errorMsg = "Implementando reset de senha!";
-            showError(errorMsg);
+            this.loginData = response.data;
             this.isLoading = false;
+            this.user.password = '';
+            this.user.confirmPassword = '';
+            this.toggleChangePassword();
           }
         } else {
           let errorMsg = response.data.message;
@@ -462,6 +531,36 @@ export default {
         }
       });
     },
+    newPass(){
+      this.isLoading = true;
+      let parsedUser = JSON.parse(JSON.stringify(this.user));
+      const data = {
+        "senha": parsedUser.password
+      }
+
+      const apix = axios.create({
+        baseURL: baseApiUrl,
+        headers: {"Authorization" : `Bearer ${this.loginData.jwt_token}`},
+        validateStatus: function (status) {
+            return status < 1000;
+        }
+      });
+
+      apix.put("/reset_password", data).then(response => {
+        if (response.status === 201) {
+          localStorage.setItem(userKey, JSON.stringify(this.loginData));
+          this.$store.commit("setUser", this.loginData);
+          this.isLoading = false;
+          this.$router.push({ path: "/" });
+          let welcomeMsg = `Bem Vindo (a), ` + this.$store.getters.getUsername;
+          showWelcome(welcomeMsg);
+        } else {
+          let errorMsg = response.data.message;
+          showError(errorMsg);
+          this.isLoading = false;
+        }
+      });
+    },
     toggleSignup() {
       if (!this.recoverPass) {
         this.showSignup = !this.showSignup;
@@ -476,6 +575,14 @@ export default {
         this.recoverPass = !this.recoverPass;
       } else {
         this.recoverPass = !this.recoverPass;
+      }
+    },
+    toggleChangePassword() {
+      if (this.showSignup) {
+        this.showSignup = !this.showSignup;
+        this.changePass = !this.changePass;
+      } else {
+        this.changePass = !this.changePass;
       }
     },
     showPassword() {
