@@ -12,7 +12,10 @@
         class="mb-3 d-sm-block d-xs-block d-md-none d-lg-none d-xl-none"
       />
       <hr>
-      <div class="auth-title" v-if="!recoverPass && !changePass">{{ showSignup ? 'CADASTRO' : 'LOGIN' }}</div>
+      <div
+        class="auth-title"
+        v-if="!recoverPass && !changePass"
+      >{{ showSignup ? 'CADASTRO' : 'LOGIN' }}</div>
       <div class="auth-title" v-else-if="recoverPass">ESQUECI MINHA SENHA</div>
       <div class="auth-title" v-else-if="changePass">INSIRA SUA NOVA SENHA</div>
 
@@ -310,11 +313,10 @@ export default {
     };
   },
   methods: {
-    /*
     validEmail: function(email) {
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
-    },*/
+    },
     checkForm(e) {
       this.errors = [];
       this.isLoading = true;
@@ -349,14 +351,12 @@ export default {
           this.errors.push(msg);
           showError(msg);
           this.isLoading = false;
-        } /*else if (!this.validEmail(this.user.email)) {
-        let msg = "Utilize um e-mail válido";
-        this.errors.push(msg);
-        showError(msg);
-        this.isLoading = false;
-      } */ else if (
-          !this.user.password
-        ) {
+        } else if (!this.validEmail(this.user.email)) {
+          let msg = "Utilize um e-mail válido";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        } else if (!this.user.password) {
           let msg = "Senha é obrigatório";
           this.errors.push(msg);
           showError(msg);
@@ -396,7 +396,7 @@ export default {
           showError(msg);
           this.isLoading = false;
         } else if (this.user.password != this.user.confirmPassword) {
-          let msg = "Senha e Confirmar senha não são iguais";
+          let msg = "Senha e Confirmar Senha não são iguais";
           this.errors.push(msg);
           showError(msg);
           this.isLoading = false;
@@ -435,7 +435,8 @@ export default {
       if (!this.errors.length && this.changePass) {
         this.isLoading = false;
         return this.newPass();
-      } if (!this.errors.length && this.recoverPass) {
+      }
+      if (!this.errors.length && this.recoverPass) {
         this.isLoading = false;
         return this.resetPass();
       } else if (!this.errors.length && !this.showSignup) {
@@ -462,13 +463,14 @@ export default {
             this.$store.commit("setUser", response.data);
             this.isLoading = false;
             this.$router.push({ path: "/" });
-            let welcomeMsg = `Bem Vindo (a), ` + this.$store.getters.getUsername;
+            let welcomeMsg =
+              `Bem Vindo (a), ` + this.$store.getters.getUsername;
             showWelcome(welcomeMsg);
           } else {
             this.loginData = response.data;
             this.isLoading = false;
-            this.user.password = '';
-            this.user.confirmPassword = '';
+            this.user.password = "";
+            this.user.confirmPassword = "";
             this.toggleChangePassword();
           }
         } else {
@@ -531,18 +533,18 @@ export default {
         }
       });
     },
-    newPass(){
+    newPass() {
       this.isLoading = true;
       let parsedUser = JSON.parse(JSON.stringify(this.user));
       const data = {
-        "senha": parsedUser.password
-      }
+        senha: parsedUser.password
+      };
 
       const apix = axios.create({
         baseURL: baseApiUrl,
-        headers: {"Authorization" : `Bearer ${this.loginData.jwt_token}`},
-        validateStatus: function (status) {
-            return status < 1000;
+        headers: { Authorization: `Bearer ${this.loginData.jwt_token}` },
+        validateStatus: function(status) {
+          return status < 1000;
         }
       });
 

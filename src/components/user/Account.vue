@@ -23,7 +23,7 @@
         </b-form-group>
 
         <b-form-group id="input-group-2" label="Nome:" label-for="input-2">
-          <b-form-input id="input-2" v-model="editedUser.nome" placeholder="Digite nome"></b-form-input>
+          <b-form-input id="input-2" v-model="editedUser.nome" readonly placeholder="Digite nome"></b-form-input>
         </b-form-group>
 
         <b-form-group id="input-group-33" label="Gênero:" label-for="input-33">
@@ -36,13 +36,19 @@
         </b-form-group>
 
         <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">
-          <b-form-input id="input-3" v-model="editedUser.matricula" placeholder="Digite matrícula"></b-form-input>
+          <b-form-input
+            id="input-3"
+            readonly
+            v-model="editedUser.matricula"
+            placeholder="Digite matrícula"
+          ></b-form-input>
         </b-form-group>
 
         <b-form-group id="input-group-4" label="CPF:" label-for="input-4">
           <the-mask
             id="input-4"
             v-model="editedUser.cpf"
+            readonly
             placeholder="CPF"
             class="form-control"
             :mask="['###.###.###-##']"
@@ -50,7 +56,7 @@
         </b-form-group>
 
         <b-form-group id="input-group-5" label="RG:" label-for="input-5">
-          <b-form-input id="input-5" v-model="editedUser.rg"/>
+          <b-form-input readonly id="input-5" v-model="editedUser.rg"/>
         </b-form-group>
 
         <b-form-group
@@ -85,6 +91,7 @@
           aria-label="Editar Dados de Usuário"
           class="btn btn-warning btn-block"
           :styled="isStyled"
+          disabled
           @click.native="editUser"
           :loading="isLoading"
         >

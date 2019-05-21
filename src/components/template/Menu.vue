@@ -83,6 +83,7 @@ export default {
           text: "Minha Conta",
           data: { icon: "user-circle", name: "AccountPages" }
         },
+        /*
         {
           text: "Minicursos",
           data: {
@@ -93,7 +94,7 @@ export default {
         {
           text: "Programação",
           data: { icon: "calendar-alt", name: "ScheduleView" }
-        },
+        },*/
         {
           text: "Sair",
           data: { icon: "sign-out-alt" }
@@ -132,6 +133,7 @@ export default {
             }
           ]
         },
+        /*
         {
           text: "Minicursos",
           data: {
@@ -142,7 +144,7 @@ export default {
         {
           text: "Ver Programação",
           data: { icon: "calendar-alt", name: "ScheduleView" }
-        },
+        },*/
         {
           text: "Sair",
           data: { icon: "sign-out-alt" }
