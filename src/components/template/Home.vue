@@ -30,7 +30,7 @@
         />
       </div>
       <div v-else>
-        <h2>Escopo participante</h2>
+        <h2 class="text-center text-uppercase mt-1">MAIS INFORMAÇÕES EM BREVE...</h2>
       </div>
     </div>
   </div>
