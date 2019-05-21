@@ -272,7 +272,14 @@ export default {
       this.errors = [];
       this.isLoading = true;
 
-      if (!this.showSignup) {
+      if (this.recoverPass) {
+        if (!this.user.email) {
+          let msg = "E-mail é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+          this.isLoading = false;
+        }
+      } else if (!this.showSignup) {
         if (!this.user.email) {
           let msg = "E-mail é obrigatório";
           this.errors.push(msg);
@@ -361,8 +368,10 @@ export default {
           this.isLoading = false;
         }
       }
-
-      if (!this.errors.length && !this.showSignup) {
+      if (!this.errors.length && this.recoverPass) {
+        this.isLoading = false;
+        return this.resetPass();
+      } else if (!this.errors.length && !this.showSignup) {
         this.isLoading = false;
         return this.signin();
       } else if (!this.errors.length && this.showSignup) {
@@ -381,12 +390,18 @@ export default {
       };
       api.post("/login", data).then(response => {
         if (response.status === 200) {
-          localStorage.setItem(userKey, JSON.stringify(response.data));
-          this.$store.commit("setUser", response.data);
-          this.isLoading = false;
-          this.$router.push({ path: "/" });
-          let welcomeMsg = `Bem Vindo (a), ` + this.$store.getters.getUsername;
-          showWelcome(welcomeMsg);
+          if (!response.data.rsenha) {
+            localStorage.setItem(userKey, JSON.stringify(response.data));
+            this.$store.commit("setUser", response.data);
+            this.isLoading = false;
+            this.$router.push({ path: "/" });
+            let welcomeMsg = `Bem Vindo (a), ` + this.$store.getters.getUsername;
+            showWelcome(welcomeMsg);
+          } else {
+            let errorMsg = "Implementando reset de senha!";
+            showError(errorMsg);
+            this.isLoading = false;
+          }
         } else {
           let errorMsg = response.data.message;
           showError(errorMsg);
@@ -439,7 +454,7 @@ export default {
           showInfo("Senha enviada ao e-mail!");
           this.isLoading = false;
           this.user = {};
-          this.showSignup = false;
+          this.recoverPass = false;
         } else {
           let errorMsg = response.data.message;
           showError(errorMsg);
