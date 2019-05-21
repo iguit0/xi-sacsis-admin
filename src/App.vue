@@ -40,14 +40,14 @@ export default {
         return this.$router.push({ name: "auth" });
       }
 
-      const res = await api.put("/login", userData);
-
-      if (res.data) {
-        this.$store.commit("setUser", userData);
-      } else {
-        localStorage.removeItem(userKey);
-        this.$router.push({ name: "auth" });
-      }
+      const res = await api.put("/login", userData).then(res => {
+        if (res.status === 200) {
+          this.$store.commit("setUser", userData);
+        } else {
+          localStorage.removeItem(userKey);
+          this.$router.push({ name: "auth" });
+        }
+      });
 
       this.isValidating = false;
     }
