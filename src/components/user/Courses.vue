@@ -142,7 +142,6 @@ export default {
           option2: this.option2
         };
         api.post("/schedule/course", data).then(res => {
-          console.log(res);
           if (res.status === 200 || res.status === 201) {
             showSuccess(res.data.option1);
             this.getCourses();
