@@ -88,17 +88,20 @@
             </b-card>
           </b-col>
         </b-row>
-        <b-btn :disabled="!option1 || !option2" variant="success" block size="lg" v-if="payment">
+        <b-btn
+          @click="confirm"
+          :disabled="!option1 || !option2"
+          variant="success"
+          block
+          size="lg"
+          v-if="payment"
+        >
           <v-icon name="save" scale="1.5" class="mr-1"/>
           <span class="text-uppercase">salvar</span>
         </b-btn>
         <div v-else>
           <h2 class="mt-2 text-center text-uppercase">Seu pagamento ainda não foi verificado!</h2>
         </div>
-        <span
-          class="text-muted float-right"
-          v-if="!option1 || !option2"
-        >Escolha duas opções de minicurso</span>
       </b-container>
     </div>
   </div>
@@ -106,6 +109,7 @@
 
 <script>
 import PageTitle from "@/components/template/PageTitle";
+import { showSuccess, showError } from "@/global";
 import api from "@/services/api";
 
 export default {
@@ -128,13 +132,34 @@ export default {
   },
   methods: {
     confirm() {
-      console.log("Você escolheu a opção" + this.option1 + "e " + this.option2);
+      if (!this.option1 || !this.option2) {
+        return showError("Selecione duas opções");
+      } else if (this.option1 === this.option2) {
+        return showError("Não é possível cadastrar em minicursos iguais");
+      } else {
+        const data = {
+          option1: this.option1,
+          option2: this.option2
+        };
+        api.post("/schedule/course", data).then(res => {
+          console.log(res);
+          if (res.status === 200 || res.status === 201) {
+            showSuccess(res.data.option1);
+            this.getCourses();
+          } else {
+            showError(res.data.message);
+            this.getCourses();
+          }
+        });
+      }
     },
     getCourses() {
       this.isLoading = true;
       api.get("/schedule/course").then(res => {
         if (res.status === 200) {
           this.courses = res.data.minicursos;
+        } else {
+          showError(res.data.message);
         }
       });
       setTimeout(() => {
