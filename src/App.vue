@@ -9,14 +9,14 @@
 </template>
 
 <script>
-import { userKey, showError } from "@/global";
+import { userKey, showError, baseApiUrl } from "@/global";
 import { mapState } from "vuex";
 import Menu from "@/components/template/Menu";
 import Footer from "@/components/template/Footer";
 import Header from "@/components/template/Header";
 import Content from "@/components/template/Content";
 import Loading from "@/components/template/Loading";
-import api from "@/services/api";
+import axios from 'axios';
 
 export default {
   name: "App",
@@ -40,19 +40,26 @@ export default {
         return this.$router.push({ name: "auth" });
       }
 
-      const res = await api.put("/login", userData).then(res => {
-        if (res.status === 200) {
-          this.$store.commit("setUser", userData);
-        } else {
-          localStorage.removeItem(userKey);
-          if (sessionStorage.getItem("vuex") ){
-            sessionStorage.removeItem("vuex");
-            document.location.reload(true);
-          } else {
-            this.$router.push({ name: "auth" });
-          }
+      const api = axios.create({
+        baseURL: baseApiUrl,
+        headers: {"Authorization" : `Bearer ${userData.jwt_token}`},
+        validateStatus: function (status) {
+            return status < 1000;
         }
       });
+
+      const res = await api.put("/login", userData)
+      if (res.status === 200) {
+        this.$store.commit("setUser", userData);
+      } else {
+        localStorage.removeItem(userKey);
+        if (sessionStorage.getItem("vuex") ){
+          sessionStorage.removeItem("vuex");
+          document.location.reload(true);
+        } else {
+          this.$router.push({ name: "auth" });
+        }
+      }
 
       this.isValidating = false;
     }

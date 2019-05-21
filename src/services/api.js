@@ -1,9 +1,9 @@
 import axios from 'axios';
 import store from '@/store';
+import { baseApiUrl } from "@/global";
 
 const api = axios.create({
-    //baseURL: 'https://api.sacsis.tech/api',
-    baseURL: 'https://sacsis-api.herokuapp.com/api',
+    baseURL: baseApiUrl,
     validateStatus: function (status) {
         return status < 1000;
     }
