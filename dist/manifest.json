@@ -1,8 +1,8 @@
 {
   "name": "XI SACSIS",
   "short_name": "SACSIS",
-  "theme_color": "#2196f3",
-  "background_color": "#2196f3",
+  "theme_color": "#3F51B5",
+  "background_color": "#3F51B5",
   "display": "standalone",
   "Scope": ".",
   "start_url": ".",
