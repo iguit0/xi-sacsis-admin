@@ -162,7 +162,7 @@
         </b-input-group-text>
         <the-mask
           v-on:keyup.enter="checkForm"
-          :mask="['####']"
+          :mask="['#####']"
           v-model="user.matricula"
           name="matricula"
           placeholder="Matrícula"
@@ -299,14 +299,14 @@ export default {
         shirtSize: null
       },
       optionsShirt: [
-        { value: null, text: "Selecione um tamanho" },
+        { value: null, text: "Tamanho" },
         { value: "P", text: "P" },
         { value: "M", text: "M" },
         { value: "G", text: "G" },
         { value: "GG", text: "GG" }
       ],
       optionsGender: [
-        { value: null, text: "Selecione um gênero" },
+        { value: null, text: "Gênero" },
         { value: 0, text: "Masculino" },
         { value: 1, text: "Feminino" }
       ]
@@ -378,14 +378,7 @@ export default {
           this.errors.push(msg);
           showError(msg);
           this.isLoading = false;
-        } /*else if (!this.validEmail(this.user.email)) {
-        let msg = "Utilize um e-mail válido";
-        this.errors.push(msg);
-        showError(msg);
-        this.isLoading = false;
-      } */ else if (
-          !this.user.password
-        ) {
+        } else if (!this.user.password) {
           let msg = "Senha é obrigatório";
           this.errors.push(msg);
           showError(msg);

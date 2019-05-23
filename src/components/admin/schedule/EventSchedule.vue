@@ -270,8 +270,6 @@ export default {
           if (res.status === 200) {
             this.events = res.data.other;
             this.totalRows = res.data.other.length;
-          } else {
-            showError(res.data.message);
           }
         });
     },

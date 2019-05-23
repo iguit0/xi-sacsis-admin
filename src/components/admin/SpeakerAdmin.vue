@@ -217,8 +217,6 @@ export default {
       api.get("/admin/speaker").then(res => {
         if (res.status === 200) {
           this.speakers = res.data.ministrantes;
-        } else {
-          showError(res.data.message);
         }
       });
     },

@@ -208,6 +208,11 @@ export default {
   text-decoration: none;
 }
 
+.tree-node.selected > .tree-content:hover,
+.tree-node.selected > .tree-content:active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 .tree-node.selected > .tree-content {
   background-color: rgba(255, 255, 255, 0.2);
 }

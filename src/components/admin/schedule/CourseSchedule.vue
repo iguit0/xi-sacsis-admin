@@ -326,7 +326,6 @@ export default {
         } else {
           this.isLoading = false;
           this.empty = true;
-          showError(res.data.message);
         }
       });
     },

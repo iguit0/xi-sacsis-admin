@@ -141,9 +141,6 @@ export default {
         if (res.status === 200) {
           this.tickets = res.data.lotes;
           this.totalRows = res.data.lotes.length;
-        } else {
-          let errorMsg = res.data.message;
-          showError(errorMsg);
         }
       });
     },

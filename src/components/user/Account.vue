@@ -36,12 +36,15 @@
         </b-form-group>
 
         <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">
-          <b-form-input
+          <the-mask
             id="input-3"
-            readonly
+            :mask="['#####']"
             v-model="editedUser.matricula"
-            placeholder="Digite matrícula"
-          ></b-form-input>
+            name="matricula"
+            readonly
+            placeholder="Matrícula"
+            class="form-control"
+          />
         </b-form-group>
 
         <b-form-group id="input-group-4" label="CPF:" label-for="input-4">

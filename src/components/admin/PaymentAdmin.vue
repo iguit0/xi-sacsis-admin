@@ -289,8 +289,6 @@ export default {
       api.get("/admin/user?onlyadm=0&loadname=1").then(res => {
         if (res.status === 200) {
           this.users = res.data;
-        } else {
-          showError(res.data.message);
         }
       });
     },
@@ -299,8 +297,6 @@ export default {
         if (res.status === 200) {
           this.payments = res.data.pagamentos;
           this.totalRows = res.data.pagamentos.length;
-        } else {
-          showError(res.data.message);
         }
       });
     },
@@ -308,8 +304,6 @@ export default {
       api.get("/admin/payment/lot?loadvalue=0").then(res => {
         if (res.status === 200) {
           this.tickets = res.data.lotes;
-        } else {
-          showError(res.data.message);
         }
       });
     },
