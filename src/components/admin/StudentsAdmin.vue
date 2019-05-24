@@ -210,7 +210,7 @@ export default {
         rg: parsedStudent.rg,
         camiseta: parsedStudent.camiseta,
         sexo: parsedStudent.sexo,
-        admin: parsedStudent.admin
+        admin: (parsedStudent.admin === "false") ? false : true
       };
       axios
         .put(`${baseApiUrl}/admin/user`, data, {
