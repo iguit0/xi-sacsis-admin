@@ -27,7 +27,7 @@
           v-on:keyup.enter="checkForm"
           v-model="user.name"
           type="text"
-          placeholder="Nome"
+          placeholder="Nome e sobrenome"
           class="form-control"
           required
           name="name"
@@ -369,7 +369,7 @@ export default {
         }
       } else if (this.showSignup) {
         if (!this.user.name) {
-          let msg = "Nome é obrigatório";
+          let msg = "Nome completo é obrigatório";
           this.errors.push(msg);
           showError(msg);
           this.isLoading = false;
