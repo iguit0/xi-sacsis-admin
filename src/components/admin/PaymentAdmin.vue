@@ -194,6 +194,7 @@ export default {
       mode: "save",
       user: null,
       ticket: null,
+      putRequest: false,
       payment: {},
       paymentContent: {},
       paymentModal: {
@@ -270,7 +271,7 @@ export default {
     save() {
       let parsedTicket = JSON.parse(JSON.stringify(this.ticket));
       let parsedUser = JSON.parse(JSON.stringify(this.user));
-      const method = parsedTicket.id ? "put" : "post";
+      const method = this.putRequest ? "put" : "post";
       const data = {
         user_id: parsedUser.id,
         lote_id: parsedTicket.id
@@ -284,6 +285,7 @@ export default {
           this.reset();
         }
       });
+      this.putRequest = false;
     },
     loadUsers() {
       api.get("/admin/user?onlyadm=0&loadname=1").then(res => {
@@ -327,6 +329,7 @@ export default {
       };
       this.mode = mode;
       this.payment = { ...payment };
+      this.putRequest = true;
       this.incomplete = false;
     }
   },
