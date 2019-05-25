@@ -83,7 +83,6 @@ export default {
           text: "Minha Conta",
           data: { icon: "user-circle", name: "AccountPages" }
         },
-        /*
         {
           text: "Minicursos",
           data: {
@@ -94,7 +93,7 @@ export default {
         {
           text: "Programação",
           data: { icon: "calendar-alt", name: "ScheduleView" }
-        },*/
+        },
         {
           text: "Sair",
           data: { icon: "sign-out-alt" }
@@ -133,7 +132,6 @@ export default {
             }
           ]
         },
-        /*
         {
           text: "Minicursos",
           data: {
@@ -144,7 +142,7 @@ export default {
         {
           text: "Ver Programação",
           data: { icon: "calendar-alt", name: "ScheduleView" }
-        },*/
+        },
         {
           text: "Sair",
           data: { icon: "sign-out-alt" }
@@ -208,17 +206,11 @@ export default {
   text-decoration: none;
 }
 
-.tree-node.selected > .tree-content:hover,
-.tree-node.selected > .tree-content:active {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
 .tree-node.selected > .tree-content {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.menu .tree-node.selected > .tree-content,
-.menu .tree-node .tree-content:hover {
+.tree-node:not(.selected) > .tree-content:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
