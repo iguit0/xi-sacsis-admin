@@ -8,11 +8,7 @@ export default new Vuex.Store({
     plugins: [createPersistedState({ storage: window.sessionStorage })],
     state: {
         isMenuVisible: false,
-        user: null,
-        stats: {
-            participants: 0,
-            courses: 0
-        }
+        user: null
     },
     mutations: {
         toggleMenu(state, isVisible) {
@@ -34,10 +30,7 @@ export default new Vuex.Store({
             } else {
                 state.isMenuVisible = false
             }
-        },
-        setStats(state, stats) {
-            state.stats = stats;
-        },
+        }
     },
     getters: {
         permissionLevel(state) {
@@ -64,9 +57,6 @@ export default new Vuex.Store({
                 return state.user.jwt_token
             else
                 return null
-        },
-        getStats(state) {
-            return state.stats
         }
     }
 })

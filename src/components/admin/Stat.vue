@@ -4,7 +4,7 @@
       <v-icon :name="icon" scale="4" :color="style"/>
     </div>
     <div class="stat-info">
-      <span class="stat-title">{{title}}</span>
+      <span class="stat-title text-uppercase">{{title}}</span>
       <span class="stat-value">{{value}}</span>
     </div>
   </div>

@@ -5,11 +5,11 @@
       <h2 class="text-center text-uppercase mt-1">CARREGANDO...</h2>
     </div>
 
-    <div>
+    <div v-else>
       <PageTitle
         icon="chalkboard-teacher"
         main="Minicursos"
-        :sub="`${courses.length} opções disponíveis`"
+        :sub="`${coursesLength} opções disponíveis`"
         :firstOption="option1"
         :secondOption="option2"
       />
@@ -18,7 +18,7 @@
           <b-col>
             <h2 class="text-center text-uppercase">Opção 1</h2>
             <b-card
-              v-for="(minicurso) in courses"
+              v-for="(minicurso) in coursesTurma1"
               :key="minicurso.id"
               header-bg-variant="primary"
               header-text-variant="white"
@@ -54,7 +54,7 @@
           <b-col>
             <h2 class="text-center text-uppercase">Opção 2</h2>
             <b-card
-              v-for="(minicurso) in courses"
+              v-for="(minicurso) in coursesTurma2"
               :key="minicurso.id"
               header-bg-variant="primary"
               header-text-variant="white"
@@ -117,11 +117,13 @@ export default {
   components: { PageTitle },
   data() {
     return {
-      check1: "",
-      check2: "",
-      option1: "",
+      check1: null,
+      check2: null,
+      option1: null,
       option2: null,
-      courses: [],
+      coursesLength: 0,
+      coursesTurma1: [],
+      coursesTurma2: [],
       isLoading: false
     };
   },
@@ -132,16 +134,21 @@ export default {
   },
   methods: {
     confirm() {
+      const parsedOption1 = parseInt(this.option1);
+      const parsedOption2 = parseInt(this.option2);
+      const method = this.option1 && this.option2 ? "put" : "post";
       if (!this.option1 || !this.option2) {
+        // verificar tem duas opcoes selecionadas
         return showError("Selecione duas opções");
       } else if (this.option1 === this.option2) {
+        // não deixar cadastrar dois minicursos iguais
         return showError("Não é possível cadastrar em minicursos iguais");
       } else {
         const data = {
-          option1: this.option1,
-          option2: this.option2
+          option1: parsedOption1,
+          option2: parsedOption2
         };
-        api.post("/schedule/course", data).then(res => {
+        api[method]("/schedule/course", data).then(res => {
           if (res.status === 200 || res.status === 201) {
             showSuccess(res.data.option1);
             this.getCourses();
@@ -155,8 +162,19 @@ export default {
     getCourses() {
       this.isLoading = true;
       api.get("/schedule/course").then(res => {
-        if (res.status === 200) {
-          this.courses = res.data.minicursos;
+        if (res.status === 200 || res.status === 201) {
+          console.log(res.data);
+          if (res.data.option1 && res.data.option2) {
+            this.option1 = res.data.option1;
+            this.option2 = res.data.option2;
+          }
+          this.coursesLength = res.data.minicursos.length;
+          this.coursesTurma1 = res.data.minicursos.filter(
+            elem => elem.turma === "1"
+          );
+          this.coursesTurma2 = res.data.minicursos.filter(
+            elem => elem.turma === "2"
+          );
         } else {
           showError(res.data.message);
         }
