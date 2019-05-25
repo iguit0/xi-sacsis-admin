@@ -17,7 +17,7 @@
           <!-- sobrescrita do título -->
           <h2 slot="title" class="text-uppercase">{{title}}</h2>
           <!-- ./sobrescrita do título -->
-          <tab-content title="Sobre você" icon="fa fa-user" :before-change="checkForm">
+          <tab-content title="Sobre você" icon="fa fa-user" :before-change="checkForm1">
             <!-- personal content -->
             <b-form>
               <b-form-group id="input-group-1" label="Nome Completo:" label-for="input-1">
@@ -25,27 +25,49 @@
                   id="input-1"
                   type="email"
                   required
-                  v-model="teacher.name"
+                  v-model="teacher.nome"
                   placeholder="Conte-nos o seu nome"
                 />
               </b-form-group>
-              <b-form-group id="input-group-2" label="Resumo:" label-for="input-2">
+              <b-form-group id="input-group-2" label="Resumo:" label-for="input-2" description="Maximo 250 caracteres">
                 <b-form-textarea
                   id="input-2"
                   placeholder="Fale um pouco sobre você..."
+                  required
+                  v-model="teacher.resumo"
                   no-resize
                   no-auto-shrink
                   rows="3"
                   max-rows="6"
-                ></b-form-textarea>
+                  :maxlength="250"
+                />
               </b-form-group>
-              <b-form-group
-                id="input-group-2"
-                label="RG:"
-                label-for="input-2"
-                description="Apenas números"
-              >
-                <b-input v-model="teacher.rg" type="number" placeholder="RG" required/>
+              <b-form-group id="input-group-1" label="Email:" label-for="input-1">
+                <b-form-input
+                  id="input-1"
+                  type="email"
+                  required
+                  v-model="teacher.email"
+                  placeholder="Insira seu endereço de email."
+                />
+              </b-form-group>
+              <b-form-group id="input-group-3" label="Telefone:" label-for="input-3">
+                <the-mask
+                  v-model="teacher.telefone"
+                  placeholder="Insira seu numero de telefone."
+                  class="form-control"
+                  required
+                  :mask="['(##) ####-####','(##) #####-####']"
+                />
+              </b-form-group>
+              <b-form-group id="input-group-2" label="RG:" label-for="input-2" description="Apenas números">
+                <the-mask
+                  v-model="teacher.rg"
+                  placeholder="RG"
+                  class="form-control"
+                  required
+                  :mask="['#####################']"
+                />
               </b-form-group>
               <b-form-group id="input-group-3" label="CPF:" label-for="input-3">
                 <the-mask
@@ -68,14 +90,14 @@
                   browse-text="Escolher"
                   placeholder="Escolha um arquivo..."
                   drop-placeholder="Solte o arquivo aqui..."
-                ></b-form-file>
+                />
               </b-form-group>
               <b-form-group id="input-group-4" label="Facebook:" label-for="input-4">
                 <b-input-group>
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-facebook" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-4" placeholder="@usuario"/>
+                  <b-input id="input-4" placeholder="@usuario (Opcional)"/>
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-5" label="Instagram:" label-for="input-5">
@@ -83,7 +105,7 @@
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-instagram" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-5" placeholder="@usuario"/>
+                  <b-input id="input-5" placeholder="@usuario (Opcional)"/>
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-6" label="Twitter:" label-for="input-6">
@@ -91,33 +113,38 @@
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-twitter" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-6" placeholder="@usuario"/>
+                  <b-input id="input-6" placeholder="@usuario (Opcional)"/>
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-7" label="Site:" label-for="input-7">
                 <b-input-group prepend="www." class="mt-3">
-                  <b-input id="input-7" placeholder="seusite.com.br"/>
+                  <b-input id="input-7" placeholder="seusite.com.br (Opcional)"/>
                 </b-input-group>
               </b-form-group>
             </b-form>
             <!-- ./personal content -->
           </tab-content>
-          <tab-content title="Sobre a Minicurso" icon="fa fa-chalkboard-teacher">
+          <tab-content title="Sobre a Minicurso" icon="fa fa-chalkboard-teacher" :before-change="checkForm2">
             <!-- course details -->
             <b-form>
               <b-form-group id="input-group-9" label="Título:" label-for="input-9">
-                <b-input placeholder="Título do minicurso" id="input-9"/>
+                <b-input
+                  v-model="teacher.titulo"
+                  placeholder="Título do minicurso"
+                  id="input-9"
+                  required
+                />
               </b-form-group>
               <b-form-group id="input-group-10" label="Conteúdo:" label-for="input-10">
                 <b-form-textarea
                   id="input-10"
                   placeholder="O minicurso irá abordar..."
                   no-resize
+                  required
                   v-model="teacher.conteudo"
                   no-auto-shrink
-                  rows="3"
-                  max-rows="6"
-                ></b-form-textarea>
+                  rows="9"
+                />
               </b-form-group>
             </b-form>
             <!-- ./teacher details -->
@@ -127,27 +154,50 @@
             <b-form>
               <b-form-group id="input-group-1" label="Nome Completo:" label-for="input-1">
                 <b-form-input
-                  v-model="teacher.nome"
                   id="input-1"
-                  readonly
                   type="email"
+                  readonly
+                  v-model="teacher.nome"
                   placeholder="Conte-nos o seu nome"
                 />
               </b-form-group>
               <b-form-group id="input-group-2" label="Resumo:" label-for="input-2">
                 <b-form-textarea
-                  v-model="teacher.resumo"
-                  readonly
                   id="input-2"
                   placeholder="Fale um pouco sobre você..."
+                  readonly
+                  v-model="teacher.resumo"
                   no-resize
                   no-auto-shrink
                   rows="3"
                   max-rows="6"
-                ></b-form-textarea>
+                />
               </b-form-group>
-              <b-form-group label="Telefone:">
-                <b-input type="tel" placeholder="Telefone" readonly v-model="teacher.telefone"/>
+              <b-form-group id="input-group-1" label="Email:" label-for="input-1">
+                <b-form-input
+                  id="input-1"
+                  type="email"
+                  readonly
+                  v-model="teacher.email"
+                  placeholder="Insira seu endereço de email."
+                />
+              </b-form-group>
+              <b-form-group id="input-group-3" label="Telefone:" label-for="input-3">
+                <the-mask
+                  v-model="teacher.telefone"
+                  placeholder="Insira seu numero de telefone."
+                  class="form-control"
+                  readonly
+                  :mask="['(##) ####-####','(##) #####-####']"
+                />
+              </b-form-group>
+              <b-form-group id="input-group-2" label="RG:" label-for="input-2" description="Apenas números">
+                <b-input
+                  v-model="teacher.rg"
+                  type="number"
+                  placeholder="RG"
+                  readonly
+                />
               </b-form-group>
               <b-form-group id="input-group-3" label="CPF:" label-for="input-3">
                 <the-mask
@@ -157,9 +207,6 @@
                   readonly
                   :mask="['###.###.###-##']"
                 />
-              </b-form-group>
-              <b-form-group id="input-group-2" label="RG:" label-for="input-2">
-                <b-input v-model="teacher.rg" readonly type="number" placeholder="RG"/>
               </b-form-group>
             </b-form>
             <b-form-group id="input-group-9" label="Título:" label-for="input-9">
@@ -178,15 +225,11 @@
                 placeholder="O minicurso irá abordar..."
                 no-resize
                 no-auto-shrink
-                rows="3"
-                max-rows="6"
-              ></b-form-textarea>
+                rows="9"
+              />
             </b-form-group>
             <!-- ./confirmacao -->
           </tab-content>
-          <div v-if="errorMsg">
-            <span class="error">{{errorMsg}}</span>
-          </div>
         </form-wizard>
       </b-col>
     </b-row>
@@ -202,7 +245,9 @@ export default {
   name: "FormTeacherSignup",
   data() {
     return {
-      errorMsg: null,
+      errors: [],
+      form1Check: true,
+      form2Check: false,
       teacher: {
         nome: "",
         resumo: ""
@@ -220,7 +265,7 @@ export default {
       const data = {
         type_form: "course",
         nome: parsedTeacher.nome,
-        resumo: parsedTeacher,
+        resumo: parsedTeacher.resumo,
         rg: parsedTeacher.rg,
         cpf: parsedTeacher.cpf,
         avatar: parsedTeacher.avatar,
@@ -243,7 +288,7 @@ export default {
           }
         });
     },
-    checkForm() {
+    checkForm1() {
       this.errors = [];
 
       return new Promise((resolve, reject) => {
@@ -255,14 +300,6 @@ export default {
           let msg = "Resumo é obrigatório";
           this.errors.push(msg);
           showError(msg);
-        } else if (!this.teacher.rg) {
-          let msg = "RG é obrigatório";
-          this.errors.push(msg);
-          showError(msg);
-        } else if (!this.teacher.cpf) {
-          let msg = "CPF é obrigatório";
-          this.errors.push(msg);
-          showError(msg);
         } else if (!this.teacher.email) {
           let msg = "E-mail é obrigatório";
           this.errors.push(msg);
@@ -271,12 +308,12 @@ export default {
           let msg = "Telefone é obrigatório";
           this.errors.push(msg);
           showError(msg);
-        } else if (!this.teacher.titulo) {
-          let msg = "Título do minicurso é obrigatório";
+        } else if (!this.teacher.rg) {
+          let msg = "RG é obrigatório";
           this.errors.push(msg);
           showError(msg);
-        } else if (!this.teacher.conteudo) {
-          let msg = "Conteúdo do minicurso é obrigatório";
+        } else if (!this.teacher.cpf) {
+          let msg = "CPF é obrigatório";
           this.errors.push(msg);
           showError(msg);
         } else if (!this.teacher.avatar) {
@@ -292,9 +329,30 @@ export default {
         }
       });
     },
+    checkForm2() {
+      this.errors = [];
+
+      return new Promise((resolve, reject) => {
+        if (!this.teacher.titulo) {
+          let msg = "Título do minicurso é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+        } else if (!this.teacher.conteudo) {
+          let msg = "Conteúdo do minicurso é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+        } 
+
+        if (!this.errors.length) {
+          resolve(true);
+        } else {
+          reject("Preencha os campos obrigatórios!");
+        }
+      });
+    },
     handleErrorMessage(errorMsg) {
-      this.errorMsg = errorMsg;
-    }
+      this.errors = errorMsg;
+    },
   }
 };
 </script>
