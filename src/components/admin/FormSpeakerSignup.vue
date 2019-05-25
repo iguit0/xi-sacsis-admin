@@ -15,51 +15,56 @@
           <!-- sobrescrita do título -->
           <h2 slot="title" class="text-uppercase">{{title}}</h2>
           <!-- ./sobrescrita do título -->
-          <tab-content title="Sobre você" icon="fa fa-user" :before-change="checkForm">
+          <tab-content title="Sobre você" icon="fa fa-user" :before-change="checkForm1">
             <!-- personal content -->
             <b-form>
               <b-form-group id="input-group-1" label="Nome Completo:" label-for="input-1">
                 <b-form-input
-                  v-model="speaker.nome"
                   id="input-1"
-                  type="text"
+                  type="email"
                   required
+                  v-model="speaker.nome"
                   placeholder="Conte-nos o seu nome"
                 />
               </b-form-group>
-              <b-form-group
-                id="input-group-2"
-                label="Resumo:"
-                label-for="input-2"
-                description="Fale um pouco sobre você, onde trabalha(ou), etc..."
-              >
+              <b-form-group id="input-group-2" label="Resumo:" label-for="input-2" description="Maximo 250 caracteres">
                 <b-form-textarea
-                  v-model="speaker.resumo"
-                  required
                   id="input-2"
-                  placeholder="Resumo"
+                  placeholder="Fale um pouco sobre você..."
+                  required
+                  v-model="speaker.resumo"
                   no-resize
                   no-auto-shrink
                   rows="3"
                   max-rows="6"
-                ></b-form-textarea>
+                  :maxlength="250"
+                />
               </b-form-group>
-              <b-form-group label="E-mail:" description="Não mandaremos spam :)">
+              <b-form-group id="input-group-1" label="Email:" label-for="input-1">
                 <b-form-input
-                  v-model="speaker.email"
                   id="input-1"
                   type="email"
                   required
-                  placeholder="E-mail"
+                  v-model="speaker.email"
+                  placeholder="Insira seu endereço de email."
                 />
               </b-form-group>
-              <b-form-group label="Telefone:">
+              <b-form-group id="input-group-3" label="Telefone:" label-for="input-3">
                 <the-mask
                   v-model="speaker.telefone"
-                  placeholder="Telefone"
+                  placeholder="Insira seu numero de telefone."
                   class="form-control"
                   required
-                  :mask="['(##) ####-####', '(##) #####-####']"
+                  :mask="['(##) ####-####','(##) #####-####']"
+                />
+              </b-form-group>
+              <b-form-group id="input-group-2" label="RG:" label-for="input-2" description="Apenas números">
+                <the-mask
+                  v-model="speaker.rg"
+                  placeholder="RG"
+                  class="form-control"
+                  required
+                  :mask="['#####################']"
                 />
               </b-form-group>
               <b-form-group id="input-group-3" label="CPF:" label-for="input-3">
@@ -71,25 +76,26 @@
                   :mask="['###.###.###-##']"
                 />
               </b-form-group>
-              <b-form-group id="input-group-2" label="RG:" label-for="input-2">
-                <b-input v-model="speaker.rg" type="number" placeholder="RG" required/>
-              </b-form-group>
-              <b-form-group id="input-group-8" label="Foto:" label-for="input-8">
+              <b-form-group
+                id="input-group-8"
+                label="Foto:"
+                label-for="input-8"
+                description="Formatos aceitos: .jpg, .jpeg e .png"
+              >
                 <b-form-file
                   id="input-8"
                   v-model="speaker.avatar"
                   browse-text="Escolher"
                   placeholder="Escolha um arquivo..."
                   drop-placeholder="Solte o arquivo aqui..."
-                  description="Formatos aceitos: .jpg, .jpeg e .png"
-                ></b-form-file>
+                />
               </b-form-group>
               <b-form-group id="input-group-4" label="Facebook:" label-for="input-4">
                 <b-input-group>
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-facebook" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input v-model="speaker.facebook" id="input-4" placeholder="@usuario"/>
+                  <b-input id="input-4" placeholder="@usuario (Opcional)"/>
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-5" label="Instagram:" label-for="input-5">
@@ -97,7 +103,7 @@
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-instagram" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-5" v-model="speaker.instagram" placeholder="@usuario"/>
+                  <b-input id="input-5" placeholder="@usuario (Opcional)"/>
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-6" label="Twitter:" label-for="input-6">
@@ -105,37 +111,38 @@
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-twitter" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-6" v-model="speaker.twitter" placeholder="@usuario"/>
+                  <b-input id="input-6" placeholder="@usuario (Opcional)"/>
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-7" label="Site:" label-for="input-7">
                 <b-input-group prepend="www." class="mt-3">
-                  <b-input id="input-7" placeholder="seusite.com.br" v-model="speaker.site"/>
+                  <b-input id="input-7" placeholder="seusite.com.br (Opcional)"/>
                 </b-input-group>
               </b-form-group>
             </b-form>
             <!-- ./personal content -->
           </tab-content>
-          <tab-content title="Sobre a palestra" icon="fa fa-microphone">
+          <tab-content title="Sobre a palestra" icon="fa fa-microphone" :before-change="checkForm2">
             <!-- speaker details -->
             <b-form>
               <b-form-group id="input-group-9" label="Título:" label-for="input-9">
                 <b-input
                   v-model="speaker.titulo"
-                  placeholder="Machine Learning no século XXI"
+                  placeholder="Título da palestra"
                   id="input-9"
+                  required
                 />
               </b-form-group>
               <b-form-group id="input-group-10" label="Conteúdo:" label-for="input-10">
                 <b-form-textarea
                   id="input-10"
-                  v-model="speaker.conteudo"
                   placeholder="A palestra irá abordar..."
                   no-resize
+                  required
+                  v-model="speaker.conteudo"
                   no-auto-shrink
-                  rows="3"
-                  max-rows="6"
-                ></b-form-textarea>
+                  rows="9"
+                />
               </b-form-group>
             </b-form>
             <!-- ./speaker details -->
@@ -145,27 +152,45 @@
             <b-form>
               <b-form-group id="input-group-1" label="Nome Completo:" label-for="input-1">
                 <b-form-input
-                  v-model="speaker.nome"
                   id="input-1"
-                  readonly
                   type="email"
-                  placeholder="Conte-nos o seu nome"
+                  readonly
+                  v-model="speaker.nome"
                 />
               </b-form-group>
               <b-form-group id="input-group-2" label="Resumo:" label-for="input-2">
                 <b-form-textarea
-                  v-model="speaker.resumo"
-                  readonly
                   id="input-2"
-                  placeholder="Fale um pouco sobre você..."
+                  readonly
+                  v-model="speaker.resumo"
                   no-resize
                   no-auto-shrink
                   rows="3"
                   max-rows="6"
-                ></b-form-textarea>
+                />
               </b-form-group>
-              <b-form-group label="Telefone:">
-                <b-input type="tel" placeholder="Telefone" readonly v-model="speaker.telefone"/>
+              <b-form-group id="input-group-1" label="Email:" label-for="input-1">
+                <b-form-input
+                  id="input-1"
+                  type="email"
+                  readonly
+                  v-model="speaker.email"
+                />
+              </b-form-group>
+              <b-form-group id="input-group-3" label="Telefone:" label-for="input-3">
+                <the-mask
+                  v-model="speaker.telefone"
+                  class="form-control"
+                  readonly
+                  :mask="['(##) ####-####','(##) #####-####']"
+                />
+              </b-form-group>
+              <b-form-group id="input-group-2" label="RG:" label-for="input-2">
+                <b-input
+                  v-model="speaker.rg"
+                  type="number"
+                  readonly
+                />
               </b-form-group>
               <b-form-group id="input-group-3" label="CPF:" label-for="input-3">
                 <the-mask
@@ -176,14 +201,10 @@
                   :mask="['###.###.###-##']"
                 />
               </b-form-group>
-              <b-form-group id="input-group-2" label="RG:" label-for="input-2">
-                <b-input v-model="speaker.rg" readonly type="number" placeholder="RG"/>
-              </b-form-group>
             </b-form>
             <b-form-group id="input-group-9" label="Título:" label-for="input-9">
               <b-input
                 v-model="speaker.titulo"
-                placeholder="Machine Learning no século XXI"
                 id="input-9"
                 readonly
               />
@@ -193,12 +214,10 @@
                 id="input-10"
                 v-model="speaker.conteudo"
                 readonly
-                placeholder="A palestra irá abordar..."
                 no-resize
                 no-auto-shrink
-                rows="3"
-                max-rows="6"
-              ></b-form-textarea>
+                rows="9"
+              />
             </b-form-group>
             <!-- ./confirmacao -->
           </tab-content>
@@ -220,7 +239,7 @@ export default {
   name: "FormSpeakerSignup",
   data() {
     return {
-      errorMsg: null,
+      errors: null,
       speaker: {
         nome: "",
         resumo: ""
@@ -261,7 +280,7 @@ export default {
           }
         });
     },
-    checkForm() {
+    checkForm1() {
       this.errors = [];
 
       return new Promise((resolve, reject) => {
@@ -273,14 +292,6 @@ export default {
           let msg = "Resumo é obrigatório";
           this.errors.push(msg);
           showError(msg);
-        } else if (!this.speaker.rg) {
-          let msg = "RG é obrigatório";
-          this.errors.push(msg);
-          showError(msg);
-        } else if (!this.speaker.cpf) {
-          let msg = "CPF é obrigatório";
-          this.errors.push(msg);
-          showError(msg);
         } else if (!this.speaker.email) {
           let msg = "E-mail é obrigatório";
           this.errors.push(msg);
@@ -289,12 +300,12 @@ export default {
           let msg = "Telefone é obrigatório";
           this.errors.push(msg);
           showError(msg);
-        } else if (!this.speaker.titulo) {
-          let msg = "Título da palestra é obrigatório";
+        } else if (!this.speaker.rg) {
+          let msg = "RG é obrigatório";
           this.errors.push(msg);
           showError(msg);
-        } else if (!this.speaker.conteudo) {
-          let msg = "Conteúdo da palestra é obrigatório";
+        } else if (!this.speaker.cpf) {
+          let msg = "CPF é obrigatório";
           this.errors.push(msg);
           showError(msg);
         } else if (!this.speaker.avatar) {
@@ -310,9 +321,30 @@ export default {
         }
       });
     },
+    checkForm2() {
+      this.errors = [];
+
+      return new Promise((resolve, reject) => {
+        if (!this.speaker.titulo) {
+          let msg = "Título da palestra é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+        } else if (!this.speaker.conteudo) {
+          let msg = "Conteúdo da palestra é obrigatório";
+          this.errors.push(msg);
+          showError(msg);
+        } 
+
+        if (!this.errors.length) {
+          resolve(true);
+        } else {
+          reject("Preencha os campos obrigatórios!");
+        }
+      });
+    },
     handleErrorMessage(errorMsg) {
-      this.errorMsg = errorMsg;
-    }
+      this.errors = errorMsg;
+    },
   }
 };
 </script>

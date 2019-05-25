@@ -245,9 +245,7 @@ export default {
   name: "FormTeacherSignup",
   data() {
     return {
-      errors: [],
-      form1Check: true,
-      form2Check: false,
+      errors: null,
       teacher: {
         nome: "",
         resumo: ""
