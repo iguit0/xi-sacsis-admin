@@ -203,7 +203,6 @@
               <b-form-group id="input-group-2" label="RG:" label-for="input-2" description="Apenas números">
                 <b-input
                   v-model="teacher.rg"
-                  type="number"
                   readonly
                   :mask="['####################']"
                 />

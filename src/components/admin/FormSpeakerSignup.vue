@@ -201,7 +201,6 @@
               <b-form-group id="input-group-2" label="RG:" label-for="input-2">
                 <b-input
                   v-model="speaker.rg"
-                  type="number"
                   readonly
                   :mask="['####################']"
                 />
