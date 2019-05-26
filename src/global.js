@@ -1,6 +1,7 @@
 import Vue from 'vue';
 //export const baseApiUrl = 'https://api.sacsis.tech/api'
 export const baseApiUrl = 'https://sacsis-api.herokuapp.com/api'
+//export const baseApiUrl = 'http://localhost:5000/api'
 export const userKey = '__sacsis_user'
 
 // tratamento de erros/exceções do backend

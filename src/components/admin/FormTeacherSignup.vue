@@ -266,7 +266,6 @@ export default {
         resumo: ""
       },
 
-
 			show: false,
 			params: {
 				token: '123456798',
@@ -274,9 +273,8 @@ export default {
 			},
 			headers: {
 				smail: '*_~'
-			},
-
-
+      },
+      
     };
   },
   components: {
