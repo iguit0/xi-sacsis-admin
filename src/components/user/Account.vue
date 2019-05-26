@@ -23,16 +23,14 @@
         </b-form-group>
 
         <b-form-group id="input-group-2" label="Nome:" label-for="input-2">
-          <b-form-input id="input-2" v-model="editedUser.nome" readonly placeholder="Digite nome"></b-form-input>
+          <b-form-input id="input-2" v-model="editedUser.nome" placeholder="Digite nome"/>
         </b-form-group>
 
         <b-form-group id="input-group-33" label="Gênero:" label-for="input-33">
-          <b-form-checkbox
-            disabled
-            id="input-33"
-            v-model="editedUser.sexo"
-            switch
-          >{{ editedUser.sexo ? 'Masculino' : 'Feminino' }}</b-form-checkbox>
+          <b-form-radio-group id="input-33" v-model="editedUser.sexo" name="gender-radio">
+            <b-form-radio value="Masculino">Masculino</b-form-radio>
+            <b-form-radio value="Feminino">Feminino</b-form-radio>
+          </b-form-radio-group>
         </b-form-group>
 
         <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">
@@ -41,7 +39,6 @@
             :mask="['#####']"
             v-model="editedUser.matricula"
             name="matricula"
-            readonly
             placeholder="Matrícula"
             class="form-control"
           />
@@ -51,7 +48,6 @@
           <the-mask
             id="input-4"
             v-model="editedUser.cpf"
-            readonly
             placeholder="CPF"
             class="form-control"
             :mask="['###.###.###-##']"
@@ -59,14 +55,14 @@
         </b-form-group>
 
         <b-form-group id="input-group-5" label="RG:" label-for="input-5">
-          <b-form-input readonly id="input-5" v-model="editedUser.rg"/>
+          <b-form-input id="input-5" v-model="editedUser.rg"/>
         </b-form-group>
 
         <b-form-group
           id="input-group-6"
           label="Camiseta:"
           label-for="input-6"
-          description="Escolheu tamanho errado? Entre em contato com a organização do evento"
+          description="Escolheu tamanho errado? Entre em contato com a organização do evento!"
         >
           <b-form-select
             id="input-6"
@@ -94,7 +90,6 @@
           aria-label="Editar Dados de Usuário"
           class="btn btn-warning btn-block"
           :styled="isStyled"
-          disabled
           @click.native="editUser"
           :loading="isLoading"
         >
@@ -109,7 +104,7 @@
 import { mapState } from "vuex";
 import api from "@/services/api";
 import VueLoadingButton from "vue-loading-button";
-import { showError, showSuccess } from "@/global";
+import { showError, showSuccess, userKey } from "@/global";
 import PageTitle from "@/components/template/PageTitle";
 
 export default {
@@ -135,16 +130,22 @@ export default {
   methods: {
     editUser() {
       this.isLoading = true;
-      let parsedUser = JSON.parse(JSON.stringify(this.editedUser));
+      //let parsedUser = JSON.parse(JSON.stringify(this.editedUser));
+      // parse do select de genero
+      if (this.editedUser.sexo === "Masculino") this.editedUser.sexo = 0;
+      else if (this.editedUser.sexo === "Feminino") this.editedUser.sexo = 1;
       const data = {
-        nome: parsedUser.nome,
-        cpf: parsedUser.cpf,
-        rg: parsedUser.rg,
-        matricula: parsedUser.matricula,
-        camiseta: parsedUser.camiseta
+        email: this.editedUser.email,
+        nome: this.editedUser.nome,
+        sexo: this.editedUser.sexo,
+        matricula: this.editedUser.matricula,
+        cpf: this.editedUser.cpf,
+        rg: this.editedUser.rg,
+        camiseta: this.editedUser.camiseta,
+        status_pago: this.editedUser.status_pago
       };
       api.put("/user", data).then(res => {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           showSuccess(res.data.message);
         } else {
           showError(res.data.message);
@@ -157,7 +158,7 @@ export default {
   },
   mounted() {
     this.isLoading = true;
-    this.editedUser = this.user.dados;
+    this.editedUser = JSON.parse(JSON.stringify(this.user.dados));
     setTimeout(() => {
       this.isLoading = false;
     }, 1000);

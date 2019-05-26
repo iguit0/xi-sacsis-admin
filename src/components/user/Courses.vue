@@ -132,7 +132,7 @@
           size="lg"
           v-if="payment"
         >
-          <v-icon name="save" scale="1.5" class="mr-1"/>
+          <v-icon name="save" scale="1.5" class="mr-2"/>
           <span class="text-uppercase">salvar</span>
         </b-btn>
         <div v-else>
@@ -172,7 +172,6 @@ export default {
     confirm() {
       const parsedOption1 = parseInt(this.option1);
       const parsedOption2 = parseInt(this.option2);
-      const method = this.option1 && this.option2 ? "put" : "post";
       if (this.option1 === this.option2) {
         // não deixar cadastrar dois minicursos iguais
         return showError("Não é possível cadastrar em minicursos iguais");
@@ -181,7 +180,8 @@ export default {
         option1: parsedOption1,
         option2: parsedOption2
       };
-      api[method]("/schedule/course", data).then(res => {
+      api.post("/schedule/course", data).then(res => {
+        console.log("confirm -> ", res.data);
         if (res.status === 200 || res.status === 201) {
           showSuccess(res.data.message);
           this.getCourses();
@@ -201,15 +201,36 @@ export default {
         this.option2 = -1;
         this.check2 = null;
       }
+      // desinscricao (sair) de minicurso
+      const data = {
+        option1: this.option1,
+        option2: this.option2
+      };
+      console.log(data);
+      api.post("/schedule/course", data).then(res => {
+        console.log("cancel -> ", res.data);
+        if (res.status === 200 || res.status === 201) {
+          showSuccess(res.data.option1);
+          showSuccess(res.data.option2);
+          this.getCourses();
+        } else {
+          showError(res.data.option1);
+          showError(res.data.option2);
+          this.getCourses();
+        }
+      });
     },
     getCourses() {
       this.isLoading = true;
       api.get("/schedule/course").then(res => {
+        console.log("getCourses -> ", res.data);
         if (res.status === 200 || res.status === 201) {
           // se tiver inscrito em algum, popula os selects
-          if (res.data.option1 && res.data.option2) {
+          if (res.data.option1 || res.data.option2) {
             this.option1 = res.data.option1;
             this.option2 = res.data.option2;
+            this.check1 = res.data.option1;
+            this.check2 = res.data.option2;
           }
           this.coursesLength = res.data.minicursos.length;
           this.coursesTurma1 = res.data.minicursos.filter(
