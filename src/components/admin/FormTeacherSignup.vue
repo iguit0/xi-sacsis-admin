@@ -252,7 +252,6 @@
 <script>
 import axios from "axios";
 import { baseApiUrl, showError, showSuccess } from "@/global";
-
 import myUpload from 'vue-image-crop-upload';
 
 export default {
