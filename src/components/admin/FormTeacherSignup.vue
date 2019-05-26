@@ -313,7 +313,7 @@ export default {
       axios
         .post(`${baseApiUrl}/speaker/?token=${this.token}`, data)
         .then(res => {
-          if (res.status === 200) {
+          if (res.status === 201) {
             showSuccess(res.data.message);
           } else {
             showError(res.data.message);
