@@ -252,7 +252,6 @@
 <script>
 import axios from "axios";
 import { baseApiUrl, showError, showSuccess } from "@/global";
-
 import myUpload from 'vue-image-crop-upload';
 
 export default {
@@ -313,7 +312,7 @@ export default {
       axios
         .post(`${baseApiUrl}/speaker/?token=${this.token}`, data)
         .then(res => {
-          if (res.status === 200) {
+          if (res.status === 201) {
             showSuccess(res.data.message);
           } else {
             showError(res.data.message);

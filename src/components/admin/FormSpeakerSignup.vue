@@ -64,7 +64,7 @@
                   placeholder="RG"
                   class="form-control"
                   required
-                  :mask="['#####################']"
+                  :mask="['####################']"
                 />
               </b-form-group>
               <b-form-group id="input-group-3" label="CPF:" label-for="input-3">
@@ -76,20 +76,30 @@
                   :mask="['###.###.###-##']"
                 />
               </b-form-group>
-              <b-form-group
-                id="input-group-8"
-                label="Foto:"
-                label-for="input-8"
-                description="Formatos aceitos: .jpg, .jpeg e .png"
-              >
-                <b-form-file
-                  id="input-8"
-                  v-model="speaker.avatar"
-                  browse-text="Escolher"
-                  placeholder="Escolha um arquivo..."
-                  drop-placeholder="Solte o arquivo aqui..."
-                />
+
+              <b-form-group label="Imagem de avatar:">
+                <my-upload field="img"
+                      @crop-success="cropSuccess"
+                      v-model="show"
+                  :params="params"
+                  :headers="headers"
+                  :width="300"
+                  :height="300"
+                  langType="pt-br"
+                  img-format="png"></my-upload>
+                <b-img
+                  center
+                  :src="speaker.avatar"
+                  v-show="speaker.avatar"
+                  rounded="circle"
+                  :style="[speaker.avatar ? {'margin-bottom':'20px'} : {}]"/>
+                <b-button
+                  block
+                  variant="outline-primary"
+                  @click="toggleShow">Selecionar imagem de avatar
+                </b-button>
               </b-form-group>
+
               <b-form-group id="input-group-4" label="Facebook:" label-for="input-4">
                 <b-input-group>
                   <b-input-group-text slot="prepend">
@@ -150,6 +160,9 @@
           <tab-content title="Confirmar Dados" icon="fas fa-clipboard-check">
             <!-- confirmacao -->
             <b-form>
+              <b-form-group>
+                <b-img center :src="speaker.avatar" v-show="speaker.avatar" rounded="circle"/>
+              </b-form-group>
               <b-form-group id="input-group-1" label="Nome Completo:" label-for="input-1">
                 <b-form-input
                   id="input-1"
@@ -221,9 +234,6 @@
             </b-form-group>
             <!-- ./confirmacao -->
           </tab-content>
-          <div v-if="errorMsg">
-            <span class="error">{{errorMsg}}</span>
-          </div>
         </form-wizard>
       </b-col>
     </b-row>
@@ -233,6 +243,7 @@
 <script>
 import axios from "axios";
 import { baseApiUrl, showError, showSuccess } from "@/global";
+import myUpload from 'vue-image-crop-upload';
 
 export default {
   props: ["token"],
@@ -243,8 +254,21 @@ export default {
       speaker: {
         nome: "",
         resumo: ""
-      }
+      },
+
+			show: false,
+			params: {
+				token: '123456798',
+				name: 'avatar'
+			},
+			headers: {
+				smail: '*_~'
+      },
+      
     };
+  },
+  components: {
+    'my-upload': myUpload
   },
   computed: {
     title() {
@@ -252,28 +276,34 @@ export default {
     }
   },
   methods: {
+    toggleShow() {
+      this.show = !this.show;
+    },
+    cropSuccess(avatar){
+      this.speaker.avatar = avatar;
+    },
     save() {
-      let parsedSpeaker = JSON.parse(JSON.stringify(this.speaker));
       const data = {
         type_form: "lecture",
-        nome: parsedSpeaker.nome,
-        resumo: parsedSpeaker,
-        rg: parsedSpeaker.rg,
-        cpf: parsedSpeaker.cpf,
-        avatar: parsedSpeaker.avatar,
-        facebook: parsedSpeaker.facebook,
-        twitter: parsedSpeaker.twitter,
-        instagram: parsedSpeaker.instagram,
-        site: parsedSpeaker.site,
-        email: parsedSpeaker.email,
-        telefone: parsedSpeaker.telefone,
-        titulo: parsedSpeaker.titulo,
-        conteudo: parsedSpeaker.conteudo
-      };
+        nome: this.speaker.nome,
+        resumo: this.speaker.resumo,
+        rg: this.speaker.rg,
+        cpf: this.speaker.cpf,
+        facebook: this.speaker.facebook,
+        twitter: this.speaker.twitter,
+        instagram: this.speaker.instagram,
+        site: this.speaker.site,
+        email: this.speaker.email,
+        telefone: this.speaker.telefone,
+        titulo: this.speaker.titulo,
+        conteudo: this.speaker.conteudo,
+        avatar: this.speaker.avatar
+      }
+
       axios
         .post(`${baseApiUrl}/speaker/?token=${this.token}`, data)
         .then(res => {
-          if (res.status === 200) {
+          if (res.status === 201) {
             showSuccess(res.data.message);
           } else {
             showError(res.data.message);
@@ -342,8 +372,8 @@ export default {
         }
       });
     },
-    handleErrorMessage(errorMsg) {
-      this.errors = errorMsg;
+    handleErrorMessage(errors) {
+      this.errors = errors;
     },
   }
 };
