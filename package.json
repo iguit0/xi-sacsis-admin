@@ -24,6 +24,7 @@
     "vue-awesome": "^3.4.0",
     "vue-clipboards": "^1.2.4",
     "vue-form-wizard": "^0.8.4",
+    "vue-image-crop-upload": "^2.5.0",
     "vue-loading-button": "^0.1.4",
     "vue-mq": "0.2.1",
     "vue-router": "3.0.1",

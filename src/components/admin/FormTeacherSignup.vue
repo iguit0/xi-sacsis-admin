@@ -78,20 +78,30 @@
                   :mask="['###.###.###-##']"
                 />
               </b-form-group>
-              <b-form-group
-                id="input-group-8"
-                label="Foto:"
-                label-for="input-8"
-                description="Formatos aceitos: .jpg, .jpeg e .png"
-              >
-                <b-form-file
-                  id="input-8"
-                  v-model="teacher.avatar"
-                  browse-text="Escolher"
-                  placeholder="Escolha um arquivo..."
-                  drop-placeholder="Solte o arquivo aqui..."
-                />
+
+              <b-form-group label="Imagem de avatar:">
+                <my-upload field="img"
+                      @crop-success="cropSuccess"
+                      v-model="show"
+                  :params="params"
+                  :headers="headers"
+                  :width="300"
+                  :height="300"
+                  langType="pt-br"
+                  img-format="png"></my-upload>
+                <b-img
+                  center
+                  :src="teacher.avatar"
+                  v-show="teacher.avatar"
+                  rounded="circle"
+                  :style="[teacher.avatar ? {'margin-bottom':'20px'} : {}]"/>
+                <b-button
+                  block
+                  variant="outline-primary"
+                  @click="toggleShow">Selecionar imagem de avatar
+                </b-button>
               </b-form-group>
+
               <b-form-group id="input-group-4" label="Facebook:" label-for="input-4">
                 <b-input-group>
                   <b-input-group-text slot="prepend">
@@ -152,6 +162,9 @@
           <tab-content title="Confirmar Dados" icon="fas fa-clipboard-check">
             <!-- confirmacao -->
             <b-form>
+              <b-form-group>
+                <b-img center :src="teacher.avatar" v-show="teacher.avatar" rounded="circle"/>
+              </b-form-group>
               <b-form-group id="input-group-1" label="Nome Completo:" label-for="input-1">
                 <b-form-input
                   id="input-1"
@@ -240,6 +253,8 @@
 import axios from "axios";
 import { baseApiUrl, showError, showSuccess } from "@/global";
 
+import myUpload from 'vue-image-crop-upload';
+
 export default {
   props: ["token"],
   name: "FormTeacherSignup",
@@ -249,8 +264,23 @@ export default {
       teacher: {
         nome: "",
         resumo: ""
-      }
+      },
+
+
+			show: false,
+			params: {
+				token: '123456798',
+				name: 'avatar'
+			},
+			headers: {
+				smail: '*_~'
+			},
+
+
     };
+  },
+  components: {
+    'my-upload': myUpload
   },
   computed: {
     title() {
@@ -258,24 +288,30 @@ export default {
     }
   },
   methods: {
+    toggleShow() {
+      this.show = !this.show;
+    },
+    cropSuccess(avatar){
+      this.teacher.avatar = avatar;
+    },
     save() {
-      let parsedTeacher = JSON.parse(JSON.stringify(this.teacher));
       const data = {
         type_form: "course",
-        nome: parsedTeacher.nome,
-        resumo: parsedTeacher.resumo,
-        rg: parsedTeacher.rg,
-        cpf: parsedTeacher.cpf,
-        avatar: parsedTeacher.avatar,
-        facebook: parsedTeacher.facebook,
-        twitter: parsedTeacher.twitter,
-        instagram: parsedTeacher.instagram,
-        site: parsedTeacher.site,
-        email: parsedTeacher.email,
-        telefone: parsedTeacher.telefone,
-        titulo: parsedTeacher.titulo,
-        conteudo: parsedTeacher.conteudo
-      };
+        nome: this.teacher.nome,
+        resumo: this.teacher.resumo,
+        rg: this.teacher.rg,
+        cpf: this.teacher.cpf,
+        facebook: this.teacher.facebook,
+        twitter: this.teacher.twitter,
+        instagram: this.teacher.instagram,
+        site: this.teacher.site,
+        email: this.teacher.email,
+        telefone: this.teacher.telefone,
+        titulo: this.teacher.titulo,
+        conteudo: this.teacher.conteudo,
+        avatar: this.teacher.avatar
+      }
+
       axios
         .post(`${baseApiUrl}/speaker/?token=${this.token}`, data)
         .then(res => {
