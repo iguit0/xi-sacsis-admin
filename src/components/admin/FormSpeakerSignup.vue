@@ -234,9 +234,6 @@
             </b-form-group>
             <!-- ./confirmacao -->
           </tab-content>
-          <div v-if="errorMsg">
-            <span class="error">{{errorMsg}}</span>
-          </div>
         </form-wizard>
       </b-col>
     </b-row>
@@ -375,8 +372,8 @@ export default {
         }
       });
     },
-    handleErrorMessage(errorMsg) {
-      this.errors = errorMsg;
+    handleErrorMessage(errors) {
+      this.errors = errors;
     },
   }
 };
