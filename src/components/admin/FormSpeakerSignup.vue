@@ -203,12 +203,12 @@
                   v-model="speaker.rg"
                   type="number"
                   readonly
+                  :mask="['####################']"
                 />
               </b-form-group>
               <b-form-group id="input-group-3" label="CPF:" label-for="input-3">
                 <the-mask
                   v-model="speaker.cpf"
-                  placeholder="CPF"
                   class="form-control"
                   readonly
                   :mask="['###.###.###-##']"

@@ -171,13 +171,11 @@
                   type="email"
                   readonly
                   v-model="teacher.nome"
-                  placeholder="Conte-nos o seu nome"
                 />
               </b-form-group>
               <b-form-group id="input-group-2" label="Resumo:" label-for="input-2">
                 <b-form-textarea
                   id="input-2"
-                  placeholder="Fale um pouco sobre você..."
                   readonly
                   v-model="teacher.resumo"
                   no-resize
@@ -192,13 +190,11 @@
                   type="email"
                   readonly
                   v-model="teacher.email"
-                  placeholder="Insira seu endereço de email."
                 />
               </b-form-group>
               <b-form-group id="input-group-3" label="Telefone:" label-for="input-3">
                 <the-mask
                   v-model="teacher.telefone"
-                  placeholder="Insira seu numero de telefone."
                   class="form-control"
                   readonly
                   :mask="['(##) ####-####','(##) #####-####']"
@@ -208,14 +204,13 @@
                 <b-input
                   v-model="teacher.rg"
                   type="number"
-                  placeholder="RG"
                   readonly
+                  :mask="['####################']"
                 />
               </b-form-group>
               <b-form-group id="input-group-3" label="CPF:" label-for="input-3">
                 <the-mask
                   v-model="teacher.cpf"
-                  placeholder="CPF"
                   class="form-control"
                   readonly
                   :mask="['###.###.###-##']"
@@ -225,7 +220,6 @@
             <b-form-group id="input-group-9" label="Título:" label-for="input-9">
               <b-input
                 v-model="teacher.titulo"
-                placeholder="Título do minicurso"
                 id="input-9"
                 readonly
               />
@@ -235,7 +229,6 @@
                 id="input-10"
                 v-model="teacher.conteudo"
                 readonly
-                placeholder="O minicurso irá abordar..."
                 no-resize
                 no-auto-shrink
                 rows="9"
