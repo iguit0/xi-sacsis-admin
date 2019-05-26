@@ -66,7 +66,7 @@
                   placeholder="RG"
                   class="form-control"
                   required
-                  :mask="['#####################']"
+                  :mask="['####################']"
                 />
               </b-form-group>
               <b-form-group id="input-group-3" label="CPF:" label-for="input-3">
