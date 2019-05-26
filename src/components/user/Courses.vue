@@ -10,18 +10,18 @@
         icon="chalkboard-teacher"
         main="Minicursos"
         :sub="`${coursesLength} opções disponíveis`"
-        :firstOption="option1"
-        :secondOption="option2"
       />
       <b-container fluid>
         <b-row>
           <b-col>
             <h2 class="text-center text-uppercase">Opção 1</h2>
+            <!-- OPCAO 1 -->
             <b-card
               v-for="(minicurso) in coursesTurma1"
               :key="minicurso.id"
               header-bg-variant="primary"
               header-text-variant="white"
+              header-class="text-uppercase h5"
               :header="`${minicurso.titulo}`"
               align="center"
               class="mt-3 mb-3"
@@ -36,11 +36,28 @@
                 <v-icon name="users" class="mr-1"/>
                 Turma: {{minicurso.turma}}
               </b-card-text>
-              <b-card-text>
+              <b-card-text v-if="minicurso.vagas_disponiveis > 10">
                 <v-icon name="chair" class="mr-1"/>
                 Vagas restantes: {{minicurso.vagas_disponiveis}}
               </b-card-text>
-              <div slot="footer">
+              <b-card-text v-if="minicurso.vagas_disponiveis <= 10">
+                <v-icon name="chair" class="mr-1"/>Vagas restantes:
+                <span class="text-danger">{{minicurso.vagas_disponiveis}}</span>
+              </b-card-text>
+              <div slot="footer" v-if="minicurso.vagas_disponiveis === 0">
+                <span class="text-danger text-uppercase">Vagas esgotadas!</span>
+              </div>
+              <div slot="footer" v-else>
+                <b-btn
+                  class="float-left"
+                  size="sm"
+                  variant="danger"
+                  v-if="check1 === minicurso.id"
+                  @click="cancel(check1)"
+                >
+                  <v-icon name="times"/>
+                  <span class="ml-1">SAIR</span>
+                </b-btn>
                 <b-form-radio
                   class="float-right"
                   v-model="option1"
@@ -53,11 +70,13 @@
           </b-col>
           <b-col>
             <h2 class="text-center text-uppercase">Opção 2</h2>
+            <!-- OPÇÃO 2 -->
             <b-card
               v-for="(minicurso) in coursesTurma2"
               :key="minicurso.id"
               header-bg-variant="primary"
               header-text-variant="white"
+              header-class="text-uppercase h5"
               :header="`${minicurso.titulo}`"
               align="center"
               class="mt-3 mb-3"
@@ -72,11 +91,28 @@
                 <v-icon name="users" class="mr-1"/>
                 Turma: {{minicurso.turma}}
               </b-card-text>
-              <b-card-text>
+              <b-card-text v-if="minicurso.vagas_disponiveis > 10">
                 <v-icon name="chair" class="mr-1"/>
                 Vagas restantes: {{minicurso.vagas_disponiveis}}
               </b-card-text>
-              <div slot="footer">
+              <b-card-text v-if="minicurso.vagas_disponiveis <= 10">
+                <v-icon name="chair" class="mr-1"/>Vagas restantes:
+                <span class="text-danger">{{minicurso.vagas_disponiveis}}</span>
+              </b-card-text>
+              <div slot="footer" v-if="minicurso.vagas_disponiveis === 0">
+                <span class="text-danger text-uppercase">Vagas esgotadas!</span>
+              </div>
+              <div slot="footer" v-else>
+                <b-btn
+                  class="float-left"
+                  size="sm"
+                  variant="danger"
+                  v-if="check2 === minicurso.id"
+                  @click="cancel(check2)"
+                >
+                  <v-icon name="times"/>
+                  <span class="ml-1">SAIR</span>
+                </b-btn>
                 <b-form-radio
                   class="float-right"
                   v-model="option2"
@@ -90,7 +126,7 @@
         </b-row>
         <b-btn
           @click="confirm"
-          :disabled="!option1 || !option2"
+          :disabled="!option1 && !option2"
           variant="success"
           block
           size="lg"
@@ -100,7 +136,7 @@
           <span class="text-uppercase">salvar</span>
         </b-btn>
         <div v-else>
-          <h2 class="mt-2 text-center text-uppercase">Seu pagamento ainda não foi verificado!</h2>
+          <h2 class="mt-2 text-center text-uppercase">Seu pagamento ainda não foi confirmado!</h2>
         </div>
       </b-container>
     </div>
@@ -137,33 +173,40 @@ export default {
       const parsedOption1 = parseInt(this.option1);
       const parsedOption2 = parseInt(this.option2);
       const method = this.option1 && this.option2 ? "put" : "post";
-      if (!this.option1 || !this.option2) {
-        // verificar tem duas opcoes selecionadas
-        return showError("Selecione duas opções");
-      } else if (this.option1 === this.option2) {
+      if (this.option1 === this.option2) {
         // não deixar cadastrar dois minicursos iguais
         return showError("Não é possível cadastrar em minicursos iguais");
-      } else {
-        const data = {
-          option1: parsedOption1,
-          option2: parsedOption2
-        };
-        api[method]("/schedule/course", data).then(res => {
-          if (res.status === 200 || res.status === 201) {
-            showSuccess(res.data.option1);
-            this.getCourses();
-          } else {
-            showError(res.data.message);
-            this.getCourses();
-          }
-        });
+      }
+      const data = {
+        option1: parsedOption1,
+        option2: parsedOption2
+      };
+      api[method]("/schedule/course", data).then(res => {
+        if (res.status === 200 || res.status === 201) {
+          showSuccess(res.data.message);
+          this.getCourses();
+        } else {
+          showError(res.data.message);
+          this.getCourses();
+        }
+      });
+    },
+    cancel(option) {
+      // parametro: id do minicurso selecionado
+      // invalida a opcao que tiver com a opcao selecionada
+      if (this.option1 === option) {
+        this.option1 = -1;
+        this.check1 = null;
+      } else if (this.option2 === option) {
+        this.option2 = -1;
+        this.check2 = null;
       }
     },
     getCourses() {
       this.isLoading = true;
       api.get("/schedule/course").then(res => {
         if (res.status === 200 || res.status === 201) {
-          console.log(res.data);
+          // se tiver inscrito em algum, popula os selects
           if (res.data.option1 && res.data.option2) {
             this.option1 = res.data.option1;
             this.option2 = res.data.option2;
@@ -177,6 +220,7 @@ export default {
           );
         } else {
           showError(res.data.message);
+          this.getCourses();
         }
       });
       setTimeout(() => {
