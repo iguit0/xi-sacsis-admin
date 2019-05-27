@@ -122,18 +122,17 @@ export default {
               text: "Programação",
               data: { icon: "calendar-check", name: "SchedulePages" }
             },
-            {
+            /*{
               text: "Ministrantes",
               data: { icon: "person-booth", name: "GuestsPages" }
-            },
+            },*/
             {
               text: "Relatórios",
               data: { icon: "scroll", name: "ReportsPage" }
             }
           ]
         },
-        /*
-        {
+        /*{
           text: "Minicursos",
           data: {
             icon: "chalkboard-teacher",
@@ -207,12 +206,16 @@ export default {
   text-decoration: none;
 }
 
-.tree-node.selected > .tree-content {
-  background-color: rgba(255, 255, 255, 0.2);
+.tree-node:not(.selected) > .tree-content:hover {
+  background-color: rgba(255, 255, 255, 0.4) !important;
 }
 
-.tree-node:not(.selected) > .tree-content:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+.tree-node.selected > .tree-content {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.tree-node.disabled > .tree-content:hover {
+  background: inherit !important;
 }
 
 .tree-arrow.has-child {

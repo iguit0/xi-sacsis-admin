@@ -6,20 +6,14 @@
         <!-- Programação -->
         <b-col>
           <h2 class="text-center text-uppercase title mb-3">DADOS DE PROGRAMAÇÃO</h2>
-          <b-btn
-            size="lg"
-            :disabled="isLoading"
-            variant="primary"
-            block
-            @click="downloadSchedule('csv')"
-          >
+          <b-btn size="lg" disabled variant="primary" block @click="downloadSchedule('csv')">
             <v-icon scale="2" name="file-csv"/>
             <span class="ml-2 title text-uppercase">Baixar .CSV</span>
           </b-btn>
         </b-col>
         <b-col>
           <h2 class="text-center text-uppercase title mb-3">DADOS DE PROGRAMAÇÃO</h2>
-          <b-btn size="lg" variant="warning" block @click="downloadSchedule('xls')">
+          <b-btn disabled size="lg" variant="warning" block @click="downloadSchedule('xls')">
             <v-icon scale="2" name="file-excel"/>
             <span class="ml-2 title text-uppercase">Baixar .XLS</span>
           </b-btn>
@@ -30,14 +24,26 @@
         <!-- Pagamentos -->
         <b-col>
           <h2 class="text-center text-uppercase title mb-3">PAGAMENTOS</h2>
-          <b-btn size="lg" variant="primary" block @click="downloadPayments('csv')">
+          <b-btn
+            size="lg"
+            :disabled="isLoading"
+            variant="primary"
+            block
+            @click="downloadPayments('csv')"
+          >
             <v-icon scale="2" name="file-csv"/>
             <span class="ml-2 title text-uppercase">Baixar .CSV</span>
           </b-btn>
         </b-col>
         <b-col>
           <h2 class="text-center text-uppercase title mb-3">PAGAMENTOS</h2>
-          <b-btn size="lg" variant="warning" block @click="downloadPayments('xls')">
+          <b-btn
+            size="lg"
+            :disabled="isLoading"
+            variant="warning"
+            block
+            @click="downloadPayments('xls')"
+          >
             <v-icon scale="2" name="file-excel"/>
             <span class="ml-2 title text-uppercase">Baixar .XLS</span>
           </b-btn>
@@ -104,7 +110,7 @@ export default {
       link.click();
     },
     downloadPayments(type) {
-      let filename = "xisacsis_dados_programacao";
+      let filename = "xisacsis_pagamentos";
       if (type === "csv") {
         this.filetype = 1;
         this.responseType = "arraybuffer";

@@ -29,9 +29,9 @@
           color="#49a7c1"
         />
         <Stat
-          v-if="lectures"
+          v-if="payments"
           title="Pagamentos"
-          :value="lectures"
+          :value="payments"
           icon="money-bill-alt"
           color="#3CB371"
         />
