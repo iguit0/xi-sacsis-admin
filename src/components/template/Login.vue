@@ -351,14 +351,12 @@ export default {
           this.errors.push(msg);
           showError(msg);
           this.isLoading = false;
-        } /*else if (!this.validEmail(this.user.email)) {
+        } else if (!this.validEmail(this.user.email)) {
           let msg = "Utilize um e-mail válido";
           this.errors.push(msg);
           showError(msg);
           this.isLoading = false;
-        } */ else if (
-          !this.user.password
-        ) {
+        } else if (!this.user.password) {
           let msg = "Senha é obrigatório";
           this.errors.push(msg);
           showError(msg);

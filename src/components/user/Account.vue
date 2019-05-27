@@ -23,15 +23,14 @@
         </b-form-group>
 
         <b-form-group id="input-group-2" label="Nome:" label-for="input-2">
-          <b-form-input id="input-2" v-model="editedUser.nome" placeholder="Digite nome"/>
+          <b-form-input id="input-2" v-model="editedUser.nome" readonly placeholder="Digite nome"/>
         </b-form-group>
 
-        <b-form-group id="input-group-33" label="Gênero:" label-for="input-33">
-          <b-form-radio-group id="input-33" v-model="editedUser.sexo" name="gender-radio">
-            <b-form-radio value="Masculino">Masculino</b-form-radio>
-            <b-form-radio value="Feminino">Feminino</b-form-radio>
-          </b-form-radio-group>
-        </b-form-group>
+        <b-form-group
+          id="input-group-33"
+          label="Gênero:"
+          label-for="input-33"
+        >{{editedUser.sexo ? 'Masculino' : 'Feminino'}}</b-form-group>
 
         <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">
           <the-mask
@@ -41,6 +40,7 @@
             name="matricula"
             placeholder="Matrícula"
             class="form-control"
+            readonly
           />
         </b-form-group>
 
@@ -51,11 +51,12 @@
             placeholder="CPF"
             class="form-control"
             :mask="['###.###.###-##']"
+            readonly
           />
         </b-form-group>
 
         <b-form-group id="input-group-5" label="RG:" label-for="input-5">
-          <b-form-input id="input-5" v-model="editedUser.rg"/>
+          <b-form-input id="input-5" v-model="editedUser.rg" readonly/>
         </b-form-group>
 
         <b-form-group
@@ -89,6 +90,7 @@
         <VueLoadingButton
           aria-label="Editar Dados de Usuário"
           class="btn btn-warning btn-block"
+          disabled
           :styled="isStyled"
           @click.native="editUser"
           :loading="isLoading"
@@ -104,7 +106,7 @@
 import { mapState } from "vuex";
 import api from "@/services/api";
 import VueLoadingButton from "vue-loading-button";
-import { showError, showSuccess, userKey } from "@/global";
+import { showError, showSuccess } from "@/global";
 import PageTitle from "@/components/template/PageTitle";
 
 export default {

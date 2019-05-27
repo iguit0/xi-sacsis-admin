@@ -44,11 +44,16 @@
               placeholder="Selecione uma opção"
             >
               <!-- dropdown pra selecionar -->
-              <template slot="option" slot-scope="option">{{option.valor}} • {{option.admin_nome}}</template>
+              <template
+                slot="option"
+                slot-scope="option"
+              >{{option.valor | formatCurrency}} • {{option.admin_nome}}</template>
               <!-- ./dropdown pra selecionar -->
               <!-- método ja selecionado -->
               <template slot="selected-option" slot-scope="option">
-                <div class="selected d-center">{{option.valor}} • {{option.admin_nome}}</div>
+                <div
+                  class="selected d-center"
+                >{{option.valor | formatCurrency}} • {{option.admin_nome}}</div>
               </template>
               <!-- ./metodo ja selecionado -->
               <!-- sem opcoes -->
@@ -163,7 +168,7 @@
         </li>
         <li class="py-1" v-if="paymentContent.valor">
           Lote Valor:
-          <span class="font-weight-bold">{{'R$'+paymentContent.valor+',00'}}</span>
+          <span class="font-weight-bold">{{paymentContent.valor}}</span>
         </li>
         <li class="py-1" v-if="paymentContent.data_pagamento">
           Data Pagamento:
@@ -212,7 +217,9 @@ export default {
           key: "valor",
           label: "Valor",
           sortable: true,
-          formatter: value => "R$" + value + ",00"
+          formatter: value => {
+            return this.formatCurrency(value);
+          }
         },
         {
           key: "data_modificacao",
@@ -223,6 +230,11 @@ export default {
     };
   },
   methods: {
+    formatCurrency(numero) {
+      numero = numero.toFixed(2).split(".");
+      numero[0] = "R$ " + numero[0].split(/(?=(?:...)*$)/).join(".");
+      return numero.join(",");
+    },
     paymentInfo(item, button) {
       this.paymentModal.title = "Detalhes de pagamento";
       this.paymentModal.content = JSON.stringify(item, null, 2);
@@ -331,6 +343,15 @@ export default {
       this.payment = { ...payment };
       this.putRequest = true;
       this.incomplete = false;
+    }
+  },
+  filters: {
+    formatCurrency(numero) {
+      if (numero) {
+        numero = numero.toFixed(2).split(".");
+        numero[0] = "R$ " + numero[0].split(/(?=(?:...)*$)/).join(".");
+        return numero.join(",");
+      }
     }
   },
   mounted() {

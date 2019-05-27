@@ -181,7 +181,6 @@ export default {
         option2: parsedOption2
       };
       api.post("/schedule/course", data).then(res => {
-        console.log("confirm -> ", res.data);
         if (res.status === 200 || res.status === 201) {
           showSuccess(res.data.message);
           this.getCourses();
@@ -206,9 +205,7 @@ export default {
         option1: this.option1,
         option2: this.option2
       };
-      console.log(data);
       api.post("/schedule/course", data).then(res => {
-        console.log("cancel -> ", res.data);
         if (res.status === 200 || res.status === 201) {
           showSuccess(res.data.option1);
           showSuccess(res.data.option2);
@@ -223,7 +220,6 @@ export default {
     getCourses() {
       this.isLoading = true;
       api.get("/schedule/course").then(res => {
-        console.log("getCourses -> ", res.data);
         if (res.status === 200 || res.status === 201) {
           // se tiver inscrito em algum, popula os selects
           if (res.data.option1 || res.data.option2) {

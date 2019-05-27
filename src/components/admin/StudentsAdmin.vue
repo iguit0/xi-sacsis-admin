@@ -17,23 +17,26 @@
         </b-col>
         <b-col md="2" sm="2">
           <b-form-group label="Matrícula:" label-for="student-matricula">
-            <b-form-input
+            <the-mask
               id="student-matricula"
-              type="text"
+              :mask="['#####']"
               v-model="student.matricula"
-              required
-              placeholder="Matrícula"
+              name="matricula"
               :readonly="mode === 'remove'"
+              placeholder="Matrícula"
+              class="form-control"
             />
           </b-form-group>
         </b-col>
         <b-col md="2" sm="6">
           <b-form-group label="CPF:" label-for="student-cpf">
-            <b-input
+            <the-mask
               id="student-cpf"
               v-model="student.cpf"
               placeholder="CPF"
               :readonly="mode === 'remove'"
+              class="form-control"
+              :mask="['###.###.###-##']"
             />
           </b-form-group>
         </b-col>
@@ -191,7 +194,7 @@ export default {
       fields: [
         { key: "matricula", label: "Matrícula", sortable: true },
         { key: "nome", label: "Nome Completo", sortable: true },
-        { key: "email", label: "E-mail" },
+        { key: "email", label: "E-mail", sortable: true },
         { key: "camiseta", label: "Camiseta" },
         { key: "cpf", label: "CPF" },
         { key: "rg", label: "RG" },
@@ -210,7 +213,7 @@ export default {
         rg: parsedStudent.rg,
         camiseta: parsedStudent.camiseta,
         sexo: parsedStudent.sexo,
-        admin: (parsedStudent.admin === "false") ? false : true
+        admin: parsedStudent.admin === "false" ? false : true
       };
       axios
         .put(`${baseApiUrl}/admin/user`, data, {

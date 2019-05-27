@@ -67,12 +67,29 @@
           <strong>automaticamente confirmada.</strong>
         </h3>
 
-        <p
-          class="h4 mt-3 text-muted float-right"
-        >A equipe da XI SACSIS agradece e aguarda-o ansiosa em nosso evento!</p>
+        <p class="h4 mt-3 text-muted float-right">
+          A equipe da
+          <strong>XI SACSIS</strong> agradece e aguarda-o ansiosa em nosso evento!
+        </p>
       </div>
       <div v-else-if="!isAdmin && isPaid">
-        <h2 class="text-center text-uppercase mt-1">Você pagou!!</h2>
+        <h2 class="text-center text-uppercase mt-1">
+          Seu pagamento foi
+          <strong class="text-success">confirmado</strong>!
+        </h2>
+        <p class="h2 text-center text-uppercase mt-3">
+          Agora é só esperar pela
+          <strong class="text-primary">programação</strong> e
+          <strong class="text-warning">minicursos</strong>.
+        </p>
+        <p class="h2 text-center text-uppercase mt-3">
+          Fique ligado, pois iremos liberar a qualquer momento!
+          <v-icon name="smile-wink" scale="2" color="blue"/>
+        </p>
+        <p class="h4 mt-3 text-muted float-right">
+          A equipe da
+          <strong>XI SACSIS</strong> agradece e aguarda-o ansiosa em nosso evento!
+        </p>
       </div>
     </div>
   </div>

@@ -14,6 +14,7 @@ import './plugins/mq'
 import './plugins/sweetalert'
 import './plugins/v-select'
 import './plugins/clipboard'
+import './plugins/money'
 
 Vue.use(VueAnalytics, {
     id: 'UA-140729382-2',

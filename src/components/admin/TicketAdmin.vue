@@ -14,7 +14,7 @@
         </b-col>
         <b-col md="2">
           <b-form-group label="Valor do Lote:" label-for="ticket-value">
-            <b-input type="number" v-model="ticket.valor" placeholder="Valor do Lote"/>
+            <money v-model="ticket.valor" v-bind="money" class="form-control"/>
           </b-form-group>
         </b-col>
       </b-row>
@@ -88,6 +88,13 @@ export default {
   name: "TicketAdmin",
   data() {
     return {
+      money: {
+        decimal: ",",
+        thousands: ".",
+        prefix: "R$ ",
+        precision: 2,
+        masked: false
+      },
       currentPage: 1,
       perPage: 5,
       pageOptions: [5, 10, 15],
@@ -99,7 +106,9 @@ export default {
           key: "valor",
           label: "Valor",
           sortable: true,
-          formatter: value => "R$" + value + ",00"
+          formatter: value => {
+            return this.formatCurrency(value);
+          }
         },
         { key: "admin_nome", label: "Responsável", sortable: true },
         {
@@ -117,6 +126,11 @@ export default {
     };
   },
   methods: {
+    formatCurrency(numero) {
+      numero = numero.toFixed(2).split(".");
+      numero[0] = "R$ " + numero[0].split(/(?=(?:...)*$)/).join(".");
+      return numero.join(",");
+    },
     save() {
       let parsedTicket = JSON.parse(JSON.stringify(this.ticket));
       const method = parsedTicket.id ? "put" : "post";
