@@ -131,9 +131,9 @@ export default {
             let generatedToken = res.data.token;
             let url = window.location.hostname;
             if (this.selectedType === "course") {
-              this.copyData = `${url}/cadastro-minicurso/${generatedToken}`;
+              this.copyData = `${url}/cadastro-minicurso?token=${generatedToken}`;
             } else if (this.selectedType === "lecture") {
-              this.copyData = `${url}/cadastro-palestra/${generatedToken}`;
+              this.copyData = `${url}/cadastro-palestra?token=${generatedToken}`;
             }
             showSuccess(res.data.message);
             this.reset();

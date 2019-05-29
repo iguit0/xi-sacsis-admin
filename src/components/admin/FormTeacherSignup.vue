@@ -107,7 +107,7 @@
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-facebook" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-4" placeholder="@usuario (Opcional)"/>
+                  <b-input id="input-4" placeholder="Link do seu perfil (Opcional)"/>
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-5" label="Instagram:" label-for="input-5">
@@ -115,7 +115,7 @@
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-instagram" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-5" placeholder="@usuario (Opcional)"/>
+                  <b-input id="input-5" placeholder="Link do seu perfil (Opcional)"/>
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-6" label="Twitter:" label-for="input-6">
@@ -123,7 +123,7 @@
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-twitter" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-6" placeholder="@usuario (Opcional)"/>
+                  <b-input id="input-6" placeholder="Link do seu perfil (Opcional)"/>
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-7" label="Site:" label-for="input-7">
@@ -247,7 +247,6 @@ import { baseApiUrl, showError } from "@/global"; //showSuccess
 import myUpload from 'vue-image-crop-upload';
 
 export default {
-  props: ["token"],
   name: "FormTeacherSignup",
   data() {
     return {
@@ -308,7 +307,7 @@ export default {
         }
       });
 
-      api.post(`${baseApiUrl}/speaker/?token=${this.token}`, data).then(res => {
+      api.post(`${baseApiUrl}/speaker/?token=${this.$route.query.token}`, data).then(res => {
         if (res.status === 201) {
           this.confirmModal("success", res.data.message);
           //showSuccess(res.data.message);
@@ -393,21 +392,21 @@ export default {
       this.errors = errorMsg;
     },
     facebookRegex(str) {
-      const regex = /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[?\w\-]*\/)?(?:profile.php\?id=(?=\d.*))?([\w\.-]*)?/;
+      const regex = /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[?\w-]*\/)?(?:profile.php\?id=(?=\d.*))?([\w.-]*)?/;
       const res = str.match(regex);
       if (res.length === 2)
         return res[1];
       return [0];
     },
     twitterRegex(str) {
-      const regex = /http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_.\-]+)/;
+      const regex = /http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_.-]+)/;
       const res = str.match(regex);
       if (res.length === 2)
         return res[1];
       return [0];
     },
     instagramRegex(str) {
-      const regex = /(?:(?:http|https):\/\/)?(?:www.)?(?:instagram.com|instagr.am)\/([a-zA-Z0-9_.\-]+)/;
+      const regex = /(?:(?:http|https):\/\/)?(?:www.)?(?:instagram.com|instagr.am)\/([a-zA-Z0-9_.-]+)/;
       const res = str.match(regex);
       if (res.length === 2)
         return res[1];

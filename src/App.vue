@@ -68,7 +68,9 @@ export default {
     }
   },
   created() {
-    this.validateToken();
+    const currentUrl = window.location.pathname;
+    if (currentUrl !== "/cadastro-minicurso" || currentUrl !== "/cadastro-palestra")
+      this.validateToken();
   }
 };
 </script>

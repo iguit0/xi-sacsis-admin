@@ -59,16 +59,14 @@ const routes = [
         meta: { requiresLogin: true, requiresAdmin: true }
     },
     {
-        path: '/cadastro-palestra/:token',
+        path: '/cadastro-palestra',
         name: 'FormSpeakerSignup',
         component: () => import('./components/admin/FormSpeakerSignup.vue'),
-        props: true
     },
     {
-        path: '/cadastro-minicurso/:token',
+        path: '/cadastro-minicurso',
         name: 'FormTeacherSignup',
         component: () => import('./components/admin/FormTeacherSignup.vue'),
-        props: true
     },
     {
         path: '*',
@@ -83,6 +81,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+    // verifica caminho do formulario.
+    const currentUrl = window.location.pathname;
+    if (currentUrl === "/cadastro-minicurso" || currentUrl === "/cadastro-palestra")
+        next()
+
     const user = JSON.parse(localStorage.getItem(userKey))
 
     // verificar se usuario esta logado - possui token valido
