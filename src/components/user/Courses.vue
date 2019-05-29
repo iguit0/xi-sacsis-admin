@@ -5,6 +5,10 @@
       <h2 class="text-center text-uppercase mt-1">CARREGANDO...</h2>
     </div>
 
+    <div v-else-if="!coursesTurma1 && !coursesTurma2 && !coursesLength">
+      <h2>wtf</h2>
+    </div>
+
     <div v-else>
       <PageTitle
         icon="chalkboard-teacher"
@@ -27,14 +31,18 @@
               class="mt-3 mb-3"
               footer-tag="footer"
             >
-              <b-card-text>{{ minicurso.descricao }}</b-card-text>
-              <b-card-text>
+              <b-card-text v-if="minicurso.descricao">{{minicurso.descricao}}</b-card-text>
+              <b-card-text v-if="minicurso.ministrante">
                 <v-icon name="chalkboard-teacher" class="mr-1"/>
                 Ministrante: {{minicurso.ministrante}}
               </b-card-text>
-              <b-card-text>
+              <b-card-text v-if="minicurso.turma">
                 <v-icon name="users" class="mr-1"/>
                 Turma: {{minicurso.turma}}
+              </b-card-text>
+              <b-card-text v-if="minicurso.data_inicio && minicurso.data_fim">
+                <v-icon name="clock" class="mr-1"/>
+                {{minicurso.data_inicio}} • {{minicurso.data_fim}}
               </b-card-text>
               <b-card-text v-if="minicurso.vagas_disponiveis > 10">
                 <v-icon name="chair" class="mr-1"/>
@@ -44,8 +52,21 @@
                 <v-icon name="chair" class="mr-1"/>Vagas restantes:
                 <span class="text-danger">{{minicurso.vagas_disponiveis}}</span>
               </b-card-text>
-              <div slot="footer" v-if="minicurso.vagas_disponiveis === 0">
+              <div slot="footer" v-if="!payment">
+                <span class="text-danger text-uppercase">Pagamento não confirmado</span>
+              </div>
+              <div slot="footer" v-else-if="payment && minicurso.vagas_disponiveis === 0">
                 <span class="text-danger text-uppercase">Vagas esgotadas!</span>
+                <b-btn
+                  class="float-left"
+                  size="sm"
+                  variant="danger"
+                  v-if="(check2 === minicurso.id)"
+                  @click="cancel(check2)"
+                >
+                  <v-icon name="times"/>
+                  <span class="ml-1">SAIR</span>
+                </b-btn>
               </div>
               <div slot="footer" v-else>
                 <b-btn
@@ -82,14 +103,18 @@
               class="mt-3 mb-3"
               footer-tag="footer"
             >
-              <b-card-text>{{minicurso.descricao}}</b-card-text>
-              <b-card-text>
+              <b-card-text v-if="minicurso.descricao">{{minicurso.descricao}}</b-card-text>
+              <b-card-text v-if="minicurso.ministrante">
                 <v-icon name="chalkboard-teacher" class="mr-1"/>
                 Ministrante: {{minicurso.ministrante}}
               </b-card-text>
-              <b-card-text>
+              <b-card-text v-if="minicurso.turma">
                 <v-icon name="users" class="mr-1"/>
                 Turma: {{minicurso.turma}}
+              </b-card-text>
+              <b-card-text v-if="minicurso.data_inicio && minicurso.data_fim">
+                <v-icon name="clock" class="mr-1"/>
+                {{minicurso.data_inicio}} • {{minicurso.data_fim}}
               </b-card-text>
               <b-card-text v-if="minicurso.vagas_disponiveis > 10">
                 <v-icon name="chair" class="mr-1"/>
@@ -99,7 +124,20 @@
                 <v-icon name="chair" class="mr-1"/>Vagas restantes:
                 <span class="text-danger">{{minicurso.vagas_disponiveis}}</span>
               </b-card-text>
-              <div slot="footer" v-if="minicurso.vagas_disponiveis === 0">
+              <div slot="footer" v-if="!payment">
+                <span class="text-danger text-uppercase">Pagamento não confirmado</span>
+              </div>
+              <div slot="footer" v-else-if="payment && minicurso.vagas_disponiveis === 0">
+                <b-btn
+                  class="float-left"
+                  size="sm"
+                  variant="danger"
+                  v-if="(check2 === minicurso.id)"
+                  @click="cancel(check2)"
+                >
+                  <v-icon name="times"/>
+                  <span class="ml-1">SAIR</span>
+                </b-btn>
                 <span class="text-danger text-uppercase">Vagas esgotadas!</span>
               </div>
               <div slot="footer" v-else>
@@ -107,7 +145,7 @@
                   class="float-left"
                   size="sm"
                   variant="danger"
-                  v-if="check2 === minicurso.id"
+                  v-if="(check2 === minicurso.id)"
                   @click="cancel(check2)"
                 >
                   <v-icon name="times"/>
