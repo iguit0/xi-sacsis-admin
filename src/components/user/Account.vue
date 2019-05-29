@@ -174,8 +174,6 @@ export default {
       setTimeout(() => {
         this.isLoading = false;
       }, 1000);
-
-
     },
     changeState() {
       this.bsave = !this.bsave;
