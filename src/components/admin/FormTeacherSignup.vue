@@ -290,9 +290,9 @@ export default {
         resumo: this.teacher.resumo,
         rg: this.teacher.rg,
         cpf: this.teacher.cpf,
-        facebook: this.teacher.facebook,
-        twitter: this.teacher.twitter,
-        instagram: this.teacher.instagram,
+        facebook: this.facebookRegex(this.teacher.facebook),
+        twitter: this.twitterRegex(this.teacher.twitter),
+        instagram: this.instagramRegex(this.teacher.instagram),
         site: this.teacher.site,
         email: this.teacher.email,
         telefone: this.teacher.telefone,
@@ -392,6 +392,27 @@ export default {
     handleErrorMessage(errorMsg) {
       this.errors = errorMsg;
     },
+    facebookRegex(str) {
+      const regex = /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[?\w\-]*\/)?(?:profile.php\?id=(?=\d.*))?([\w\.-]*)?/;
+      const res = str.match(regex);
+      if (res.length === 2)
+        return res[1];
+      return [0];
+    },
+    twitterRegex(str) {
+      const regex = /http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_.\-]+)/;
+      const res = str.match(regex);
+      if (res.length === 2)
+        return res[1];
+      return [0];
+    },
+    instagramRegex(str) {
+      const regex = /(?:(?:http|https):\/\/)?(?:www.)?(?:instagram.com|instagr.am)\/([a-zA-Z0-9_.\-]+)/;
+      const res = str.match(regex);
+      if (res.length === 2)
+        return res[1];
+      return [0];
+    }
   }
 };
 </script>

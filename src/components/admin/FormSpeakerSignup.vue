@@ -105,7 +105,7 @@
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-facebook" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-4" placeholder="@usuario (Opcional)"/>
+                  <b-input id="input-4" placeholder="Link do seu perfil (Opcional)"/>
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-5" label="Instagram:" label-for="input-5">
@@ -113,7 +113,7 @@
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-instagram" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-5" placeholder="@usuario (Opcional)"/>
+                  <b-input id="input-5" placeholder="Link do seu perfil (Opcional)"/>
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-6" label="Twitter:" label-for="input-6">
@@ -121,7 +121,7 @@
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-twitter" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-6" placeholder="@usuario (Opcional)"/>
+                  <b-input id="input-6" placeholder="Link do seu perfil (Opcional)"/>
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-7" label="Site:" label-for="input-7">
@@ -288,9 +288,9 @@ export default {
         resumo: this.speaker.resumo,
         rg: this.speaker.rg,
         cpf: this.speaker.cpf,
-        facebook: this.speaker.facebook,
-        twitter: this.speaker.twitter,
-        instagram: this.speaker.instagram,
+        facebook: this.facebookRegex(this.teacher.facebook),
+        twitter: this.twitterRegex(this.teacher.twitter),
+        instagram: this.instagramRegex(this.teacher.instagram),
         site: this.speaker.site,
         email: this.speaker.email,
         telefone: this.speaker.telefone,
@@ -390,6 +390,27 @@ export default {
     handleErrorMessage(errors) {
       this.errors = errors;
     },
+    facebookRegex(str) {
+      const regex = /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[?\w\-]*\/)?(?:profile.php\?id=(?=\d.*))?([\w\.-]*)?/;
+      const res = str.match(regex);
+      if (res.length === 2)
+        return res[1];
+      return [0];
+    },
+    twitterRegex(str) {
+      const regex = /http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_.\-]+)/;
+      const res = str.match(regex);
+      if (res.length === 2)
+        return res[1];
+      return [0];
+    },
+    instagramRegex(str) {
+      const regex = /(?:(?:http|https):\/\/)?(?:www.)?(?:instagram.com|instagr.am)\/([a-zA-Z0-9_.\-]+)/;
+      const res = str.match(regex);
+      if (res.length === 2)
+        return res[1];
+      return [0];
+    }
   }
 };
 </script>
