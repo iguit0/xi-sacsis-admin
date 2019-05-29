@@ -7,6 +7,50 @@
     <div class="personal-data" v-else>
       <PageTitle icon="user-circle" main="Minha conta" sub="Gerencie suas informações"/>
       <b-form>
+        <b-form-group id="input-group-2" label="Nome:" label-for="input-2">
+          <b-form-input id="input-2" v-model="editedUser.nome" :readonly="!ienable" placeholder="Digite nome"/>
+        </b-form-group>
+
+        <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">
+          <the-mask
+            id="input-3"
+            :mask="['#######']"
+            v-model="editedUser.matricula"
+            name="matricula"
+            placeholder="Matrícula"
+            class="form-control"
+            :readonly="!ienable"
+          />
+        </b-form-group>
+
+        <b-form-group id="input-group-4" label="CPF:" label-for="input-4">
+          <the-mask
+            id="input-4"
+            v-model="editedUser.cpf"
+            placeholder="CPF"
+            class="form-control"
+            :mask="['###.###.###-##']"
+            :readonly="!ienable"
+          />
+        </b-form-group>
+
+        <b-form-group id="input-group-5" label="RG:" label-for="input-5">
+          <b-form-input
+            id="input-5"
+            v-model="editedUser.rg"
+            :readonly="!ienable"
+            :mask="['####################']"  
+          />
+        </b-form-group>
+
+        <b-form-group
+          id="input-group-33"
+          label="Gênero:"
+          label-for="input-33"
+        >
+          {{editedUser.sexo ? 'Masculino' : 'Feminino'}}
+        </b-form-group>
+
         <b-form-group
           id="input-group-1"
           label="E-mail:"
@@ -20,43 +64,6 @@
             readonly
             placeholder="Digite e-mail"
           ></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Nome:" label-for="input-2">
-          <b-form-input id="input-2" v-model="editedUser.nome" readonly placeholder="Digite nome"/>
-        </b-form-group>
-
-        <b-form-group
-          id="input-group-33"
-          label="Gênero:"
-          label-for="input-33"
-        >{{editedUser.sexo ? 'Masculino' : 'Feminino'}}</b-form-group>
-
-        <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">
-          <the-mask
-            id="input-3"
-            :mask="['#####']"
-            v-model="editedUser.matricula"
-            name="matricula"
-            placeholder="Matrícula"
-            class="form-control"
-            readonly
-          />
-        </b-form-group>
-
-        <b-form-group id="input-group-4" label="CPF:" label-for="input-4">
-          <the-mask
-            id="input-4"
-            v-model="editedUser.cpf"
-            placeholder="CPF"
-            class="form-control"
-            :mask="['###.###.###-##']"
-            readonly
-          />
-        </b-form-group>
-
-        <b-form-group id="input-group-5" label="RG:" label-for="input-5">
-          <b-form-input id="input-5" v-model="editedUser.rg" readonly/>
         </b-form-group>
 
         <b-form-group
@@ -87,15 +94,24 @@
           >{{ editedUser.status_pago ? 'Sim' : 'Não'}}</b-form-checkbox>
         </b-form-group>
 
-        <VueLoadingButton
+        <VueLoadingButton v-if="bedit"
           aria-label="Editar Dados de Usuário"
           class="btn btn-warning btn-block"
-          disabled
           :styled="isStyled"
           @click.native="editUser"
           :loading="isLoading"
         >
           <v-icon name="edit" scale="1.5" class="mr-1"/>Editar
+        </VueLoadingButton>
+
+        <VueLoadingButton v-if="bsave"
+          aria-label="Salvar Dados de Usuário"
+          class="btn btn-success btn-block"
+          :styled="isStyled"
+          @click.native="saveUser"
+          :loading="isLoading"
+        >
+          <v-icon name="save" scale="1.5" class="mr-1"/>Salvar
         </VueLoadingButton>
       </b-form>
     </div>
@@ -106,7 +122,7 @@
 import { mapState } from "vuex";
 import api from "@/services/api";
 import VueLoadingButton from "vue-loading-button";
-import { showError, showSuccess } from "@/global";
+import { showError, showSuccess, userKey } from "@/global";
 import PageTitle from "@/components/template/PageTitle";
 
 export default {
@@ -114,6 +130,9 @@ export default {
   components: { VueLoadingButton, PageTitle },
   data() {
     return {
+      bedit: true,
+      bsave: false,
+      ienable: false,
       isStyled: false,
       isLoading: false,
       editedUser: {},
@@ -131,24 +150,23 @@ export default {
   },
   methods: {
     editUser() {
+      this.changeState();
+    },
+    saveUser() {
+      this.changeState();
       this.isLoading = true;
       //let parsedUser = JSON.parse(JSON.stringify(this.editedUser));
-      // parse do select de genero
-      if (this.editedUser.sexo === "Masculino") this.editedUser.sexo = 0;
-      else if (this.editedUser.sexo === "Feminino") this.editedUser.sexo = 1;
       const data = {
-        email: this.editedUser.email,
         nome: this.editedUser.nome,
-        sexo: this.editedUser.sexo,
         matricula: this.editedUser.matricula,
         cpf: this.editedUser.cpf,
-        rg: this.editedUser.rg,
-        camiseta: this.editedUser.camiseta,
-        status_pago: this.editedUser.status_pago
+        rg: this.editedUser.rg
       };
       api.put("/user", data).then(res => {
         if (res.status === 200 || res.status === 201) {
           showSuccess(res.data.message);
+          localStorage.setItem(userKey, JSON.stringify(res.data));
+          this.$store.commit("setUser", res.data);
         } else {
           showError(res.data.message);
         }
@@ -156,6 +174,13 @@ export default {
       setTimeout(() => {
         this.isLoading = false;
       }, 1000);
+
+
+    },
+    changeState() {
+      this.bsave = !this.bsave;
+      this.bedit = !this.bedit;
+      this.ienable = !this.ienable;
     }
   },
   mounted() {
