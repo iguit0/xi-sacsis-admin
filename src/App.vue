@@ -5,6 +5,9 @@
     <Loading v-if="isValidating"/>
     <Content v-else/>
     <Footer/>
+
+    <!-- Dialogs -->
+    <modals-container />
   </div>
 </template>
 

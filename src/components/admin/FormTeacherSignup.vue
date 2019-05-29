@@ -243,7 +243,7 @@
 
 <script>
 import axios from "axios";
-import { baseApiUrl, showError, showSuccess } from "@/global";
+import { baseApiUrl, showError } from "@/global"; //showSuccess
 import myUpload from 'vue-image-crop-upload';
 
 export default {
@@ -301,15 +301,22 @@ export default {
         avatar: this.teacher.avatar
       }
 
-      axios
-        .post(`${baseApiUrl}/speaker/?token=${this.token}`, data)
-        .then(res => {
-          if (res.status === 201) {
-            showSuccess(res.data.message);
-          } else {
-            showError(res.data.message);
-          }
-        });
+      const api = axios.create({
+        baseURL: baseApiUrl,
+        validateStatus: function (status) {
+            return status < 1000;
+        }
+      });
+
+      api.post(`${baseApiUrl}/speaker/?token=${this.token}`, data).then(res => {
+        if (res.status === 201) {
+          this.confirmModal("success", res.data.message);
+          //showSuccess(res.data.message);
+        } else {
+          this.confirmModal("error", res.data.message);
+          //showError(res.data.message);
+        }
+      });
     },
     checkForm1() {
       this.errors = [];
@@ -371,6 +378,15 @@ export default {
         } else {
           reject("Preencha os campos obrigatórios!");
         }
+      });
+    },
+    confirmModal(type, title) {
+      this.$swal({
+        position: "center",
+        title: title,
+        type: type,
+        showCancelButton: false,
+        showConfirmButton: false
       });
     },
     handleErrorMessage(errorMsg) {

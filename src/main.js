@@ -5,6 +5,7 @@ import router from './router'
 
 // plugins
 import VueAnalytics from 'vue-analytics'
+import VModal from 'vue-js-modal'
 import './plugins/bootstrap'
 import './plugins/icons'
 import './plugins/toasted'
@@ -16,6 +17,12 @@ import './plugins/v-select'
 import './plugins/clipboard'
 import './plugins/money'
 
+Vue.use(VModal, { 
+    dynamic: true, 
+    dynamicDefaults: { 
+        clickToClose: false 
+    } 
+})
 Vue.use(VueAnalytics, {
     id: 'UA-140729382-2',
     router,

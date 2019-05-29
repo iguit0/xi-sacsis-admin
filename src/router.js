@@ -29,12 +29,12 @@ const routes = [
         component: () => import('./components/template/Schedule.vue'),
         meta: { requiresLogin: true }
     },
-    /*{
+    {
         path: '/minicursos',
         name: 'CoursesList',
         component: () => import('./components/user/Courses.vue'),
         meta: { requiresLogin: true }
-    },*/
+    },
     {
         path: '/relatorios',
         name: 'ReportsPage',
@@ -52,7 +52,7 @@ const routes = [
         name: 'auth',
         component: () => import('./components/template/Login.vue')
     },
-    /*{
+    {
         path: '/admin-ministrantes',
         name: 'GuestsPages',
         component: () => import('./components/admin/GuestsPages.vue'),
@@ -69,7 +69,7 @@ const routes = [
         name: 'FormTeacherSignup',
         component: () => import('./components/admin/FormTeacherSignup.vue'),
         props: true
-    },*/
+    },
     {
         path: '*',
         name: 'NotFound',

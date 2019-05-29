@@ -83,13 +83,13 @@ export default {
           text: "Minha Conta",
           data: { icon: "user-circle", name: "AccountPages" }
         },
-        /*{
+        {
           text: "Minicursos",
           data: {
             icon: "chalkboard-teacher",
             name: "CoursesList"
           }
-        },*/
+        },
         {
           text: "Programação",
           data: { icon: "calendar-alt", name: "ScheduleView" }
@@ -122,23 +122,23 @@ export default {
               text: "Programação",
               data: { icon: "calendar-check", name: "SchedulePages" }
             },
-            /*{
+            {
               text: "Ministrantes",
               data: { icon: "person-booth", name: "GuestsPages" }
-            },*/
+            },
             {
               text: "Relatórios",
               data: { icon: "scroll", name: "ReportsPage" }
             }
           ]
         },
-        /*{
+        {
           text: "Minicursos",
           data: {
             icon: "chalkboard-teacher",
             name: "CoursesList"
           }
-        },*/
+        },
         {
           text: "Ver Programação",
           data: { icon: "calendar-alt", name: "ScheduleView" }
