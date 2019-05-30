@@ -42,11 +42,13 @@
         </b-col>
         <b-col md="2" sm="6">
           <b-form-group label="RG:" label-for="student-rg">
-            <b-input
+            <the-mask
               id="student-rg"
               v-model="student.rg"
               placeholder="RG"
               :readonly="mode === 'remove'"
+              :mask="['###############']"
+              class="form-control"
             />
           </b-form-group>
         </b-col>
