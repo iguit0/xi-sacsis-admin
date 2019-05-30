@@ -6,43 +6,43 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-        path: '/',
+        path: '/profile',
         name: 'home',
         component: () => import('./components/template/Home.vue'),
         meta: { requiresLogin: true }
     },
     {
-        path: '/admin',
+        path: '/profile/admin',
         name: 'adminPages',
         component: () => import('./components/admin/AdminPages.vue'),
         meta: { requiresLogin: true, requiresAdmin: true }
     },
     {
-        path: '/admin-programacao',
+        path: '/profile/admin-programacao',
         name: 'SchedulePages',
         component: () => import('./components/admin/schedule/SchedulePages.vue'),
         meta: { requiresLogin: true, requiresAdmin: true }
     },
     {
-        path: '/programacao',
+        path: '/profile/programacao',
         name: 'ScheduleView',
         component: () => import('./components/template/Schedule.vue'),
         meta: { requiresLogin: true }
-    },
+    },/*
     {
-        path: '/minicursos',
+        path: '/profile/minicursos',
         name: 'CoursesList',
         component: () => import('./components/user/Courses.vue'),
         meta: { requiresLogin: true }
-    },
+    },*/
     {
-        path: '/relatorios',
+        path: '/profile/relatorios',
         name: 'ReportsPage',
         component: () => import('./components/admin/ReportsPage.vue'),
         meta: { requiresLogin: true, requiresAdmin: true }
     },
     {
-        path: '/minha-conta',
+        path: '/profile/minha-conta',
         name: 'AccountPages',
         component: () => import('./components/user/Account.vue'),
         meta: { requiresLogin: true }
@@ -53,7 +53,7 @@ const routes = [
         component: () => import('./components/template/Login.vue')
     },
     {
-        path: '/admin-ministrantes',
+        path: '/profile/admin-ministrantes',
         name: 'GuestsPages',
         component: () => import('./components/admin/GuestsPages.vue'),
         meta: { requiresLogin: true, requiresAdmin: true }
@@ -81,13 +81,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    // verifica caminho do formulario.
-    const currentUrl = window.location.pathname;
-    if (currentUrl === "/cadastro-minicurso" || currentUrl === "/cadastro-palestra")
-        next()
-
     const user = JSON.parse(localStorage.getItem(userKey))
-
     // verificar se usuario esta logado - possui token valido
     if (to.matched.some(record => record.meta.requiresLogin))
         user && user.jwt_token ? next() : next({ path: '/entrar' })

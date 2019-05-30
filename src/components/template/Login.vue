@@ -462,7 +462,7 @@ export default {
             localStorage.setItem(userKey, JSON.stringify(response.data));
             this.$store.commit("setUser", response.data);
             this.isLoading = false;
-            this.$router.push({ path: "/" });
+            this.$router.push({ path: "/profile" });
             let welcomeMsg =
               `Bem Vindo (a), ` + this.$store.getters.getUsername;
             showWelcome(welcomeMsg);

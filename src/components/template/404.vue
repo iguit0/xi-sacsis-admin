@@ -3,7 +3,7 @@
     <div class="error">
       <h1>404</h1>
       <p>Esta página não existe ou você não tem autorização</p>
-      <b-btn @click="$router.push({path: '/'})" size="lg" variant="primary" block>
+      <b-btn @click="toHome" size="lg" variant="primary" block>
         <v-icon scale="1.5" name="home" class="mr-1"/>Voltar a página inicial
       </b-btn>
     </div>
@@ -11,8 +11,14 @@
 </template>
 
 <script>
+
 export default {
-  name: "NotFound"
+  name: "NotFound",
+  methods: {
+    toHome() {
+      window.location.href = '/profile';
+    }
+  }
 };
 </script>
 

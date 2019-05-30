@@ -53,6 +53,8 @@ export default {
       const res = await api.put("/login", userData)
       if (res.status === 200) {
         this.$store.commit("setUser", userData);
+        this.$router.push({ name: "home" });
+
       } else {
         localStorage.removeItem(userKey);
         if (sessionStorage.getItem("vuex") ){
@@ -69,8 +71,11 @@ export default {
   },
   created() {
     const currentUrl = window.location.pathname;
-    if (currentUrl !== "/cadastro-minicurso" || currentUrl !== "/cadastro-palestra")
+    if (currentUrl === "/" || currentUrl.match("/profile")){
       this.validateToken();
+    } else {
+      this.isValidating = false;
+    }
   }
 };
 </script>
