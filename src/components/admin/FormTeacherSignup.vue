@@ -101,13 +101,16 @@
                   @click="toggleShow">Selecionar imagem de avatar
                 </b-button>
               </b-form-group>
-
               <b-form-group id="input-group-4" label="Facebook:" label-for="input-4">
                 <b-input-group>
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-facebook" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-4" placeholder="Link do seu perfil (Opcional)"/>
+                  <b-input
+                    id="input-4"
+                    placeholder="Link do seu perfil (Opcional)"
+                    v-model="teacher.facebook"
+                  />
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-5" label="Instagram:" label-for="input-5">
@@ -115,7 +118,11 @@
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-instagram" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-5" placeholder="Link do seu perfil (Opcional)"/>
+                  <b-input 
+                    id="input-5"
+                    placeholder="Link do seu perfil (Opcional)"
+                    v-model="teacher.instagram"
+                  />
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-6" label="Twitter:" label-for="input-6">
@@ -123,12 +130,20 @@
                   <b-input-group-text slot="prepend">
                     <i class="fab fa-twitter" style="font-size: 1rem;"/>
                   </b-input-group-text>
-                  <b-input id="input-6" placeholder="Link do seu perfil (Opcional)"/>
+                  <b-input
+                    id="input-6"
+                    placeholder="Link do seu perfil (Opcional)"
+                    v-model="teacher.twitter"
+                  />
                 </b-input-group>
               </b-form-group>
               <b-form-group id="input-group-7" label="Site:" label-for="input-7">
                 <b-input-group prepend="www." class="mt-3">
-                  <b-input id="input-7" placeholder="seusite.com.br (Opcional)"/>
+                  <b-input
+                    id="input-7"
+                    placeholder="seusite.com.br (Opcional)"
+                    v-model="teacher.site"
+                  />
                 </b-input-group>
               </b-form-group>
             </b-form>
@@ -252,8 +267,9 @@ export default {
     return {
       errors: null,
       teacher: {
-        nome: "",
-        resumo: ""
+        facebook: "",
+        instagram: "",
+        twitter: ""
       },
 
 			show: false,
@@ -392,6 +408,7 @@ export default {
       this.errors = errorMsg;
     },
     facebookRegex(str) {
+      if (!str) return null;
       const regex = /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[?\w-]*\/)?(?:profile.php\?id=(?=\d.*))?([\w.-]*)?/;
       const res = str.match(regex);
       if (res.length === 2)
@@ -399,6 +416,7 @@ export default {
       return [0];
     },
     twitterRegex(str) {
+      if (!str) return null;
       const regex = /http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_.-]+)/;
       const res = str.match(regex);
       if (res.length === 2)
@@ -406,6 +424,7 @@ export default {
       return [0];
     },
     instagramRegex(str) {
+      if (!str) return null;
       const regex = /(?:(?:http|https):\/\/)?(?:www.)?(?:instagram.com|instagr.am)\/([a-zA-Z0-9_.-]+)/;
       const res = str.match(regex);
       if (res.length === 2)

@@ -300,8 +300,8 @@ export default {
     remove() {
       const id = this.course.id;
       api.delete(`/admin/schedule/${id}`).then(res => {
-        if (res.status === 200) {
-          showSuccess(res.data.message);
+        if (res.status === 201) {
+          showSuccess('Minicurso removido da programação!');
           this.reset();
         } else {
           showError(res.data.message);

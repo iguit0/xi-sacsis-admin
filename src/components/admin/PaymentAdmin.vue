@@ -261,8 +261,8 @@ export default {
       }).then(result => {
         if (result.value) {
           api.delete(`/admin/payment/${id}`).then(res => {
-            if (res.status === 200) {
-              showSuccess(res.data.message);
+            if (res.status === 201) {
+              showSuccess('Pagamento invalidado com sucesso!');
               this.reset();
             } else {
               showError(res.data.message);

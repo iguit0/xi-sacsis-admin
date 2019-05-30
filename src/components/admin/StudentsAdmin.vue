@@ -234,8 +234,8 @@ export default {
     remove() {
       const id = this.student.id;
       api.delete(`/admin/user/${id}`).then(response => {
-        if (response.status === 200) {
-          showSuccess(response.data.message);
+        if (response.status === 201) {
+          showSuccess('Participante removido com sucesso!');
           this.reset();
         } else {
           showError(response.data.message);

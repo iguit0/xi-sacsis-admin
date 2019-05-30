@@ -261,8 +261,8 @@ export default {
     remove() {
       const id = this.lecture.id;
       api.delete(`/admin/schedule/${id}`).then(res => {
-        if (res.status === 200) {
-          showSuccess(res.data.message);
+        if (res.status === 201) {
+          showSuccess('Palestra removida da programação com sucesso!');
           this.reset();
         } else {
           showError(res.data.message);

@@ -30,14 +30,16 @@
                 <v-icon class="mr-1" name="link"/>Gerar
               </b-btn>
 
+            <!-- Botão de abertura do modal de testes
               <b-btn
                 @click="openModal"
                 id="link-btn"
                 variant="danger"
+
               >
                 <v-icon class="mr-1" name="link"/>Abrir Modal de Teste
               </b-btn>
-
+            -->
             </b-form-group>
           </b-col>
         </b-row>
@@ -100,7 +102,7 @@ export default {
   },
   methods: {
 
-    openModal() {
+    /*openModal() {
       this.$modal.show(InfoModal, {
         schedule: {
           user: {
@@ -119,7 +121,7 @@ export default {
         width: 800,
         height: 500
       })
-    },
+    },*/
     
     generate() {
       api

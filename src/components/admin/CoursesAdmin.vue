@@ -153,8 +153,8 @@ export default {
     remove() {
       const id = this.course.id;
       api.delete(`/admin/course/${id}`).then(response => {
-        if (response.status === 200) {
-          showSuccess(response.data.message);
+        if (response.status === 201) {
+          showSuccess('Minicurso removido com sucesso!');
           this.reset();
         } else {
           showError(response.data.message);

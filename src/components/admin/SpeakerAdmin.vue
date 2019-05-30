@@ -217,6 +217,7 @@ export default {
       api.get("/admin/speaker").then(res => {
         if (res.status === 200) {
           this.speakers = res.data.ministrantes;
+          this.totalRows = res.data.ministrantes.length;
         }
       });
     },
@@ -250,8 +251,8 @@ export default {
     remove() {
       const id = this.speaker.id;
       api.delete(`/admin/speaker/${id}`).then(res => {
-        if (res.status === 200) {
-          showSuccess(res.data.message);
+        if (res.status === 201) {
+          showSuccess("Dados do ministrante removido!");
           this.reset();
         } else {
           showError(res.data.message);
