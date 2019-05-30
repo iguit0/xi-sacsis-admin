@@ -14,7 +14,7 @@
         <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">
           <the-mask
             id="input-3"
-            :mask="['#######']"
+            :mask="['#####']"
             v-model="editedUser.matricula"
             name="matricula"
             placeholder="Matrícula"
@@ -35,11 +35,12 @@
         </b-form-group>
 
         <b-form-group id="input-group-5" label="RG:" label-for="input-5">
-          <b-form-input
+          <the-mask
             id="input-5"
             v-model="editedUser.rg"
             :readonly="!ienable"
-            :mask="['####################']"  
+            class="form-control"
+            :mask="['###############']"
           />
         </b-form-group>
 

@@ -191,7 +191,14 @@
         <b-input-group-text slot="prepend">
           <v-icon name="id-card-alt"/>
         </b-input-group-text>
-        <b-input v-on:keyup.enter="checkForm" v-model="user.rg" placeholder="RG" required/>
+        <the-mask
+          v-on:keyup.enter="checkForm"
+          v-model="user.rg"
+          placeholder="RG"
+          class="form-control"
+          required
+          :mask="['###############']"
+        />
       </b-input-group>
 
       <b-input-group class="mb-3" v-if="showSignup">
