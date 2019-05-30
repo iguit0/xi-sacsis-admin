@@ -28,13 +28,13 @@ const routes = [
         name: 'ScheduleView',
         component: () => import('./components/template/Schedule.vue'),
         meta: { requiresLogin: true }
-    },/*
+    },
     {
         path: '/profile/minicursos',
         name: 'CoursesList',
         component: () => import('./components/user/Courses.vue'),
         meta: { requiresLogin: true }
-    },*/
+    },
     {
         path: '/profile/relatorios',
         name: 'ReportsPage',
