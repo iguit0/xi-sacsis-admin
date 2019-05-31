@@ -127,7 +127,7 @@
       <template slot="table-caption" v-if="totalRows">
         <h6 align="right">
           <strong>{{ totalRows 
-            ? totalRows + "participantes encontrados"
+            ? totalRows + " participantes encontrados"
             : "Nenhum participante encontrado" }}
           </strong>
         </h6>
