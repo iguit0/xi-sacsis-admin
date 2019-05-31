@@ -1,9 +1,14 @@
 <template>
   <section id="cd-timeline" class="cd-container">
     <div class="cd-timeline-block" v-for="(item) in day" :key="item.id">
-      <div class="cd-timeline-img cd-picture">
-        <b-img v-if="item.avatar" :src="item.avatar" :alt="item.ministrante"/>
-        <b-img src="https://cdn3.iconfinder.com/data/icons/stars-5/512/gold_star-512.png" v-else/>
+      <div class="cd-timeline-img cd-picture"
+        :style="{
+          'background-image': `url(${item.avatar ? item.avatar : 'https://cdn3.iconfinder.com/data/icons/stars-5/512/gold_star-512.png'})`,
+          'background-color': 'rgb(255, 235, 179)'
+        }"
+      >
+        <!--<b-img v-if="item.avatar" :src="item.avatar" :alt="item.ministrante" rounded="circle"/>-->
+        <!--<b-img src="https://cdn3.iconfinder.com/data/icons/stars-5/512/gold_star-512.png" rounded="circle" v-else/>-->
       </div>
       <!-- minicurso -->
       <div class="cd-timeline-content" v-if="item.minicurso">
@@ -66,7 +71,7 @@
 <script>
 export default {
   props: ["day"],
-  name: "Timeline"
+  name: "Timeline",
 };
 </script>
 
@@ -146,6 +151,7 @@ xcarbonads
   position: fixed;
   right: 40px;
   top: 40px;
+  background-size: 40px 40px;
   width: 180px;
   display: none;
   z-index: 1;
@@ -319,6 +325,7 @@ xcarbonads
   left: 0;
   width: 40px;
   height: 40px;
+  background-size: 40px 40px;
   border-radius: 50%;
   box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08),
     0 3px 0 4px rgba(0, 0, 0, 0.05);
@@ -334,10 +341,10 @@ xcarbonads
   width: 64px;
   height: 64px;
 }
-
+/*
 .cd-timeline-img.cd-picture {
   background: #75ce66;
-}
+}*/
 
 .cd-timeline-img.cd-movie {
   background: #c03b44;
@@ -351,6 +358,7 @@ xcarbonads
   .cd-timeline-img {
     width: 60px;
     height: 60px;
+    background-size: 60px 60px;
     left: 50%;
     margin-left: -30px;
     /* Force Hardware Acceleration in WebKit */

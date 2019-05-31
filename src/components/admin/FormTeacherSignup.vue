@@ -29,7 +29,7 @@
                   placeholder="Conte-nos o seu nome"
                 />
               </b-form-group>
-              <b-form-group id="input-group-2" label="Resumo:" label-for="input-2" description="Maximo 250 caracteres">
+              <b-form-group id="input-group-2" label="Resumo:" label-for="input-2">
                 <b-form-textarea
                   id="input-2"
                   placeholder="Fale um pouco sobre você..."
@@ -39,7 +39,6 @@
                   no-auto-shrink
                   rows="3"
                   max-rows="6"
-                  :maxlength="250"
                 />
               </b-form-group>
               <b-form-group id="input-group-1" label="Email:" label-for="input-1">
