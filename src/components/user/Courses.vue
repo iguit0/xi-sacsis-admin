@@ -132,8 +132,8 @@
                   class="float-left"
                   size="sm"
                   variant="danger"
-                  v-if="(option2 === minicurso.id)"
-                  @click="cancel(option2)"
+                  v-if="(option1 === minicurso.id)"
+                  @click="cancel(option1)"
                 >
                   <v-icon name="times"/>
                   <span class="ml-1">SAIR</span>
@@ -145,19 +145,19 @@
                   class="float-left"
                   size="sm"
                   variant="danger"
-                  v-if="(option2 === minicurso.id)"
-                  @click="cancel(option2)"
+                  v-if="(option1 === minicurso.id)"
+                  @click="cancel(option1)"
                 >
                   <v-icon name="times"/>
                   <span class="ml-1">SAIR</span>
                 </b-btn>
                 <b-form-radio
                   class="float-right"
-                  v-model="option2"
+                  v-model="option1"
                   name="option-2"
                   :value="minicurso.id"
-                  @change="option2 = minicurso.id"
-                >{{option2 === minicurso.id ? 'Selecionado' : 'Selecionar'}}</b-form-radio>
+                  @change="option1 = minicurso.id"
+                >{{option1 === minicurso.id ? 'Selecionado' : 'Selecionar'}}</b-form-radio>
               </div>
             </b-card>
           </b-col>
