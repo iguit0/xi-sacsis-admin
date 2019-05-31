@@ -2,7 +2,10 @@
   <div class="grid-container">
     <div class="user-content">
       <div class="avatar">
-        <b-img center :src="schedule.user.avatar" width="230px"/>
+        <b-img center src="https://sacsis-api.herokuapp.com/speaker/images/1" width="220px" rounded="circle"/>
+      </div>
+      <div class="user_name">
+        {{schedule.user.name}}
       </div>
       <div class="user_info">
         {{schedule.user.info}}
@@ -38,9 +41,7 @@
       <h2 slot="title" class="text-center text-uppercase">
         {{schedule.title}}
       </h2>
-      <p>
-        {{schedule.text}}
-      </p>
+      {{schedule.text}}
     </div>
   </div>
 </template>
@@ -62,28 +63,35 @@ export default {
   .user-content {
     grid-area: user-content;
     display: grid;
-    grid-template-rows: 230px 225px 45px;
+    grid-template-rows: 225px 50px 185px 40px;
     background: linear-gradient(to right, #1e469a, #49a7c1);
-    grid-template-areas: "avatar" "user_info" "social";
+    grid-template-areas: "avatar" "user_name" "user_info" "social";
     color: white;
   }
 
   .avatar {
     grid-area: avatar;
+    margin-top: 5px;
+  }
+
+  .user_name {
+    line-height: 90%;
+    margin: 5px 5px 0px 5px;
+    font-size: 22px;
   }
 
   .user_info {
     grid-area: user_info;
-    margin: 5px 5px 0px 5px;
+    margin: 0px 5px 0px 5px;
     max-width: 220px;
-    line-height: 120%;
+    line-height: 90%;
     text-align: justify;
     word-wrap: break-word;
   }
 
   .social { 
     grid-area: social;
-    margin: 5px;  
+    margin: 5px 5px 0px 5px;  
   }
 
   .content { 

@@ -30,16 +30,15 @@
                 <v-icon class="mr-1" name="link"/>Gerar
               </b-btn>
 
-            <!-- Botão de abertura do modal de testes
+            <!-- Botão de abertura do modal de testes -->
               <b-btn
                 @click="openModal"
                 id="link-btn"
                 variant="danger"
-
               >
                 <v-icon class="mr-1" name="link"/>Abrir Modal de Teste
               </b-btn>
-            -->
+            
             </b-form-group>
           </b-col>
         </b-row>
@@ -102,12 +101,13 @@ export default {
   },
   methods: {
 
-    /*openModal() {
+    openModal() {
       this.$modal.show(InfoModal, {
         schedule: {
           user: {
             avatar: null,
-            info: "alguma coisa",
+            name: "Joaozinho pereira da silva pinto sousa",
+            info: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
             instagram: "https://www.instagram.com/",
             facebook: "https://www.facebook.com/",
             twitter: "https://twitter.com/",
@@ -121,7 +121,7 @@ export default {
         width: 800,
         height: 500
       })
-    },*/
+    },
     
     generate() {
       api
