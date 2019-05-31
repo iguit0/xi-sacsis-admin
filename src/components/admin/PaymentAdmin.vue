@@ -94,18 +94,34 @@
       caption-top
       show-empty
       empty-text="Não há nenhum pagamento registrado"
-      :items="payments"
       :fields="fields"
+      :items="items"
+      :keyword="keyword"
     >
       <template slot="table-caption" v-if="totalRows">
         <h6 align="right">
-          <strong>{{totalRows}} pagamentos encontrados</strong>
+          <strong>{{ totalRows 
+            ? totalRows + " pagamentos encontrados"
+            : "Nenhum pagamento registrado" }}
+          </strong>
         </h6>
-      </template>
-      <template slot="table-caption" v-else>
-        <h6 align="right">
-          <strong>Nenhum pagamento registrado</strong>
-        </h6>
+        <b-input-group>
+          <b-form-input
+            v-model="keyword"
+            placeholder="Pesquisar"
+            type="text"
+          />
+          <b-input-group-append>
+            <b-btn
+              :disabled="!keyword"
+              @click="keyword = ''"
+              size="mb-3"
+              variant="outline-secondary"
+            >
+              <v-icon name="times"/>
+            </b-btn>
+          </b-input-group-append>
+        </b-input-group>
       </template>
       <template slot="actions" slot-scope="data">
         <b-btn size="sm" variant="warning" @click="selectPayment(data.item)" class="mr-2">
@@ -191,6 +207,7 @@ export default {
   name: "PaymentAdmin",
   data() {
     return {
+      keyword: "",
       incomplete: true,
       currentPage: 1,
       perPage: 5,
@@ -212,7 +229,7 @@ export default {
       tickets: [],
       fields: [
         { key: "user_nome", label: "Participante", sortable: true },
-        { key: "status", label: "Status" },
+        { key: "status", label: "Status", sortable: true },
         {
           key: "valor",
           label: "Valor",
@@ -229,6 +246,16 @@ export default {
       ]
     };
   },
+	computed: {
+		items () {
+			return this.keyword
+        ? this.payments.filter( item => 
+            item.valor.toString().includes(this.keyword) ||
+            item.user_nome.toLowerCase().includes(this.keyword.toLowerCase()) ||
+            item.status.toLowerCase().includes(this.keyword.toLowerCase()) )
+				: this.payments
+		}
+	},
   methods: {
     formatCurrency(numero) {
       numero = numero.toFixed(2).split(".");

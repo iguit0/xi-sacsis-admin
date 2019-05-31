@@ -120,18 +120,34 @@
       caption-top
       show-empty
       empty-text="Não há nenhum participante cadastrado"
-      :items="students"
       :fields="fields"
+      :items="items"
+      :keyword="keyword"
     >
       <template slot="table-caption" v-if="totalRows">
         <h6 align="right">
-          <strong>{{totalRows}} participantes encontrados</strong>
+          <strong>{{ totalRows 
+            ? totalRows + " participantes encontrados"
+            : "Nenhum participante encontrado" }}
+          </strong>
         </h6>
-      </template>
-      <template slot="table-caption" v-else>
-        <h6 align="right">
-          <strong>Nenhum participante encontrado</strong>
-        </h6>
+        <b-input-group>
+          <b-form-input
+            v-model="keyword"
+            placeholder="Pesquisar"
+            type="text"
+          />
+          <b-input-group-append>
+            <b-btn
+              :disabled="!keyword"
+              @click="keyword = ''"
+              size="mb-3"
+              variant="outline-secondary"
+            >
+              <v-icon name="times"/>
+            </b-btn>
+          </b-input-group-append>
+        </b-input-group>
       </template>
       <template slot="actions" slot-scope="data">
         <b-btn size="sm" variant="warning" @click="selectStudent(data.item)" class="mr-2">
@@ -166,6 +182,7 @@ export default {
   name: "StudentsAdmin",
   data() {
     return {
+      keyword: "",
       currentPage: 1,
       perPage: 5,
       pageOptions: [5, 10, 15],
@@ -198,12 +215,24 @@ export default {
         { key: "nome", label: "Nome Completo", sortable: true },
         { key: "email", label: "E-mail", sortable: true },
         { key: "camiseta", label: "Camiseta" },
-        { key: "cpf", label: "CPF" },
-        { key: "rg", label: "RG" },
+        { key: "cpf", label: "CPF", sortable: true },
+        { key: "rg", label: "RG", sortable: true },
         { key: "actions", label: "Ações" }
       ]
     };
   },
+	computed: {
+		items () {
+			return this.keyword
+        ? this.students.filter( item => 
+            item.matricula.includes(this.keyword) ||
+            item.cpf.includes(this.keyword) ||
+            item.rg.includes(this.keyword) ||
+            item.nome.toLowerCase().includes(this.keyword.toLowerCase()) ||
+            item.email.toLowerCase().includes(this.keyword.toLowerCase()) )
+				: this.students
+		}
+	},
   methods: {
     save() {
       let parsedStudent = JSON.parse(JSON.stringify(this.student));
