@@ -61,8 +61,8 @@
                   class="float-left"
                   size="sm"
                   variant="danger"
-                  v-if="(check2 === minicurso.id)"
-                  @click="cancel(check2)"
+                  v-if="(option2 === minicurso.id)"
+                  @click="cancel(option2)"
                 >
                   <v-icon name="times"/>
                   <span class="ml-1">SAIR</span>
@@ -73,8 +73,8 @@
                   class="float-left"
                   size="sm"
                   variant="danger"
-                  v-if="check1 === minicurso.id"
-                  @click="cancel(check1)"
+                  v-if="option1 === minicurso.id"
+                  @click="cancel(option1)"
                 >
                   <v-icon name="times"/>
                   <span class="ml-1">SAIR</span>
@@ -84,8 +84,8 @@
                   v-model="option1"
                   :value="minicurso.id"
                   name="option1"
-                  @change="check1 = minicurso.id"
-                >{{check1 === minicurso.id ? 'Selecionado' : 'Selecionar'}}</b-form-radio>
+                  @change="option1 = minicurso.id"
+                >{{option1 === minicurso.id ? 'Selecionado' : 'Selecionar'}}</b-form-radio>
               </div>
             </b-card>
           </b-col>
@@ -132,8 +132,8 @@
                   class="float-left"
                   size="sm"
                   variant="danger"
-                  v-if="(check2 === minicurso.id)"
-                  @click="cancel(check2)"
+                  v-if="(option2 === minicurso.id)"
+                  @click="cancel(option2)"
                 >
                   <v-icon name="times"/>
                   <span class="ml-1">SAIR</span>
@@ -145,8 +145,8 @@
                   class="float-left"
                   size="sm"
                   variant="danger"
-                  v-if="(check2 === minicurso.id)"
-                  @click="cancel(check2)"
+                  v-if="(option2 === minicurso.id)"
+                  @click="cancel(option2)"
                 >
                   <v-icon name="times"/>
                   <span class="ml-1">SAIR</span>
@@ -156,8 +156,8 @@
                   v-model="option2"
                   name="option-2"
                   :value="minicurso.id"
-                  @change="check2 = minicurso.id"
-                >{{check2 === minicurso.id ? 'Selecionado' : 'Selecionar'}}</b-form-radio>
+                  @change="option2 = minicurso.id"
+                >{{option2 === minicurso.id ? 'Selecionado' : 'Selecionar'}}</b-form-radio>
               </div>
             </b-card>
           </b-col>
@@ -191,8 +191,6 @@ export default {
   components: { PageTitle },
   data() {
     return {
-      check1: null,
-      check2: null,
       option1: null,
       option2: null,
       coursesLength: 0,
@@ -233,13 +231,11 @@ export default {
       // invalida a opcao que tiver com a opcao selecionada
       if (this.option1 === option) {
         this.option1 = -1;
-        this.check1 = null;
       } else if (this.option2 === option) {
         this.option2 = -1;
-        this.check2 = null;
       }
       // desinscricao (sair) de minicurso
-      const data = {
+      /*const data = {
         option1: this.option1,
         option2: this.option2
       };
@@ -253,7 +249,7 @@ export default {
           showError(res.data.option2);
           this.getCourses();
         }
-      });
+      });*/
     },
     getCourses() {
       this.isLoading = true;
@@ -263,8 +259,6 @@ export default {
           if (res.data.option1 || res.data.option2) {
             this.option1 = res.data.option1;
             this.option2 = res.data.option2;
-            this.check1 = res.data.option1;
-            this.check2 = res.data.option2;
           }
           this.coursesLength = res.data.minicursos.length;
           this.coursesTurma1 = res.data.minicursos.filter(
