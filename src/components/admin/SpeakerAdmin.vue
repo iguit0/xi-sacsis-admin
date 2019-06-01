@@ -131,10 +131,6 @@
           Nome:
           <span class="font-weight-bold">{{content.nome}}</span>
         </li>
-        <li class="py-1" v-if="content.resumo">
-          Resumo:
-          <span class="font-weight-bold">{{content.resumo}}</span>
-        </li>
         <li class="py-1" v-if="content.rg">
           RG:
           <span class="font-weight-bold">{{content.rg}}</span>

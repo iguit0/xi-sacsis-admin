@@ -107,7 +107,7 @@ export default {
           user: {
             avatar: null,
             name: "Joaozinho pereira da silva pinto sousa",
-            info: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            info: "aaaaaaaaaaaaaa",
             instagram: "https://www.instagram.com/",
             facebook: "https://www.facebook.com/",
             twitter: "https://twitter.com/",
@@ -118,8 +118,8 @@ export default {
         }
       }, {
         draggable: false,
-        width: 800,
-        height: 500
+        width: 850,
+        height: 510
       })
     },
     

@@ -2,7 +2,7 @@
   <div class="grid-container">
     <div class="user-content">
       <div class="avatar">
-        <b-img center src="https://sacsis-api.herokuapp.com/speaker/images/1" width="220px" rounded="circle"/>
+        <b-img center :src="schedule.user.avatar" width="180px" rounded="circle"/>
       </div>
       <div class="user_name">
         {{schedule.user.name}}
@@ -63,7 +63,8 @@ export default {
   .user-content {
     grid-area: user-content;
     display: grid;
-    grid-template-rows: 225px 50px 185px 40px;
+    width: 270px;
+    grid-template-rows: 200px 50px 220px 40px;
     background: linear-gradient(to right, #1e469a, #49a7c1);
     grid-template-areas: "avatar" "user_name" "user_info" "social";
     color: white;
@@ -71,22 +72,23 @@ export default {
 
   .avatar {
     grid-area: avatar;
-    margin-top: 5px;
+    margin-top: 15px;
   }
 
   .user_name {
     line-height: 90%;
     margin: 5px 5px 0px 5px;
     font-size: 22px;
+    text-align: center;
   }
 
   .user_info {
     grid-area: user_info;
-    margin: 0px 5px 0px 5px;
-    max-width: 220px;
+    padding: 0px 5px 0px 5px;
     line-height: 90%;
-    text-align: justify;
+    text-align: center;
     word-wrap: break-word;
+    overflow-y: auto;
   }
 
   .social { 
