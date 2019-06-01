@@ -1,37 +1,37 @@
 <template>
-  <div class="grid-container">
+  <div class="grid-container" v-if="schedule.tipo == 'minicurso' || schedule.tipo == 'palestra'">
     <div class="user-content">
       <div class="avatar">
-        <b-img center :src="schedule.user.avatar" width="180px" rounded="circle"/>
+        <b-img center :src="schedule.avatar" width="180px" rounded="circle"/>
       </div>
       <div class="user_name">
-        {{schedule.user.name}}
+        {{schedule.ministrante}}
       </div>
       <div class="user_info">
-        {{schedule.user.info}}
+        {{schedule.resumo}}
       </div>
       <div class="social">
-        <a class="b-social" v-if="schedule.user.instagram"
+        <a class="b-social" v-if="schedule.instagram"
           target="_blank" rel="noopener noreferrer"
-          :href="schedule.user.instagram"
+          :href="schedule.instagram"
         >
           <v-icon scale="2" name="brands/instagram"/>
         </a>
-        <a class="b-social" v-if="schedule.user.facebook"
+        <a class="b-social" v-if="schedule.facebook"
           target="_blank" rel="noopener noreferrer"
-          :href="schedule.user.facebook"
+          :href="schedule.facebook"
         >
           <v-icon scale="2" name="brands/facebook-square"/>
         </a>
-        <a class="b-social" v-if="schedule.user.twitter"
+        <a class="b-social" v-if="schedule.twitter"
           target="_blank" rel="noopener noreferrer"
-          :href="schedule.user.twitter"
+          :href="schedule.twitter"
         >
           <v-icon scale="2" name="brands/twitter-square"/>
         </a>
-        <a class="b-social" v-if="schedule.user.website"
+        <a class="b-social" v-if="schedule.website"
           target="_blank" rel="noopener noreferrer"
-          :href="schedule.user.website"
+          :href="schedule.site"
         >
           <v-icon scale="2" name="globe"/>
         </a>
@@ -39,9 +39,18 @@
     </div>
     <div class="content">
       <h2 slot="title" class="text-center text-uppercase">
-        {{schedule.title}}
+        {{schedule.titulo}}
       </h2>
-      {{schedule.text}}
+      {{schedule.conteudo}}
+    </div>
+  </div>
+
+  <div v-else-if="schedule.tipo == 'outros'">
+    <div class="outros">
+      <h2 slot="title" class="text-center text-uppercase">
+        {{schedule.titulo}}
+      </h2>
+      {{schedule.descricao}}
     </div>
   </div>
 </template>
@@ -111,5 +120,16 @@ export default {
   .b-social {
     margin: 5px 5px 0px 5px;
     color: white;
-  } 
+  }
+
+  .outros {
+    width: 850;
+    height: 500px;
+    padding-left: 20px;
+    padding-right: 20px;
+    line-height: 120%;
+    text-align: justify;
+    word-wrap: break-word;
+    overflow-y: auto;
+  }
 </style>

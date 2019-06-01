@@ -29,6 +29,10 @@
           <v-icon name="chair" class="mr-1"/>
           {{item.vagas}} vagas restantes
         </p>
+        <a @click="openModal(item.id)"><!-- Botão de mais informações -->
+          <v-icon name="info-circle" class="mr-1"/>
+          Mais informações
+        </a>
         <span class="cd-date">
           <v-icon name="clock" class="mr-1"/>
           {{item.data_inicio}}・{{item.data_fim}}
@@ -45,6 +49,10 @@
           <v-icon name="map-marker-alt" class="mr-1"/>
           {{item.local}}
         </p>
+        <a @click="openModal(item.id)"><!-- Botão de mais informações -->
+          <v-icon name="info-circle" class="mr-1"/>
+          Mais informações
+        </a>
         <span class="cd-date">
           <v-icon name="clock" class="mr-1"/>
           {{item.data_inicio}}・{{item.data_fim}}
@@ -58,6 +66,10 @@
           <v-icon name="map-marker-alt" class="mr-1"/>
           {{item.local}}
         </p>
+        <a @click="openModal(item.id)"><!-- Botão de mais informações -->
+          <v-icon name="info-circle" class="mr-1"/>
+          Mais informações
+        </a>
         <span class="cd-date">
           <v-icon name="clock" class="mr-1"/>
           {{item.data_inicio}}・{{item.data_fim}}
@@ -69,9 +81,29 @@
 </template>
 
 <script>
+import InfoModal from "@/components/template/InfoModal";
+import api from "@/services/api";
+
 export default {
   props: ["day"],
   name: "Timeline",
+  methods: {
+    openModal(id) {
+      api.get('/schedule/info/' + id).then(res => {
+        if (res.status === 200) {
+          console.log(res.data);
+          this.$modal.show(InfoModal, {
+              schedule: res.data
+            },{
+              draggable: false,
+              width: 850,
+              height: 510
+            }
+          )
+        }
+      });
+    }  
+  }  
 };
 </script>
 

@@ -10,7 +10,7 @@
         Mais informações em breve...
         <v-icon name="lightbulb" scale="2" class="mb-2" color="orange"/>
       </h2>
-      <!--<b-tabs active-nav-item-class="font-weight-bold text-uppercase text-secondary">
+      <b-tabs active-nav-item-class="font-weight-bold text-uppercase text-secondary">
         <b-tab title="Dia 1" active>
           <Timeline :day="segunda" v-if="segunda && segunda.length"/>
           <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
@@ -31,7 +31,7 @@
           <Timeline :day="sexta" v-if="sexta && sexta.length"/>
           <h2 v-else class="text-uppercase text-center">{{ msgError }}</h2>
         </b-tab>
-      </b-tabs>-->
+      </b-tabs>
     </div>
   </div>
 </template>
@@ -78,7 +78,7 @@ export default {
     }
   },
   mounted() {
-    //this.getSchedule();
+    this.getSchedule();
   }
 };
 </script>

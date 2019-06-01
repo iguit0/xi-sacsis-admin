@@ -28,17 +28,7 @@
                 variant="primary"
               >
                 <v-icon class="mr-1" name="link"/>Gerar
-              </b-btn>
-
-            <!-- Botão de abertura do modal de testes -->
-              <b-btn
-                @click="openModal"
-                id="link-btn"
-                variant="danger"
-              >
-                <v-icon class="mr-1" name="link"/>Abrir Modal de Teste
-              </b-btn>
-            
+              </b-btn>           
             </b-form-group>
           </b-col>
         </b-row>
@@ -70,7 +60,6 @@
 
 <script>
 import PageTitle from "@/components/template/PageTitle";
-import InfoModal from "@/components/template/InfoModal";
 import api from "@/services/api";
 import { showError, showSuccess } from "@/global";
 
@@ -100,29 +89,6 @@ export default {
     };
   },
   methods: {
-
-    openModal() {
-      this.$modal.show(InfoModal, {
-        schedule: {
-          user: {
-            avatar: null,
-            name: "Joaozinho pereira da silva pinto sousa",
-            info: "aaaaaaaaaaaaaa",
-            instagram: "https://www.instagram.com/",
-            facebook: "https://www.facebook.com/",
-            twitter: "https://twitter.com/",
-            website: "https://www.google.com/"
-          },
-          title: "alguma coisa",
-          text: "alguma coisa"
-        }
-      }, {
-        draggable: false,
-        width: 850,
-        height: 510
-      })
-    },
-    
     generate() {
       api
         .get(
