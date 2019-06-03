@@ -126,17 +126,14 @@
     >
       <template slot="table-caption" v-if="totalRows">
         <h6 align="right">
-          <strong>{{ totalRows 
+          <strong>
+            {{ totalRows
             ? totalRows + " participantes encontrados"
             : "Nenhum participante encontrado" }}
           </strong>
         </h6>
         <b-input-group>
-          <b-form-input
-            v-model="keyword"
-            placeholder="Pesquisar"
-            type="text"
-          />
+          <b-form-input v-model="keyword" placeholder="Pesquisar" type="text"/>
           <b-input-group-append>
             <b-btn
               :disabled="!keyword"
@@ -213,6 +210,12 @@ export default {
       fields: [
         { key: "matricula", label: "Matrícula", sortable: true },
         { key: "nome", label: "Nome Completo", sortable: true },
+        {
+          key: "status_pago",
+          label: "Pago",
+          sortable: true,
+          formatter: value => (value ? "Pago" : "Não")
+        },
         { key: "email", label: "E-mail", sortable: true },
         { key: "camiseta", label: "Camiseta" },
         { key: "cpf", label: "CPF", sortable: true },
@@ -221,18 +224,20 @@ export default {
       ]
     };
   },
-	computed: {
-		items () {
-			return this.keyword
-        ? this.students.filter( item => 
-            item.matricula.includes(this.keyword) ||
-            item.cpf.includes(this.keyword) ||
-            item.rg.includes(this.keyword) ||
-            item.nome.toLowerCase().includes(this.keyword.toLowerCase()) ||
-            item.email.toLowerCase().includes(this.keyword.toLowerCase()) )
-				: this.students
-		}
-	},
+  computed: {
+    items() {
+      return this.keyword
+        ? this.students.filter(
+            item =>
+              item.matricula.includes(this.keyword) ||
+              item.cpf.includes(this.keyword) ||
+              item.rg.includes(this.keyword) ||
+              item.nome.toLowerCase().includes(this.keyword.toLowerCase()) ||
+              item.email.toLowerCase().includes(this.keyword.toLowerCase())
+          )
+        : this.students;
+    }
+  },
   methods: {
     save() {
       let parsedStudent = JSON.parse(JSON.stringify(this.student));
@@ -266,7 +271,7 @@ export default {
       const id = this.student.id;
       api.delete(`/admin/user/${id}`).then(response => {
         if (response.status === 201) {
-          showSuccess('Participante removido com sucesso!');
+          showSuccess("Participante removido com sucesso!");
           this.reset();
         } else {
           showError(response.data.message);
