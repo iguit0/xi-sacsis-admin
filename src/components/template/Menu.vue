@@ -89,11 +89,11 @@ export default {
             icon: "chalkboard-teacher",
             name: "CoursesList"
           }
-        },*/
+        },
         {
           text: "Programação",
           data: { icon: "calendar-alt", name: "ScheduleView" }
-        },
+        },*/
         {
           text: "Sair",
           data: { icon: "sign-out-alt" }
@@ -138,11 +138,11 @@ export default {
             icon: "chalkboard-teacher",
             name: "CoursesList"
           }
-        },*/
+        },
         {
           text: "Ver Programação",
           data: { icon: "calendar-alt", name: "ScheduleView" }
-        },
+        },*/
         {
           text: "Sair",
           data: { icon: "sign-out-alt" }

@@ -23,7 +23,7 @@ const routes = [
         component: () => import('./components/admin/schedule/SchedulePages.vue'),
         meta: { requiresLogin: true, requiresAdmin: true }
     },
-    {
+    /*{
         path: '/profile/programacao',
         name: 'ScheduleView',
         component: () => import('./components/template/Schedule.vue'),
@@ -34,7 +34,7 @@ const routes = [
         name: 'CoursesList',
         component: () => import('./components/user/Courses.vue'),
         meta: { requiresLogin: true }
-    },
+    },*/
     {
         path: '/profile/relatorios',
         name: 'ReportsPage',
