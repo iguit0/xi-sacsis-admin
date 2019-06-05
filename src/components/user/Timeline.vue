@@ -67,10 +67,9 @@
           <v-icon name="map-marker-alt" class="mr-1"/>
           {{item.local}}
         </p>
-        <b-btn block variant="outline-primary" size="sm" @click="openModal(item.id)">
-          <!-- Botão de mais informações -->
+        <!--<b-btn block variant="outline-primary" size="sm" @click="openModal(item.id)">
           <v-icon name="info-circle" class="mr-1"/>Mais informações
-        </b-btn>
+        </b-btn>-->
         <span class="cd-date">
           <v-icon name="clock" class="mr-1"/>
           {{item.data_inicio}}・{{item.data_fim}}
