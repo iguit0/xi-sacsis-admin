@@ -6,10 +6,6 @@
     </div>
     <div class="schedule-page" v-else>
       <PageTitle icon="calendar-alt" main="Ver Programação" sub="Visualizar todos os eventos"/>
-      <h2 class="text-uppercase text-center">
-        Mais informações em breve...
-        <v-icon name="lightbulb" scale="2" class="mb-2" color="orange"/>
-      </h2>
       <b-tabs active-nav-item-class="font-weight-bold text-uppercase text-secondary">
         <b-tab title="Dia 1" active>
           <Timeline :day="segunda" v-if="segunda && segunda.length"/>
