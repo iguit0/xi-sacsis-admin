@@ -406,7 +406,7 @@ export default {
     },
     facebookRegex(str) {
       if (!str) return null;
-      const regex = /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[?\w-]*\/)?(?:profile.php\?id=(?=\d.*))?([\w.-]*)?/;
+      const regex = /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[?\w-]\/)?(?:profile.php\?id=(?=\d.*))?([\w.-]*)?/;
       const res = str.match(regex);
       if (res.length === 2)
         return res[1];
