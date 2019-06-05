@@ -92,7 +92,7 @@ export default {
     openModal(id) {
       api.get("/schedule/info/" + id).then(res => {
         if (res.status === 200) {
-          console.log(res.data);
+          //console.log(res.data);
           this.$modal.show(
             InfoModal,
             {
