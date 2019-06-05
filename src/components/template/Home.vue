@@ -74,16 +74,15 @@
       </div>
       <div v-else-if="!isAdmin && isPaid">
         <h2 class="text-center text-uppercase mt-1">
-          Seu pagamento foi
-          <strong class="text-success">confirmado</strong>!
+          a espera
+          <strong class="text-success">acabou</strong>!
         </h2>
         <p class="h2 text-center text-uppercase mt-3">
-          Agora é só esperar pela
-          <strong class="text-primary">programação</strong> e
-          <strong class="text-warning">minicursos</strong>.
+          Liberamos a
+          <strong class="text-primary">programação</strong>.
         </p>
         <p class="h2 text-center text-uppercase mt-3">
-          Fique ligado, pois iremos liberar a qualquer momento!
+          Fique ligado, as inscrições do minicurso vão começar em breve!
           <v-icon name="smile-wink" scale="2" color="blue"/>
         </p>
         <p class="h4 mt-3 text-muted float-right">
