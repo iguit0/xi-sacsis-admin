@@ -94,7 +94,7 @@ export default {
   .user_info {
     grid-area: user_info;
     padding: 0px 5px 0px 5px;
-    line-height: 90%;
+    line-height: 150%;
     text-align: center;
     word-wrap: break-word;
     overflow-y: auto;

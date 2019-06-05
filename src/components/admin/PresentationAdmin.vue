@@ -122,7 +122,6 @@ export default {
       presentations: [],
       fields: [
         { key: "titulo", label: "Título", sortable: true },
-        { key: "conteudo", label: "Descrição" },
         { key: "ministrante", label: "Palestrante" },
         { key: "actions", label: "Ações" }
       ]
@@ -150,7 +149,7 @@ export default {
       const id = this.presentation.id;
       api.delete(`/admin/lecture/${id}`).then(res => {
         if (res.status === 201) {
-          showSuccess('Palestra removida com sucesso!');
+          showSuccess("Palestra removida com sucesso!");
           this.reset();
         } else {
           showError(res.data.message);

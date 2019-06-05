@@ -1,7 +1,8 @@
 <template>
   <section id="cd-timeline" class="cd-container">
     <div class="cd-timeline-block" v-for="(item) in day" :key="item.id">
-      <div class="cd-timeline-img cd-picture"
+      <div
+        class="cd-timeline-img cd-picture"
         :style="{
           'background-image': `url(${item.avatar ? item.avatar : 'https://cdn3.iconfinder.com/data/icons/stars-5/512/gold_star-512.png'})`,
           'background-color': 'rgb(255, 235, 179)'
@@ -29,10 +30,10 @@
           <v-icon name="chair" class="mr-1"/>
           {{item.vagas}} vagas restantes
         </p>
-        <a @click="openModal(item.id)"><!-- Botão de mais informações -->
-          <v-icon name="info-circle" class="mr-1"/>
-          Mais informações
-        </a>
+        <b-btn block variant="outline-primary" size="sm" @click="openModal(item.id)">
+          <!-- Botão de mais informações -->
+          <v-icon name="info-circle" class="mr-1"/>Mais informações
+        </b-btn>
         <span class="cd-date">
           <v-icon name="clock" class="mr-1"/>
           {{item.data_inicio}}・{{item.data_fim}}
@@ -49,10 +50,10 @@
           <v-icon name="map-marker-alt" class="mr-1"/>
           {{item.local}}
         </p>
-        <a @click="openModal(item.id)"><!-- Botão de mais informações -->
-          <v-icon name="info-circle" class="mr-1"/>
-          Mais informações
-        </a>
+        <b-btn block variant="outline-primary" size="sm" @click="openModal(item.id)">
+          <!-- Botão de mais informações -->
+          <v-icon name="info-circle" class="mr-1"/>Mais informações
+        </b-btn>
         <span class="cd-date">
           <v-icon name="clock" class="mr-1"/>
           {{item.data_inicio}}・{{item.data_fim}}
@@ -66,10 +67,9 @@
           <v-icon name="map-marker-alt" class="mr-1"/>
           {{item.local}}
         </p>
-        <a @click="openModal(item.id)"><!-- Botão de mais informações -->
-          <v-icon name="info-circle" class="mr-1"/>
-          Mais informações
-        </a>
+        <!--<b-btn block variant="outline-primary" size="sm" @click="openModal(item.id)">
+          <v-icon name="info-circle" class="mr-1"/>Mais informações
+        </b-btn>-->
         <span class="cd-date">
           <v-icon name="clock" class="mr-1"/>
           {{item.data_inicio}}・{{item.data_fim}}
@@ -89,21 +89,24 @@ export default {
   name: "Timeline",
   methods: {
     openModal(id) {
-      api.get('/schedule/info/' + id).then(res => {
+      api.get("/schedule/info/" + id).then(res => {
         if (res.status === 200) {
-          console.log(res.data);
-          this.$modal.show(InfoModal, {
+          //console.log(res.data);
+          this.$modal.show(
+            InfoModal,
+            {
               schedule: res.data
-            },{
+            },
+            {
               draggable: false,
               width: 850,
               height: 510
             }
-          )
+          );
         }
       });
-    }  
-  }  
+    }
+  }
 };
 </script>
 

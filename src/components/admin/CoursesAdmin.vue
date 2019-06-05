@@ -126,7 +126,6 @@ export default {
       courses: [],
       fields: [
         { key: "titulo", label: "Título", sortable: true },
-        { key: "conteudo", label: "Descrição" },
         { key: "ministrante", label: "Ministrante" },
         { key: "actions", label: "Ações" }
       ]
@@ -154,7 +153,7 @@ export default {
       const id = this.course.id;
       api.delete(`/admin/course/${id}`).then(response => {
         if (response.status === 201) {
-          showSuccess('Minicurso removido com sucesso!');
+          showSuccess("Minicurso removido com sucesso!");
           this.reset();
         } else {
           showError(response.data.message);

@@ -1,6 +1,6 @@
 <template>
   <div class="course-schedule">
-    <b-form v-if="courses && courses.length">
+    <b-form>
       <input id="course-id" type="hidden" v-model="course.id">
       <b-row>
         <b-col md="5">
@@ -109,7 +109,7 @@
         </b-col>
       </b-row>
     </b-form>
-    <h2 v-if="empty" class="text-center text-uppercase">Não há minicursos cadastrados</h2>
+    <!--<h2 v-if="empty" class="text-center text-uppercase">Não há minicursos cadastrados</h2>-->
 
     <div class="text-center" v-if="isLoading">
       <b-spinner variant="dark"></b-spinner>
@@ -301,7 +301,7 @@ export default {
       const id = this.course.id;
       api.delete(`/admin/schedule/${id}`).then(res => {
         if (res.status === 201) {
-          showSuccess('Minicurso removido da programação!');
+          showSuccess("Minicurso removido da programação!");
           this.reset();
         } else {
           showError(res.data.message);
