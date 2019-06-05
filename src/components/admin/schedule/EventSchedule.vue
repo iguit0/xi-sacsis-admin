@@ -164,7 +164,6 @@ export default {
           }
         },
         { key: "local", label: "Local" },
-        { key: "descricao", label: "Descrição" },
         { key: "actions", label: "Ações" }
       ]
     };
@@ -248,7 +247,7 @@ export default {
       const id = this.event.id;
       api.delete(`/admin/schedule/${id}`).then(res => {
         if (res.status === 201) {
-          showSuccess('Evento removido com sucesso!');
+          showSuccess("Evento removido com sucesso!");
           this.reset();
         } else {
           showError(res.data.message);

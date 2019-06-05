@@ -1,6 +1,6 @@
 <template>
   <div class="lecture-schedule">
-    <b-form v-if="lectures && lectures.length">
+    <b-form>
       <input id="lecture-id" type="hidden" v-model="lecture.id">
       <b-row>
         <b-col md="5">
@@ -91,7 +91,7 @@
       </b-row>
     </b-form>
 
-    <h2 class="text-center text-uppercase" v-else>Não há nenhuma palestra cadastrada</h2>
+    <!--<h2 class="text-center text-uppercase" v-else>Não há nenhuma palestra cadastrada</h2>-->
 
     <!-- TABELA -->
     <b-table
@@ -237,7 +237,9 @@ export default {
         parsedLecture.lecture_id = parsedSelected.id;
       }
       if (parsedLecture.data_inicio.length === 12)
-        parsedLecture.data_inicio = this.formatDateTime(parsedLecture.data_inicio);
+        parsedLecture.data_inicio = this.formatDateTime(
+          parsedLecture.data_inicio
+        );
       if (parsedLecture.data_fim.length === 12)
         parsedLecture.data_fim = this.formatDateTime(parsedLecture.data_fim);
       const data = {
@@ -262,7 +264,7 @@ export default {
       const id = this.lecture.id;
       api.delete(`/admin/schedule/${id}`).then(res => {
         if (res.status === 201) {
-          showSuccess('Palestra removida da programação com sucesso!');
+          showSuccess("Palestra removida da programação com sucesso!");
           this.reset();
         } else {
           showError(res.data.message);
