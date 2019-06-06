@@ -64,7 +64,7 @@
                   @click="cancel(option2)"
                 >
                   <v-icon name="times"/>
-                  <span class="ml-1">Limpar</span>
+                  <span class="ml-1">Sair</span>
                 </b-btn>
               </div>
               <div slot="footer" v-else>
@@ -76,7 +76,7 @@
                   @click="cancel(option1)"
                 >
                   <v-icon name="times"/>
-                  <span class="ml-1">Limpar</span>
+                  <span class="ml-1">Sair</span>
                 </b-btn>
                 <b-form-radio
                   class="float-right"
@@ -134,7 +134,7 @@
                   @click="cancel(option2)"
                 >
                   <v-icon name="times"/>
-                  <span class="ml-1">Limpar</span>
+                  <span class="ml-1">Sair</span>
                 </b-btn>
                 <span class="text-danger text-uppercase">Vagas esgotadas!</span>
               </div>
@@ -147,7 +147,7 @@
                   @click="cancel(option2)"
                 >
                   <v-icon name="times"/>
-                  <span class="ml-1">Limpar</span>
+                  <span class="ml-1">Sair</span>
                 </b-btn>
                 <b-form-radio
                   class="float-right"
@@ -217,7 +217,8 @@ export default {
       };
       api.post("/schedule/course", data).then(res => {
         if (res.status === 200 || res.status === 201) {
-          showSuccess(res.data.message);
+          showSuccess(res.data.option1);
+          showSuccess(res.data.option2);
           this.getCourses();
         } else {
           showError(res.data.message);
@@ -227,12 +228,48 @@ export default {
     },
     cancel(option) {
       // parametro: id do minicurso selecionado
-      // invalida a opcao que tiver com a opcao selecionada
-      if (this.option1 === option) {
-        this.option1 = -1;
-      } else if (this.option2 === option) {
-        this.option2 = -1;
-      }
+
+      this.$swal({
+        position: "center",
+        title: "Minicurso",
+        text: "Deseja sair do minicurso?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sim, sair!",
+        cancelButtonText: "Cancelar"
+      }).then(result => {
+        if (result.value) {
+          // invalida a opcao que tiver com a opcao selecionada
+          if (this.option1 === option) {
+            this.option1 = -1;
+          } else if (this.option2 === option) {
+            this.option2 = -1;
+          }
+
+          const data = {
+            option1: this.option1,
+            option2: this.option2
+          };
+          api.post("/schedule/course", data).then(res => {
+            if (res.status === 200 || res.status === 201) {
+              this.getCourses(); // atualiza cards de minicursos p/ pegar vagas atualizadas
+            } else {
+              showError(res.data.message);
+              this.getCourses();
+            }
+          });
+          this.$swal({
+            position: "center",
+            type: "success",
+            title: "Minicurso",
+            text: "Você saiu!",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      });
     },
     getCourses() {
       this.isLoading = true;
