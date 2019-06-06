@@ -280,7 +280,7 @@ export default {
       }
       axios
         .get(
-          `${baseApiUrl}/admin/speaker/?report=1&csvformat=${
+          `${baseApiUrl}/admin/speaker?report=1&csvformat=${
             this.filetype
           }&filename=${filename}`,
           {
