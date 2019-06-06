@@ -79,11 +79,22 @@
         </h2>
         <p class="h2 text-center text-uppercase mt-3">
           Liberamos a
-          <strong class="text-primary">programação</strong>.
+          <strong class="text-primary">programação</strong> e
+          <strong class="text-dark">minicursos</strong>.
         </p>
         <p class="h2 text-center text-uppercase mt-3">
-          Fique ligado, as inscrições do minicurso vão começar em breve!
-          <v-icon name="smile-wink" scale="2" color="blue"/>
+          Não se esqueça de curtir nossa página no
+          <a
+            href="https://www.facebook.com/sacsisufv/"
+            target="_blank"
+            rel="noopener"
+          >Facebook</a> e
+          <a href="https://instagram.com/sacsisufv/" target="_blank" rel="noopener">Instagram</a>.
+          <v-icon name="thumbs-up" scale="2" color="#4267b2" class="mb-2"/>
+        </p>
+        <p class="h2 text-center text-uppercase mt-3">
+          Tem promoção rolando por lá!
+          <v-icon name="grin-wink" scale="2" color="#333" class="mb-2"/>
         </p>
         <p class="h4 mt-3 text-muted float-right">
           A equipe da
