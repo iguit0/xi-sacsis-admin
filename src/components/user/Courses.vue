@@ -31,7 +31,6 @@
               class="mt-3 mb-3"
               footer-tag="footer"
             >
-              <b-card-text v-if="minicurso.descricao">{{minicurso.descricao}}</b-card-text>
               <b-card-text v-if="minicurso.ministrante">
                 <v-icon name="chalkboard-teacher" class="mr-1"/>
                 Ministrante: {{minicurso.ministrante}}
@@ -61,11 +60,11 @@
                   class="float-left"
                   size="sm"
                   variant="danger"
-                  v-if="(option1 === minicurso.id)"
-                  @click="cancel(option1)"
+                  v-if="(option2 === minicurso.id)"
+                  @click="cancel(option2)"
                 >
                   <v-icon name="times"/>
-                  <span class="ml-1">SAIR</span>
+                  <span class="ml-1">Limpar</span>
                 </b-btn>
               </div>
               <div slot="footer" v-else>
@@ -77,7 +76,7 @@
                   @click="cancel(option1)"
                 >
                   <v-icon name="times"/>
-                  <span class="ml-1">SAIR</span>
+                  <span class="ml-1">Limpar</span>
                 </b-btn>
                 <b-form-radio
                   class="float-right"
@@ -103,7 +102,6 @@
               class="mt-3 mb-3"
               footer-tag="footer"
             >
-              <b-card-text v-if="minicurso.descricao">{{minicurso.descricao}}</b-card-text>
               <b-card-text v-if="minicurso.ministrante">
                 <v-icon name="chalkboard-teacher" class="mr-1"/>
                 Ministrante: {{minicurso.ministrante}}
@@ -132,11 +130,11 @@
                   class="float-left"
                   size="sm"
                   variant="danger"
-                  v-if="(option1 === minicurso.id)"
-                  @click="cancel(option1)"
+                  v-if="(option2 === minicurso.id)"
+                  @click="cancel(option2)"
                 >
                   <v-icon name="times"/>
-                  <span class="ml-1">SAIR</span>
+                  <span class="ml-1">Limpar</span>
                 </b-btn>
                 <span class="text-danger text-uppercase">Vagas esgotadas!</span>
               </div>
@@ -145,26 +143,26 @@
                   class="float-left"
                   size="sm"
                   variant="danger"
-                  v-if="(option1 === minicurso.id)"
-                  @click="cancel(option1)"
+                  v-if="(option2 === minicurso.id)"
+                  @click="cancel(option2)"
                 >
                   <v-icon name="times"/>
-                  <span class="ml-1">SAIR</span>
+                  <span class="ml-1">Limpar</span>
                 </b-btn>
                 <b-form-radio
                   class="float-right"
-                  v-model="option1"
+                  v-model="option2"
                   name="option-2"
                   :value="minicurso.id"
-                  @change="option1 = minicurso.id"
-                >{{option1 === minicurso.id ? 'Selecionado' : 'Selecionar'}}</b-form-radio>
+                  @change="option2 = minicurso.id"
+                >{{option2 === minicurso.id ? 'Selecionado' : 'Selecionar'}}</b-form-radio>
               </div>
             </b-card>
           </b-col>
         </b-row>
         <b-btn
           @click="confirm"
-          :disabled="!option1"
+          :disabled="!option1 && !option2"
           variant="success"
           block
           size="lg"
@@ -207,14 +205,15 @@ export default {
   methods: {
     confirm() {
       const parsedOption1 = parseInt(this.option1);
-      /*const parsedOption2 = parseInt(this.option2);
+      const parsedOption2 = parseInt(this.option2);
+      // não deixar cadastrar dois minicursos com o mesmo id da programação
       if (this.option1 === this.option2) {
-        // não deixar cadastrar dois minicursos iguais
-        return showError("Não é possível cadastrar em minicursos iguais");
-      }*/
+        if (this.option1 !== -1 && this.option2 !== -1)
+          return showError("Não é possível cadastrar em minicursos iguais");
+      }
       const data = {
-        option1: parsedOption1
-        //option2: parsedOption2
+        option1: parsedOption1,
+        option2: parsedOption2
       };
       api.post("/schedule/course", data).then(res => {
         if (res.status === 200 || res.status === 201) {
@@ -229,71 +228,20 @@ export default {
     cancel(option) {
       // parametro: id do minicurso selecionado
       // invalida a opcao que tiver com a opcao selecionada
-      this.$swal({
-        position: "center",
-        title: "Minicurso",
-        text: "Deseja sair do minicurso?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sim, sair!",
-        cancelButtonText: "Cancelar"
-      }).then(result => {
-        if (result.value) {
-          if (this.option1 === option) {
-            this.option1 = -1;
-          }
-
-          const data = {
-            option1: this.option1
-          };
-          api.post("/schedule/course", data).then(res => {
-            if (res.status === 200 || res.status === 201) {
-              showSuccess(res.data.option1);
-              this.getCourses(); // atualiza cards de minicursos p/ pegar vagas atualizadas
-            } else {
-              showError("Erro ao sair no minicurso!");
-              this.getCourses();
-            }
-          });
-
-          this.$swal({
-            position: "center",
-            type: "success",
-            title: "Minicurso",
-            text: "Você saiu!",
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-      });
-
-      // desinscricao (sair) de minicurso
-      /*const data = {
-        option1: this.option1,
-        option2: this.option2
-      };
-      api.post("/schedule/course", data).then(res => {
-        if (res.status === 200 || res.status === 201) {
-          showSuccess(res.data.option1);
-          showSuccess(res.data.option2);
-          this.getCourses();
-        } else {
-          showError(res.data.option1);
-          showError(res.data.option2);
-          this.getCourses();
-        }
-      });*/
+      if (this.option1 === option) {
+        this.option1 = -1;
+      } else if (this.option2 === option) {
+        this.option2 = -1;
+      }
     },
     getCourses() {
       this.isLoading = true;
       api.get("/schedule/course").then(res => {
         if (res.status === 200 || res.status === 201) {
           // se tiver inscrito em algum, popula os selects
-          if (res.data.option1) {
+          if (res.data.option1 || res.data.option2) {
             this.option1 = res.data.option1;
-            //this.option2 = res.data.option2;
+            this.option2 = res.data.option2;
           }
           this.coursesLength = res.data.minicursos.length;
           this.coursesTurma1 = res.data.minicursos.filter(
