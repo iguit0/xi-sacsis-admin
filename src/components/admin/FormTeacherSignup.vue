@@ -56,6 +56,7 @@
                   placeholder="Insira seu numero de telefone."
                   class="form-control"
                   required
+                  type="text"
                   :mask="['(##) ####-####','(##) #####-####']"
                 />
               </b-form-group>
@@ -65,6 +66,7 @@
                   placeholder="RG"
                   class="form-control"
                   required
+                  type="text"
                   :mask="['####################']"
                 />
               </b-form-group>
@@ -74,6 +76,7 @@
                   placeholder="CPF"
                   class="form-control"
                   required
+                  type="text"
                   :mask="['###.###.###-##']"
                 />
               </b-form-group>
