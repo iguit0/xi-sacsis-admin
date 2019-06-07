@@ -6,6 +6,7 @@ import router from './router'
 // plugins
 import VueAnalytics from 'vue-analytics'
 import VModal from 'vue-js-modal'
+import './registerServiceWorker'
 import './plugins/bootstrap'
 import './plugins/icons'
 import './plugins/toasted'
