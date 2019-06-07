@@ -21,16 +21,19 @@
       >"Os minicursos estão duplicados, é bug?"</h4>
       <h6 class="faq-text text-center text-uppercase mt-1 text-info">
         Não, não é bug.
-        <br>Se fossemos separar por turmas T1 (tarde) e T2 (noite), iríamos prejudicar as pessoas que só vem apenas um período a universidade.
-        <br>Exemplo: A pessoa irá para faculdade somente à tarde, e se ela quiser fazer os dois minicursos na turma 1? A mesma lógica se aplica para o noturno.
+        <br>Se fossemos separar por turmas T1 (tarde) e T2 (noite), iríamos prejudicar as pessoas que comparecem apenas um período a universidade.
+        <br>Exemplo: Tal aluno só vai no turno da tarde, e se ele quiser fazer os dois minicursos na turma 1?
+        <br>Seguindo a ideia da divisão por turmas únicas para cada opção, isto não iria ser possível!
+        <br>A mesma lógica se aplica para o noturno. Pensando nisso, é necessário esta "duplicação" para melhor atender a todos.
         <br>
-        <strong>Não é possível se cadastrar em dois minicursos iguais.</strong> Entretanto, é necessário esta liberdade de escolha para melhor atender a todos.
+        <strong>OBS: Não é possível se cadastrar em dois minicursos iguais.</strong>
       </h6>
       <h4 class="text-center text-danger text-uppercase mt-1">"Não consegui selecionar duas opções."</h4>
       <h6 class="faq-text text-center text-uppercase mt-1 text-info">
         O sistema passou por várias mudanças, e nos desculpamos pelo incoveniente. Recomendamos limpar o
         <i>cache</i> de seu navegador.
-        <br>A limpeza desses dados corrige determinados erros, como problemas de carregamento ou formatação nos sites.
+        <br>
+        <strong>A limpeza desses dados corrige determinados erros, como problemas de carregamento ou formatação nos sites.</strong>
         <br>Saia de sua conta e entre novamente após realizar o procedimento.
         <br>
         <a
@@ -42,7 +45,7 @@
           <i>cache</i> do navegador.
         </a>
       </h6>
-      <b-container fluid>
+      <b-container class="mt-3" fluid>
         <b-row>
           <b-col>
             <h2 class="text-center text-uppercase">Opção 1</h2>
