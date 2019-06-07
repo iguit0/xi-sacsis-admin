@@ -5,7 +5,7 @@
       <h2 class="text-center text-uppercase mt-1">CARREGANDO...</h2>
     </div>
 
-    <div v-else-if="!coursesTurma1 && !coursesTurma2 && !coursesLength">
+    <div v-else-if="!coursesLength">
       <h2>wtf</h2>
     </div>
 
@@ -21,7 +21,7 @@
             <h2 class="text-center text-uppercase">Opção 1</h2>
             <!-- OPCAO 1 -->
             <b-card
-              v-for="(minicurso) in coursesTurma1"
+              v-for="(minicurso) in coursesOpcao1"
               :key="minicurso.id"
               header-bg-variant="primary"
               header-text-variant="white"
@@ -92,7 +92,7 @@
             <h2 class="text-center text-uppercase">Opção 2</h2>
             <!-- OPÇÃO 2 -->
             <b-card
-              v-for="(minicurso) in coursesTurma2"
+              v-for="(minicurso) in coursesOpcao2"
               :key="minicurso.id"
               header-bg-variant="primary"
               header-text-variant="white"
@@ -192,8 +192,8 @@ export default {
       option1: null,
       option2: null,
       coursesLength: 0,
-      coursesTurma1: [],
-      coursesTurma2: [],
+      coursesOpcao1: [],
+      coursesOpcao2: [],
       isLoading: false
     };
   },
@@ -281,12 +281,8 @@ export default {
             this.option2 = res.data.option2;
           }
           this.coursesLength = res.data.minicursos.length;
-          this.coursesTurma1 = res.data.minicursos.filter(
-            elem => elem.turma === "1"
-          );
-          this.coursesTurma2 = res.data.minicursos.filter(
-            elem => elem.turma === "2"
-          );
+          this.coursesOpcao1 = res.data.minicursos;
+          this.coursesOpcao2 = res.data.minicursos;
         } else {
           showError(res.data.message);
           this.getCourses();
