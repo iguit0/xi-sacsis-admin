@@ -8,7 +8,12 @@
       <PageTitle icon="user-circle" main="Minha conta" sub="Gerencie suas informações"/>
       <b-form>
         <b-form-group id="input-group-2" label="Nome:" label-for="input-2">
-          <b-form-input id="input-2" v-model="editedUser.nome" :readonly="!ienable" placeholder="Digite nome"/>
+          <b-form-input
+            id="input-2"
+            v-model="editedUser.nome"
+            :readonly="!ienable"
+            placeholder="Digite nome"
+          />
         </b-form-group>
 
         <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">
@@ -44,13 +49,7 @@
           />
         </b-form-group>
 
-        <b-form-group
-          id="input-group-33"
-          label="Gênero:"
-          label-for="input-33"
-        >
-          {{editedUser.sexo ? 'Masculino' : 'Feminino'}}
-        </b-form-group>
+        <b-form-group id="input-group-33" label="Gênero:" label-for="input-33">{{editedUser.sexo}}</b-form-group>
 
         <b-form-group
           id="input-group-1"
@@ -95,7 +94,8 @@
           >{{ editedUser.status_pago ? 'Sim' : 'Não'}}</b-form-checkbox>
         </b-form-group>
 
-        <VueLoadingButton v-if="bedit"
+        <VueLoadingButton
+          v-if="bedit"
           aria-label="Editar Dados de Usuário"
           class="btn btn-warning btn-block"
           :styled="isStyled"
@@ -105,7 +105,8 @@
           <v-icon name="edit" scale="1.5" class="mr-1"/>Editar
         </VueLoadingButton>
 
-        <VueLoadingButton v-if="bsave"
+        <VueLoadingButton
+          v-if="bsave"
           aria-label="Salvar Dados de Usuário"
           class="btn btn-success btn-block"
           :styled="isStyled"
