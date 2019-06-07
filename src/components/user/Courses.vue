@@ -6,7 +6,7 @@
     </div>
 
     <div v-else-if="!coursesLength">
-      <h2>wtf</h2>
+      <h2 class="text-center text-uppercase mt-1">Não há minicurso cadastrado.</h2>
     </div>
 
     <div v-else>
@@ -15,6 +15,33 @@
         main="Minicursos"
         :sub="`${coursesLength} opções disponíveis`"
       />
+      <h2 class="text-center text-uppercase mt-1">Perguntas frequentes</h2>
+      <h4
+        class="text-center text-danger text-uppercase mt-1"
+      >"Os minicursos estão duplicados, é bug?"</h4>
+      <h6 class="faq-text text-center text-uppercase mt-1 text-info">
+        Não, não é bug.
+        <br>Se fossemos separar por turmas T1 (tarde) e T2 (noite), iríamos prejudicar as pessoas que só vem apenas um período a universidade.
+        <br>Exemplo: A pessoa irá para faculdade somente à tarde, e se ela quiser fazer os dois minicursos na turma 1? A mesma lógica se aplica para o noturno.
+        <br>
+        <strong>Não é possível se cadastrar em dois minicursos iguais.</strong> Entretanto, é necessário esta liberdade de escolha para melhor atender a todos.
+      </h6>
+      <h4 class="text-center text-danger text-uppercase mt-1">"Não consegui selecionar duas opções."</h4>
+      <h6 class="faq-text text-center text-uppercase mt-1 text-info">
+        O sistema passou por várias mudanças, e nos desculpamos pelo incoveniente. Recomendamos limpar o
+        <i>cache</i> de seu navegador.
+        <br>A limpeza desses dados corrige determinados erros, como problemas de carregamento ou formatação nos sites.
+        <br>Saia de sua conta e entre novamente após realizar o procedimento.
+        <br>
+        <a
+          href="https://support.google.com/accounts/answer/32050?co=GENIE.Platform"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Clique aqui se não sabe limpar o
+          <i>cache</i> do navegador.
+        </a>
+      </h6>
       <b-container fluid>
         <b-row>
           <b-col>
@@ -299,3 +326,8 @@ export default {
 };
 </script>
 
+<style scoped>
+.faq-text {
+  font-size: 15px;
+}
+</style>
