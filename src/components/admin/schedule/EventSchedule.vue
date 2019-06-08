@@ -42,7 +42,7 @@
             label-for="event-start"
             description="Digite a data e depois horário"
           >
-            <the-mask
+            <input
               label="Date"
               id="event-start"
               mask="##/##/#### ##:##"
@@ -57,7 +57,7 @@
         </b-col>
         <b-col md="2">
           <b-form-group label="Data Fim:" label-for="event-end">
-            <the-mask
+            <input
               label="Date"
               id="event-end"
               mask="##/##/#### ##:##"

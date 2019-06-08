@@ -17,9 +17,9 @@
         </b-col>
         <b-col md="2" sm="2">
           <b-form-group label="Matrícula:" label-for="student-matricula">
-            <the-mask
+            <input
               id="student-matricula"
-              :mask="['#####']"
+              v-mask="'#####'"
               v-model="student.matricula"
               name="matricula"
               :readonly="mode === 'remove'"
@@ -30,24 +30,24 @@
         </b-col>
         <b-col md="2" sm="6">
           <b-form-group label="CPF:" label-for="student-cpf">
-            <the-mask
+            <input
               id="student-cpf"
               v-model="student.cpf"
               placeholder="CPF"
               :readonly="mode === 'remove'"
               class="form-control"
-              :mask="['###.###.###-##']"
+              v-mask="'###########'"
             />
           </b-form-group>
         </b-col>
         <b-col md="2" sm="6">
           <b-form-group label="RG:" label-for="student-rg">
-            <the-mask
+            <input
               id="student-rg"
               v-model="student.rg"
               placeholder="RG"
               :readonly="mode === 'remove'"
-              :mask="['###############']"
+              v-mask="'###############'"
               class="form-control"
             />
           </b-form-group>
@@ -249,7 +249,7 @@ export default {
         rg: parsedStudent.rg,
         camiseta: parsedStudent.camiseta,
         sexo: parsedStudent.sexo,
-        admin: parsedStudent.admin === "false" ? false : true
+        admin: JSON.parse(parsedStudent.admin)
       };
       axios
         .put(`${baseApiUrl}/admin/user`, data, {

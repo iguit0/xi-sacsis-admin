@@ -17,9 +17,9 @@
         </b-form-group>
 
         <b-form-group id="input-group-3" label="Matrícula:" label-for="input-3">
-          <the-mask
+          <input
             id="input-3"
-            :mask="['#####']"
+            v-mask="'#####'"
             v-model="editedUser.matricula"
             name="matricula"
             placeholder="Matrícula"
@@ -29,23 +29,23 @@
         </b-form-group>
 
         <b-form-group id="input-group-4" label="CPF:" label-for="input-4">
-          <the-mask
+          <input
             id="input-4"
             v-model="editedUser.cpf"
             placeholder="CPF"
             class="form-control"
-            :mask="['###.###.###-##']"
+            v-mask="'###.###.###-##'"
             :readonly="!ienable"
           />
         </b-form-group>
 
         <b-form-group id="input-group-5" label="RG:" label-for="input-5">
-          <the-mask
+          <input
             id="input-5"
             v-model="editedUser.rg"
             :readonly="!ienable"
             class="form-control"
-            :mask="['###############']"
+            v-mask="'###############'"
           />
         </b-form-group>
 

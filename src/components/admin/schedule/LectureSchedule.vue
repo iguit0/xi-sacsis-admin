@@ -48,7 +48,7 @@
             label-for="lecture-start"
             description="Digite data e depois horário"
           >
-            <the-mask
+            <input
               label="Date"
               id="lecture-start"
               mask="##/##/#### ##:##"
@@ -63,7 +63,7 @@
         </b-col>
         <b-col md="2" sm="6">
           <b-form-group label="Data Fim" label-for="lecture-end">
-            <the-mask
+            <input
               label="Date"
               id="lecture-end"
               mask="##/##/#### ##:##"
