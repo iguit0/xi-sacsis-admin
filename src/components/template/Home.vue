@@ -73,15 +73,42 @@
         </p>
       </div>
       <div v-else-if="!isAdmin && isPaid">
+        <h2
+          class="text-center font-weight-bold mb-4 text-warning text-uppercase mt-1"
+        >Perguntas frequentes</h2>
         <h2 class="text-center text-uppercase mt-1">
-          a espera
-          <strong class="text-success">acabou</strong>!
+          <i>1. Coffee Break</i>
         </h2>
-        <p class="h2 text-center text-uppercase mt-3">
-          Liberamos a
-          <strong class="text-primary">programação</strong> e
-          <strong class="text-dark">minicursos</strong>.
+        <p class="h4 text-center text-uppercase mt-3">
+          A SACSIS para esse ano, se preocupando com o Meio Ambiente, resolveu abolir o uso de copos plásticos durante o coffee break.
+          <br>Os participantes devem,
+          <strong class="text-primary">obrigatoriamente</strong>, trazer de casa seus próprios copos para servirem as bebidas.
         </p>
+        <h2 class="text-center text-uppercase mt-4">2. Validar presença</h2>
+        <p class="h4 text-center text-uppercase mt-3">
+          Para que a presença dos participantes seja validada nos minicursos/palestras, os mesmos devem, obrigatoriamente,
+          <strong
+            class="text-primary"
+          >
+            imprimir
+            ou mostrar
+          </strong> em seu celular o
+          <i>voucher</i> disponibilizado no e-mail cadastrado pelos participantes.
+          <br>
+          <strong class="text-danger">
+            Caso algum participante não tenha recebido o
+            <i>voucher</i> em seu email, o mesmo deve procurar a organização!
+          </strong>
+        </p>
+
+        <h2 class="text-center text-uppercase mt-4">3. Frequência</h2>
+        <p class="h4 text-center text-uppercase mt-3">
+          A frequência dos participantes é contabilizada e será disponibilizada aos professores do curso de Sistemas de Informação,
+          <strong
+            class="text-primary"
+          >ficando a cargo de cada um deles julgar</strong>, com base na frequência de cada aluno, se o mesmo deve ter suas faltas abonadas.
+        </p>
+
         <p class="h2 text-center text-uppercase mt-3">
           Não se esqueça de curtir nossa página no
           <a
