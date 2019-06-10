@@ -37,31 +37,29 @@
             label-for="course-start"
             description="Exemplo: 07/06/2019 14:00"
           >
-            <the-mask
+            <input
               label="Date"
               id="course-start"
-              mask="##/##/#### ##:##"
+              v-mask="'##/##/#### ##:##'"
               placeholder="Data Início"
               v-model="course.data_inicio"
               class="form-control"
               :readonly="mode === 'remove'"
               required
-              :masked="false"
             />
           </b-form-group>
         </b-col>
         <b-col md="2">
           <b-form-group label="Data Fim:" label-for="course-end">
-            <the-mask
+            <input
               label="Date"
               id="course-end"
-              mask="##/##/#### ##:##"
+              mask="'##/##/#### ##:##'"
               placeholder="Data Fim"
               v-model="course.data_fim"
               class="form-control"
               :readonly="mode === 'remove'"
               required
-              :masked="false"
             />
           </b-form-group>
         </b-col>

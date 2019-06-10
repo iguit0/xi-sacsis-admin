@@ -160,9 +160,9 @@
         <b-input-group-text slot="prepend">
           <v-icon name="id-card"/>
         </b-input-group-text>
-        <the-mask
+        <input
           v-on:keyup.enter="checkForm"
-          :mask="['#####']"
+          v-mask="'#####'"
           v-model="user.matricula"
           name="matricula"
           placeholder="Matrícula"
@@ -177,13 +177,13 @@
             <v-icon name="id-card-alt"/>
           </span>
         </div>
-        <the-mask
+        <input
           v-on:keyup.enter="checkForm"
           v-model="user.cpf"
           placeholder="CPF"
           class="form-control"
           required
-          :mask="['###.###.###-##']"
+          v-mask="'###.###.###-##'"
         />
       </div>
 
@@ -191,13 +191,13 @@
         <b-input-group-text slot="prepend">
           <v-icon name="id-card-alt"/>
         </b-input-group-text>
-        <the-mask
+        <input
           v-on:keyup.enter="checkForm"
           v-model="user.rg"
           placeholder="RG"
           class="form-control"
           required
-          :mask="['###############']"
+          v-mask="'###############'"
         />
       </b-input-group>
 

@@ -3,27 +3,11 @@
     <PageTitle icon="scroll" main="Relatórios" sub="Visualizar planilhas, etc"/>
     <b-container fluid>
       <b-row>
-        <!-- Programação -->
-        <b-col>
-          <h2 class="text-center text-uppercase title mb-3">DADOS DE PROGRAMAÇÃO</h2>
-          <b-btn size="lg" disabled variant="primary" block @click="downloadSchedule('csv')">
-            <v-icon scale="2" name="file-csv"/>
-            <span class="ml-2 title text-uppercase">Baixar .CSV</span>
-          </b-btn>
-        </b-col>
-        <b-col>
-          <h2 class="text-center text-uppercase title mb-3">DADOS DE PROGRAMAÇÃO</h2>
-          <b-btn disabled size="lg" variant="warning" block @click="downloadSchedule('xls')">
-            <v-icon scale="2" name="file-excel"/>
-            <span class="ml-2 title text-uppercase">Baixar .XLS</span>
-          </b-btn>
-        </b-col>
-        <div class="w-100 mt-2">
-          <hr>
-        </div>
         <!-- Pagamentos -->
+        <div class="w-100 mt-2">
+          <h2 class="text-center title mb-3">Relação de pagamentos lançados</h2>
+        </div>
         <b-col>
-          <h2 class="text-center text-uppercase title mb-3">PAGAMENTOS</h2>
           <b-btn
             size="lg"
             :disabled="isLoading"
@@ -36,7 +20,6 @@
           </b-btn>
         </b-col>
         <b-col>
-          <h2 class="text-center text-uppercase title mb-3">PAGAMENTOS</h2>
           <b-btn
             size="lg"
             :disabled="isLoading"
@@ -54,8 +37,10 @@
       </div>
       <b-row>
         <!-- Minicursos -->
+        <div class="w-100 mt-2">
+          <h2 class="text-center title mb-3">Lista de chamada</h2>
+        </div>
         <b-col>
-          <h2 class="text-center text-uppercase title mb-3">minicursos</h2>
           <v-select
             id="course"
             label="titulo"
@@ -88,7 +73,6 @@
           </b-btn>
         </b-col>
         <b-col>
-          <h2 class="text-center text-uppercase title mb-3">minicursos</h2>
           <v-select
             id="course"
             label="titulo"
@@ -126,15 +110,16 @@
       </div>
       <b-row>
         <!-- Ministrantes -->
+        <div class="w-100 mt-2">
+          <h2 class="text-center title mb-3">Ministrantes cadastrados</h2>
+        </div>
         <b-col>
-          <h2 class="text-center text-uppercase title mb-3">ministrantes</h2>
           <b-btn size="lg" variant="primary" block @click="downloadSpeakers('csv')">
             <v-icon scale="2" name="file-csv"/>
             <span class="ml-2 title text-uppercase">Baixar .CSV</span>
           </b-btn>
         </b-col>
         <b-col>
-          <h2 class="text-center text-uppercase title mb-3">Ministrantes</h2>
           <b-btn size="lg" variant="warning" block @click="downloadSpeakers('xls')">
             <v-icon scale="2" name="file-excel"/>
             <span class="ml-2 title text-uppercase">Baixar .XLS</span>

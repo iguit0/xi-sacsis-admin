@@ -51,33 +51,33 @@
                 />
               </b-form-group>
               <b-form-group id="input-group-3" label="Telefone:" label-for="input-3">
-                <the-mask
+                <input
                   v-model="teacher.telefone"
                   placeholder="Insira seu numero de telefone."
                   class="form-control"
                   required
                   type="text"
-                  :mask="['(##) ####-####','(##) #####-####']"
+                  v-mask="'(##) ###-###-###'"
                 />
               </b-form-group>
               <b-form-group id="input-group-2" label="RG:" label-for="input-2" description="Apenas números">
-                <the-mask
+                <input
                   v-model="teacher.rg"
                   placeholder="RG"
                   class="form-control"
                   required
                   type="text"
-                  :mask="['####################']"
+                  v-mask="'####################'"
                 />
               </b-form-group>
               <b-form-group id="input-group-3" label="CPF:" label-for="input-3">
-                <the-mask
+                <input
                   v-model="teacher.cpf"
                   placeholder="CPF"
                   class="form-control"
                   required
                   type="text"
-                  :mask="['###.###.###-##']"
+                  v-mask="'###.###.###-##'"
                 />
               </b-form-group>
 
@@ -210,26 +210,26 @@
                 />
               </b-form-group>
               <b-form-group id="input-group-3" label="Telefone:" label-for="input-3">
-                <the-mask
+                <input
                   v-model="teacher.telefone"
                   class="form-control"
                   readonly
-                  :mask="['(##) ####-####','(##) #####-####']"
+                  v-mask="'(##) ###-###-###'"
                 />
               </b-form-group>
               <b-form-group id="input-group-2" label="RG:" label-for="input-2" description="Apenas números">
                 <b-input
                   v-model="teacher.rg"
                   readonly
-                  :mask="['####################']"
+                  v-mask="'####################'"
                 />
               </b-form-group>
               <b-form-group id="input-group-3" label="CPF:" label-for="input-3">
-                <the-mask
+                <input
                   v-model="teacher.cpf"
                   class="form-control"
                   readonly
-                  :mask="['###.###.###-##']"
+                  v-mask="'###.###.###-##'"
                 />
               </b-form-group>
             </b-form>
