@@ -114,6 +114,7 @@ export default {
     line-height: 120%;
     text-align: justify;
     word-wrap: break-word;
+    white-space: pre-line;
     overflow-y: auto;
   }
 
@@ -130,6 +131,7 @@ export default {
     line-height: 120%;
     text-align: justify;
     word-wrap: break-word;
+    white-space: pre-line;
     overflow-y: auto;
   }
 </style>
