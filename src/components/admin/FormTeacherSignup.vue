@@ -82,7 +82,7 @@
               </b-form-group>
 
               <b-form-group label="Imagem de avatar:">
-                <my-upload field="img"
+                <my-upload class="customUpload" field="img"
                       @crop-success="cropSuccess"
                       v-model="show"
                   :params="params"
@@ -90,6 +90,7 @@
                   :width="300"
                   :height="300"
                   langType="pt-br"
+                  noSquare="true"
                   img-format="png"></my-upload>
                 <b-img
                   center
@@ -443,5 +444,23 @@ span.error {
   font-size: 20px;
   display: flex;
   justify-content: center;
+}
+</style>
+<style>
+.customUpload .vicp-preview-item-circle {
+  margin-top: 50px;
+}
+.customUpload .vicp-wrap {
+  width: 420px;
+}
+@media only screen and (max-width: 600px) {
+  .customUpload .vicp-range {
+    display: none;
+  }
+  .customUpload .vicp-wrap {
+    width: 260px;
+    height: 260px;
+    padding: 10px;
+  }
 }
 </style>
