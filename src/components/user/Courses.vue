@@ -30,7 +30,7 @@
       </h6>
       <h4 class="text-center text-danger text-uppercase mt-1">"Não consegui selecionar duas opções."</h4>
       <h6 class="faq-text text-center text-uppercase mt-1 text-info">
-        O sistema passou por várias mudanças, e nos desculpamos pelo incoveniente. Recomendamos limpar o
+        O sistema passou por várias mudanças, e nos desculpamos pelo inconveniente. Recomendamos limpar o
         <i>cache</i> de seu navegador.
         <br>
         <strong>A limpeza desses dados corrige determinados erros, como problemas de carregamento ou formatação nos sites.</strong>
