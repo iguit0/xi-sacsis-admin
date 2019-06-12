@@ -554,10 +554,6 @@ xcarbonads
     font-size: 14px;
     font-size: 0.875rem;
   }
-
-  .infoBtn {
-    display: none;
-  }
 }
 
 @media only screen and (min-width: 1170px) {
