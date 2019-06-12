@@ -1,6 +1,7 @@
 <template>
   <b-container>
     <b-row>
+      <b-col>
         <form-wizard
           @on-complete="save"
           @on-error="handleErrorMessage"
@@ -251,6 +252,7 @@
             <!-- ./confirmacao -->
           </tab-content>
         </form-wizard>
+      </b-col>
     </b-row>
   </b-container>
 </template>
@@ -479,6 +481,10 @@ span.error {
     min-width: 90px;
   }
   .vue-form-wizard .wizard-tab-content {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .col {
     padding-left: 0px;
     padding-right: 0px;
   }

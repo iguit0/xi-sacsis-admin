@@ -482,5 +482,12 @@ span.error {
   .vue-form-wizard .wizard-btn {
     min-width: 90px;
   }
+  .vue-form-wizard .wizard-tab-content {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .col {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 }
-</style>
