@@ -1,7 +1,6 @@
 <template>
   <b-container>
     <b-row>
-      <b-col>
         <form-wizard
           @on-complete="save"
           @on-error="handleErrorMessage"
@@ -252,7 +251,6 @@
             <!-- ./confirmacao -->
           </tab-content>
         </form-wizard>
-      </b-col>
     </b-row>
   </b-container>
 </template>
@@ -455,10 +453,34 @@ span.error {
   .customUpload .vicp-range {
     display: none;
   }
+  .customUpload .vicp-preview {
+    display: none;
+  }
   .customUpload .vicp-wrap {
     width: 260px;
     height: 260px;
     padding: 10px;
+  }
+
+  .vue-form-wizard.lg .wizard-icon-circle {
+    height: 40px;
+    width: 40px;
+  }
+  .wizzard-progress-bar {
+    display: none;
+  }
+  .stepTitle {
+    font-size: 0.8rem
+  }
+  .vue-form-wizard.lg .wizard-navigation .wizard-progress-with-circle {
+    top: 25px;
+  }
+  .vue-form-wizard .wizard-btn {
+    min-width: 90px;
+  }
+  .vue-form-wizard .wizard-tab-content {
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
 </style>

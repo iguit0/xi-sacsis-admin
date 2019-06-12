@@ -457,10 +457,30 @@ span.error {
   .customUpload .vicp-range {
     display: none;
   }
+  .customUpload .vicp-preview {
+    display: none;
+  }
   .customUpload .vicp-wrap {
     width: 260px;
     height: 260px;
     padding: 10px;
+  }
+
+  .vue-form-wizard .wizard-icon-circle.square_shape {
+    height: 40px;
+    width: 40px;
+  }
+  .wizzard-progress-bar {
+    display: none;
+  }
+  .stepTitle {
+    font-size: 0.8rem
+  }
+  .vue-form-wizard.lg .wizard-navigation .wizard-progress-with-circle {
+    top: 25px;
+  }
+  .vue-form-wizard .wizard-btn {
+    min-width: 90px;
   }
 }
 </style>
