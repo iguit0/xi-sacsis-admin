@@ -30,7 +30,7 @@
           <v-icon name="chair" class="mr-1"/>
           {{item.vagas}} vagas restantes
         </p>
-        <b-btn block variant="outline-primary" size="sm" @click="openModal(item.id)">
+        <b-btn class="infoBtn" block variant="outline-primary" size="sm" @click="openModal(item.id)">
           <!-- Botão de mais informações -->
           <v-icon name="info-circle" class="mr-1"/>Mais informações
         </b-btn>
@@ -50,7 +50,7 @@
           <v-icon name="map-marker-alt" class="mr-1"/>
           {{item.local}}
         </p>
-        <b-btn block variant="outline-primary" size="sm" @click="openModal(item.id)">
+        <b-btn class="infoBtn" block variant="outline-primary" size="sm" @click="openModal(item.id)">
           <!-- Botão de mais informações -->
           <v-icon name="info-circle" class="mr-1"/>Mais informações
         </b-btn>
@@ -67,7 +67,7 @@
           <v-icon name="map-marker-alt" class="mr-1"/>
           {{item.local}}
         </p>
-        <!--<b-btn block variant="outline-primary" size="sm" @click="openModal(item.id)">
+        <!--<b-btn class="infoBtn" block variant="outline-primary" size="sm" @click="openModal(item.id)">
           <v-icon name="info-circle" class="mr-1"/>Mais informações
         </b-btn>-->
         <span class="cd-date">
@@ -607,6 +607,11 @@ xcarbonads
 
   .cssanimations .cd-timeline-content.is-hidden {
     visibility: hidden;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .infoBtn {
+    display: none;
   }
 }
 </style>

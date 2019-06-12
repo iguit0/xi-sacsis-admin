@@ -88,6 +88,7 @@
                   :width="300"
                   :height="300"
                   langType="pt-br"
+                  noSquare="true"
                   img-format="png"></my-upload>
                 <b-img
                   center
@@ -450,7 +451,7 @@ span.error {
 .customUpload .vicp-wrap {
   width: 420px;
 }
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
   .customUpload .vicp-range {
     display: none;
   }
