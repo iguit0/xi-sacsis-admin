@@ -51,7 +51,7 @@
             <input
               label="Date"
               id="lecture-start"
-              mask="##/##/#### ##:##"
+              v-mask="'##/##/#### ##:##'"
               placeholder="Data Início"
               :readonly="mode === 'remove'"
               v-model="lecture.data_inicio"
@@ -66,7 +66,7 @@
             <input
               label="Date"
               id="lecture-end"
-              mask="##/##/#### ##:##"
+              v-mask="'##/##/#### ##:##'"
               placeholder="Data Fim"
               v-model="lecture.data_fim"
               class="form-control"

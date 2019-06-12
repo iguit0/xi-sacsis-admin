@@ -45,7 +45,7 @@
             <input
               label="Date"
               id="event-start"
-              mask="##/##/#### ##:##"
+              v-mask="'##/##/#### ##:##'"
               placeholder="Data Início"
               :readonly="mode === 'remove'"
               v-model="event.data_inicio"
@@ -60,7 +60,7 @@
             <input
               label="Date"
               id="event-end"
-              mask="##/##/#### ##:##"
+              v-mask="'##/##/#### ##:##'"
               placeholder="Data Fim"
               :readonly="mode === 'remove'"
               v-model="event.data_fim"

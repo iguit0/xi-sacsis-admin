@@ -54,7 +54,7 @@
             <input
               label="Date"
               id="course-end"
-              mask="'##/##/#### ##:##'"
+              v-mask="'##/##/#### ##:##'"
               placeholder="Data Fim"
               v-model="course.data_fim"
               class="form-control"
