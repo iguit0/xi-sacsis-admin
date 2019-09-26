@@ -1,75 +1,75 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { userKey } from '@/global'
+import { userKey, prefix } from '@/global'
 
 Vue.use(VueRouter)
 
 const routes = [
     {
-        path: '/profile',
+        path: prefix+'/profile',
         name: 'home',
         component: () => import('./components/template/Home.vue'),
         meta: { requiresLogin: true }
     },
     {
-        path: '/profile/admin',
+        path: prefix+'/profile/admin',
         name: 'adminPages',
         component: () => import('./components/admin/AdminPages.vue'),
         meta: { requiresLogin: true, requiresAdmin: true }
     },
     {
-        path: '/profile/admin-programacao',
+        path: prefix+'/profile/admin-programacao',
         name: 'SchedulePages',
         component: () => import('./components/admin/schedule/SchedulePages.vue'),
         meta: { requiresLogin: true, requiresAdmin: true }
     },
     {
-        path: '/profile/programacao',
+        path: prefix+'/profile/programacao',
         name: 'ScheduleView',
         component: () => import('./components/template/Schedule.vue'),
         meta: { requiresLogin: true }
     },
     {
-        path: '/profile/minicursos',
+        path: prefix+'/profile/minicursos',
         name: 'CoursesList',
         component: () => import('./components/user/Courses.vue'),
         meta: { requiresLogin: true }
     },
     {
-        path: '/profile/relatorios',
+        path: prefix+'/profile/relatorios',
         name: 'ReportsPage',
         component: () => import('./components/admin/ReportsPage.vue'),
         meta: { requiresLogin: true, requiresAdmin: true }
     },
     {
-        path: '/profile/minha-conta',
+        path: prefix+'/profile/minha-conta',
         name: 'AccountPages',
         component: () => import('./components/user/Account.vue'),
         meta: { requiresLogin: true }
     },
     {
-        path: '/entrar',
+        path: prefix+'/entrar',
         name: 'auth',
         component: () => import('./components/template/Login.vue')
     },
     {
-        path: '/profile/admin-ministrantes',
+        path: prefix+'/profile/admin-ministrantes',
         name: 'GuestsPages',
         component: () => import('./components/admin/GuestsPages.vue'),
         meta: { requiresLogin: true, requiresAdmin: true }
     },
     {
-        path: '/cadastro-palestra',
+        path: prefix+'/cadastro-palestra',
         name: 'FormSpeakerSignup',
         component: () => import('./components/admin/FormSpeakerSignup.vue'),
     },
     {
-        path: '/cadastro-minicurso',
+        path: prefix+'/cadastro-minicurso',
         name: 'FormTeacherSignup',
         component: () => import('./components/admin/FormTeacherSignup.vue'),
     },
     {
-        path: '*',
+        path: prefix+'/*',
         name: 'NotFound',
         component: () => import('./components/template/404.vue')
     }
